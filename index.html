@@ -50,7 +50,8 @@
     --shadow:0 10px 30px -12px rgba(0,0,0,.55);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{-webkit-text-size-adjust:100%}
+  html{-webkit-text-size-adjust:100%;color-scheme:light}
+  html[data-theme="dark"]{color-scheme:dark}
   body{
     font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
     background:var(--bg);
@@ -107,7 +108,7 @@
   .flag-globe.xs{width:18px;height:18px}
   .flag-globe svg{width:62%;height:62%}
   .recent-flags{display:inline-flex;flex:none;align-items:center}
-  .recent-flags .flag.xs:last-child,.recent-flags .flag-globe.xs:last-child{margin-left:-7px;box-shadow:0 0 0 2px var(--card),0 0 0 3px rgba(28,25,23,.08)}
+  .recent-flags .flag.xs:last-child,.recent-flags .flag-globe.xs:last-child{margin-left:-3px;box-shadow:0 0 0 2px var(--card),0 0 0 3px rgba(28,25,23,.08)}
   .ccy-meta{flex:1;min-width:0}
   .ccy-name{font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ccy-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -133,7 +134,7 @@
   .status .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
   .status.cached .dot{background:var(--amber)}
   .status.error .dot{background:var(--red)}
-  .status button{margin-left:auto;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;font-weight:700;color:var(--orange-deep);cursor:pointer;white-space:nowrap;flex:none}
+  .status button{margin-left:auto;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--orange-deep);cursor:pointer;white-space:nowrap;flex:none}
   .status button:hover{border-color:#FDBA74}
   .error-banner{display:none;margin-top:12px;background:var(--red-soft);border:1px solid var(--red-line);color:#991B1B;border-radius:10px;padding:12px 14px;font-size:13.5px}
   html[data-theme="dark"] .error-banner{color:#FCA5A5}
@@ -281,6 +282,7 @@
   @media (max-width:400px){
     .header-in{padding:12px 14px}
     .brand-name{font-size:20px}
+    .brand-tag{display:none}
     .live-badge{padding:6px 9px}
   }
   /* ---------- footer ---------- */
@@ -296,10 +298,12 @@
   .sheet-search{margin-top:12px;display:flex;align-items:center;gap:9px;background:var(--card-soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .sheet-search svg{flex:none;color:var(--faint)}
   .sheet-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--ink)}
-  .sheet-list{overflow-y:auto;padding:6px 8px 18px;-webkit-overflow-scrolling:touch}
+  .sheet-list{overflow-y:auto;padding:6px 8px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
   .picker-group{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px 10px 4px}
   .ccy-row{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:10px;padding:10px;cursor:pointer;font:inherit;text-align:left}
-  .ccy-row:hover,.ccy-row.active{background:var(--orange-soft)}
+  .ccy-row:hover{background:var(--orange-soft)}
+  .ccy-row.active{background:#FFE7D1;box-shadow:inset 3px 0 0 var(--orange)}
+  html[data-theme="dark"] .ccy-row.active{background:#3A2410;box-shadow:inset 3px 0 0 var(--orange)}
   .ccy-row .ccy-code{width:48px}
   .ccy-row .ccy-name{font-size:14.5px}
   .ccy-row .ccy-sub{font-size:12px}
@@ -321,7 +325,7 @@
   <div class="header-in">
     <a class="brand" href="./" aria-label="Convertly home">
       <svg viewBox="0 0 64 64" role="img" aria-label="Convertly logo"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".55" stop-color="#F97316"/><stop offset="1" stop-color="#EA580C"/></linearGradient><marker id="ah1" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#EA580C"/></marker><marker id="ah2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#F59E0B"/></marker></defs><path d="M32 9 A23 23 0 1 1 12.1 43.5" fill="none" stroke="url(#lg1)" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah1)"/><path d="M32 55 A23 23 0 1 1 51.9 20.5" fill="none" stroke="#F59E0B" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah2)"/></svg>
-      <span><span class="brand-name">Convert<em>ly</em></span><span class="brand-tag" style="display:block" data-i18n="brandTag">Live currency converter</span></span>
+      <span><span class="brand-name">Convert<em>ly</em></span><span class="brand-tag" data-i18n="brandTag">Live currency converter</span></span>
     </a>
     <span class="header-actions">
       <button class="lang-btn" id="langBtn" type="button" aria-label="Switch language to Indonesian">ID</button>
@@ -336,7 +340,7 @@
 
 <main class="wrap">
   <section class="hero">
-    <h1 data-i18n-html="heroTitle">Convert at <span class="grad">live rates</span>.</h1>
+    <h1 data-i18n-html="heroTitle">Convert at&nbsp;<span class="grad">live rates</span>.</h1>
     <p data-i18n="heroSub">160+ currencies &amp; crypto, live rates.</p>
   </section>
 
@@ -359,7 +363,7 @@
       <button class="amt-chip" type="button" data-amount="10">10</button>
       <button class="amt-chip" type="button" data-amount="100">100</button>
       <button class="amt-chip" type="button" data-amount="1000">1,000</button>
-      <button class="amt-chip" type="button" data-amount="100000">100K</button>
+      <button class="amt-chip" type="button" data-amount="100000">100,000</button>
     </div>
 
     <div class="ccy-stack">
@@ -433,9 +437,9 @@
         <span class="crypto-meta"><span class="crypto-code">SOL</span><span class="crypto-name">Solana</span></span>
         <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
       </button>
-      <button class="crypto-chip" type="button" data-crypto="XRP" aria-label="Convert XRP">
+      <button class="crypto-chip" type="button" data-crypto="XRP" aria-label="Convert Ripple">
         <span class="coin coin-xrp" role="img" aria-label="XRP"><span aria-hidden="true">X</span></span>
-        <span class="crypto-meta"><span class="crypto-code">XRP</span><span class="crypto-name">XRP</span></span>
+        <span class="crypto-meta"><span class="crypto-code">XRP</span><span class="crypto-name">Ripple</span></span>
         <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
       </button>
       <button class="crypto-chip" type="button" data-crypto="DOGE" aria-label="Convert Dogecoin">
@@ -473,7 +477,7 @@
     <h2 data-i18n="histTitle">Rate on a date</h2>
     <p class="hist-sub" data-i18n="histSub">See what the rate was on a past date.</p>
     <div class="hist-row">
-      <input id="histDate" type="date" aria-label="Date">
+      <input id="histDate" type="date" lang="en" aria-label="Date">
       <button class="hist-btn" id="histBtn" type="button" data-i18n="histButton">Show rate</button>
     </div>
     <div class="hist-result" id="histResult" aria-live="polite"></div>
@@ -531,7 +535,7 @@
       <div class="sheet-title" data-i18n="installTitle">Install Convertly</div>
     </div>
     <div class="install-body">
-      <p data-i18n-html="installSteps">Tap <b>Share</b>, then <b>Add to Home Screen</b>, then <b>Add</b>.</p>
+      <p id="installStepsText" data-i18n-html="installSteps">Tap <b>Share</b>, then <b>Add to Home Screen</b>, then <b>Add</b>.</p>
       <button class="action-btn" id="installCloseBtn" type="button" data-i18n="installClose">Close</button>
     </div>
   </div>
@@ -541,7 +545,7 @@
 "use strict";
 /* Currency data: code -> [name, region]. Covers every currency returned by open.er-api.com. */
 const CURRENCIES = {
-  ADA:["Cardano","Cryptocurrency"],AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOGE:["Dogecoin","Cryptocurrency"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LTC:["Litecoin","Cryptocurrency"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOL:["Solana","Cryptocurrency"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],XRP:["XRP","Cryptocurrency"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"],BTC:["Bitcoin","Cryptocurrency"],ETH:["Ethereum","Cryptocurrency"],USDT:["Tether","Cryptocurrency"]
+  ADA:["Cardano","Cryptocurrency"],AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOGE:["Dogecoin","Cryptocurrency"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LTC:["Litecoin","Cryptocurrency"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOL:["Solana","Cryptocurrency"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],XRP:["Ripple","Cryptocurrency"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"],BTC:["Bitcoin","Cryptocurrency"],ETH:["Ethereum","Cryptocurrency"],USDT:["Tether","Cryptocurrency"]
 };
 const CODES = Object.keys(CURRENCIES).sort();
 /* Flag icons: circle-flags SVG (already round; every code verified live, no placeholders). Currency -> country code. */
@@ -611,7 +615,7 @@ const els = {
   pinnedSection: $("pinnedSection"), pinnedRow: $("pinnedRow"),
   amtChips: $("amtChips"), histDate: $("histDate"), histBtn: $("histBtn"), histResult: $("histResult"),
   chartInspect: $("chartInspect"), installBtn: $("installBtn"), installOverlay: $("installOverlay"),
-  installCloseBtn: $("installCloseBtn")
+  installStepsText: $("installStepsText"), installCloseBtn: $("installCloseBtn")
 };
 
 /* ---------- i18n: full EN/ID strings. Currency names/codes stay as-is; the app name stays "Convertly". ---------- */
@@ -619,7 +623,7 @@ const LANG_KEY = "convertly-lang-v1";
 const STRINGS = {
   en: {
     brandTag: "Live currency converter",
-    heroTitle: 'Convert at <span class="grad">live rates</span>.',
+    heroTitle: 'Convert at&nbsp;<span class="grad">live rates</span>.',
     heroSub: "160+ currencies & crypto, live rates.",
     amountLabel: "Amount", fromLabel: "From", toLabel: "To",
     pinPair: "Pin pair", unpinPair: "Pinned — tap to unpin", pinnedTitle: "Pinned pairs",
@@ -670,6 +674,7 @@ const STRINGS = {
     histWeekend: "No rate on {req} (weekend or holiday) — showing the nearest available day, {near}.",
     histUnavailable: "No rate available for this pair on that date.",
     installBtn: "Install app", installTitle: "Install Convertly",
+    installUnavailable: "Install isn't available in this browser. Try Chrome on Android or Safari on iPhone to install Convertly.",
     installSteps: "Tap <b>Share</b>, then <b>Add to Home Screen</b>, then <b>Add</b>.",
     installClose: "Close",
     themeAria: "Toggle dark mode", swapAria: "Swap currencies",
@@ -679,7 +684,7 @@ const STRINGS = {
   },
   id: {
     brandTag: "Konverter mata uang live",
-    heroTitle: 'Konversi dengan <span class="grad">kurs live</span>.',
+    heroTitle: 'Konversi dengan&nbsp;<span class="grad">kurs live</span>.',
     heroSub: "160+ mata uang & kripto, kurs live.",
     amountLabel: "Jumlah", fromLabel: "Dari", toLabel: "Ke",
     pinPair: "Sematkan pasangan", unpinPair: "Disematkan — ketuk untuk melepas", pinnedTitle: "Pasangan tersemat",
@@ -730,6 +735,7 @@ const STRINGS = {
     histWeekend: "Tidak ada kurs pada {req} (akhir pekan atau libur) — menampilkan hari terdekat yang tersedia, {near}.",
     histUnavailable: "Tidak ada kurs tersedia untuk pasangan ini pada tanggal tersebut.",
     installBtn: "Instal aplikasi", installTitle: "Instal Convertly",
+    installUnavailable: "Instalasi tidak tersedia di browser ini. Coba buka di Chrome (Android) atau Safari (iPhone) untuk menginstal Convertly.",
     installSteps: "Ketuk <b>Bagikan</b>, lalu <b>Tambah ke Layar Utama</b>, lalu <b>Tambah</b>.",
     installClose: "Tutup",
     themeAria: "Ganti mode gelap", swapAria: "Tukar mata uang",
@@ -797,6 +803,7 @@ try { recents = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e
 
 let currentRates = null;   // { rates, updated, source: "live"|"cached" }
 let fetching = false;
+let ratesStale = false; /* true from a pair change until the new table arrives — result shows "loading", never the old pair's value */
 let ratesAttempted = false; /* true once a rate load has finished (success or fail) */
 let pickerTarget = "from";
 
@@ -811,7 +818,8 @@ function fmtMoney(value, code) {
   }
   const locale = code === "IDR" ? "id-ID" : "en-US";
   try {
-    return new Intl.NumberFormat(locale, { style: "currency", currency: code }).format(value);
+    /* Intl puts a space after 3-letter codes ("SGD 129.12") but not after symbols ("€91.56") — strip it so every amount reads the same. */
+    return new Intl.NumberFormat(locale, { style: "currency", currency: code }).format(value).replace(/^([A-Z]{3})\s+/, "$1");
   } catch (e) {
     return code + " " + Number(value).toLocaleString("en-US", { maximumFractionDigits: 2 });
   }
@@ -820,7 +828,21 @@ function fmtRate(value) {
   if (!isFinite(value) || value === 0) return "—";
   if (value >= 100) return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
   if (value >= 1) return value.toLocaleString("en-US", { maximumFractionDigits: 4 });
-  return Number(value.toPrecision(4)).toString();
+  /* Never scientific notation (e.g. 9.13e-10) — plain decimals instead. */
+  return value.toLocaleString("en-US", { maximumFractionDigits: 10 });
+}
+/* Crypto strip price: one consistent rule — >=$1000 no decimals, >=$1 two, <$1 four. */
+function fmtCryptoPrice(usd) {
+  if (!isFinite(usd)) return "—";
+  const d = usd >= 1000 ? 0 : usd >= 1 ? 2 : 4;
+  return "$" + usd.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+}
+/* Chart stats: same decimals for current / high / low — >=1M no decimals, else two. */
+function fmtStat(value) {
+  if (!isFinite(value)) return "—";
+  if (value >= 1e6) return value.toLocaleString("en-US", { maximumFractionDigits: 0 });
+  if (value >= 1) return value.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return fmtRate(value);
 }
 function fmtAmountInput(value) {
   return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
@@ -910,9 +932,16 @@ function renderResult() {
   state.amount = amount;
   els.resultLabel.textContent = t("resultEquals", { amount: fmtAmountInput(amount), from: state.from });
   if (!currentRates || !currentRates.rates || typeof currentRates.rates[state.to] !== "number") {
-    els.resultValue.innerHTML = "&mdash;";
-    els.rateLine.textContent = t("rateUnavailable");
-    els.inverseLine.textContent = "";
+    if (fetching || !ratesAttempted || ratesStale) {
+      /* Still loading (first load or pair change) — say so, never a stale value or an "unavailable" error. */
+      els.resultValue.innerHTML = "&hellip;";
+      els.rateLine.textContent = t("fetching");
+      els.inverseLine.textContent = "";
+    } else {
+      els.resultValue.innerHTML = "&mdash;";
+      els.rateLine.textContent = t("rateUnavailable");
+      els.inverseLine.textContent = "";
+    }
     renderMulti();
     return;
   }
@@ -922,7 +951,7 @@ function renderResult() {
   els.rateLine.innerHTML = "1 <b>" + state.from + "</b> = <b>" + fmtRate(rate) + " " + state.to + "</b>";
   els.inverseLine.innerHTML = "1 <b>" + state.to + "</b> = <b>" + fmtRate(1 / rate) + " " + state.from + "</b>";
   if (chartData && chartData.base === state.from && chartData.target === state.to) {
-    els.trendCurrent.textContent = fmtRate(rate); /* bare number: the pair is already in the trend title */
+    els.trendCurrent.textContent = fmtStat(rate); /* bare number: the pair is already in the trend title */
   }
   renderMulti();
 }
@@ -1040,6 +1069,7 @@ async function loadRates(base, opts) {
   }
   ratesAttempted = true;
   fetching = false;
+  ratesStale = false;
   renderResult();
   if (opts.record !== false) recordRecent();
 }
@@ -1075,7 +1105,7 @@ function renderRecents() {
       state.amount = r.amount; state.from = r.from; state.to = r.to;
       els.amount.value = String(r.amount);
       saveState(); renderPair();
-      refresh(true);
+      refresh(true, true);
       loadChart();
     });
     els.recentList.appendChild(b);
@@ -1093,7 +1123,7 @@ function renderChips() {
     b.addEventListener("click", () => {
       state.from = f; state.to = t;
       saveState(); renderPair();
-      refresh(true);
+      refresh(true, true);
       loadChart();
     });
     els.chipRow.appendChild(b);
@@ -1184,7 +1214,7 @@ function renderPickerList(q) {
         state.to = code;
       }
       saveState(); renderPair(); closePicker();
-      refresh(true);
+      refresh(true, true);
       loadChart();
     });
     list.appendChild(row);
@@ -1322,6 +1352,12 @@ async function loadChart() {
   const seq = ++chartSeq;
   if (state.from === state.to) { showChartUnavailable(t("chartSame")); return; }
   setTrendNote(t("chartLoading"), true);
+  /* Clear the old stats at once — they belong to the old pair until the new chart arrives. */
+  els.trendCurrent.textContent = "—";
+  els.trendHigh.textContent = "—";
+  els.trendLow.textContent = "—";
+  els.trendChange.textContent = "—";
+  els.trendChange.className = "stat-value";
   els.trendTitle.textContent = state.from + " / " + state.to + " trend";
   const end = new Date();
   const start = new Date();
@@ -1367,17 +1403,17 @@ function renderChart(stale) {
   const changePct = ((last - first) / first) * 100;
   const live = (currentRates && currentRates.rates && typeof currentRates.rates[chartData.target] === "number")
     ? currentRates.rates[chartData.target] : last;
-  els.trendCurrent.textContent = fmtRate(live);
-  els.trendHigh.textContent = fmtRate(high);
-  els.trendLow.textContent = fmtRate(low);
+  els.trendCurrent.textContent = fmtStat(live);
+  els.trendHigh.textContent = fmtStat(high);
+  els.trendLow.textContent = fmtStat(low);
   const sign = changePct >= 0 ? "+" : "";
   els.trendChange.textContent = sign + changePct.toFixed(2) + "%" + (stale ? " (cached)" : "");
   els.trendChange.className = "stat-value " + (changePct >= 0 ? "up" : "down");
   /* ---- draw inline SVG line chart (no external library) ---- */
-  const W = 640, H = 220, padL = 10, padR = 14, padT = 20, padB = 28;
+  const W = 640, H = 220, padL = 10, padR = 66, padT = 20, padB = 28;
   let min = low, max = high;
   if (min === max) { min -= 1; max += 1; }
-  const pad = (max - min) * 0.08 || 1;
+  const pad = (max - min) * 0.2 || 1; /* wide padding so a flat 7D range doesn't look like a crash */
   min -= pad; max += pad;
   const X = (i) => padL + (i / (pts.length - 1)) * (W - padL - padR);
   const Y = (v) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
@@ -1388,7 +1424,8 @@ function renderChart(stale) {
     const v = min + ((max - min) * g) / 3;
     const y = Y(v);
     grid += '<line class="grid" x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '"/>';
-    grid += '<text class="axis" x="' + (W - padR) + '" y="' + (y - 4).toFixed(1) + '" text-anchor="end">' + fmtRate(v) + '</text>';
+    /* Y labels live in the right padding, clear of the line and the last dot. */
+    grid += '<text class="axis" x="' + (W - 8) + '" y="' + (y - 4).toFixed(1) + '" text-anchor="end">' + fmtStat(v) + '</text>';
   }
   const svg = '<defs>'
     + '<linearGradient id="trendArea" x1="0" y1="0" x2="0" y2="1">'
@@ -1406,8 +1443,12 @@ function renderChart(stale) {
         ? '<circle cx="' + X(inspectedIdx).toFixed(1) + '" cy="' + Y(pts[inspectedIdx].rate).toFixed(1) + '" r="6" fill="#fff" stroke="#EA580C" stroke-width="2.5"/>'
           + '<line x1="' + X(inspectedIdx).toFixed(1) + '" y1="' + padT + '" x2="' + X(inspectedIdx).toFixed(1) + '" y2="' + (H - padB) + '" stroke="#EA580C" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>'
         : "")
-    + '<text class="axis" x="' + padL + '" y="' + (H - 8) + '">' + fmtDay(pts[0].date) + '</text>'
-    + '<text class="axis" x="' + (W - padR) + '" y="' + (H - 8) + '" text-anchor="end">' + fmtDay(pts[pts.length - 1].date) + '</text>';
+    + [0, 0.25, 0.5, 0.75, 1].map((f) => Math.round(f * (pts.length - 1)))
+        .filter((idx, i, arr) => arr.indexOf(idx) === i)
+        .map((idx) => {
+          const anchor = idx === 0 ? "start" : idx === pts.length - 1 ? "end" : "middle";
+          return '<text class="axis" x="' + X(idx).toFixed(1) + '" y="' + (H - 8) + '" text-anchor="' + anchor + '">' + fmtDay(pts[idx].date) + '</text>';
+        }).join("");
   els.trendChart.innerHTML = svg;
   els.trendChart.setAttribute("aria-label", t("chartAria", { from: chartData.base, to: chartData.target, n: pts.length }));
   updateChartInspect();
@@ -1429,7 +1470,7 @@ function inspectChartPoint(clientX) {
   if (!chartData || !chartData.points || chartData.points.length < 2) return;
   const rect = els.trendChart.getBoundingClientRect();
   if (!rect.width) return;
-  const W = 640, padL = 10, padR = 14;
+  const W = 640, padL = 10, padR = 66;
   const x = ((clientX - rect.left) / rect.width) * W;
   const frac = (x - padL) / (W - padL - padR);
   let idx = Math.round(frac * (chartData.points.length - 1));
@@ -1456,22 +1497,30 @@ document.querySelectorAll(".range-btn").forEach((btn) => {
 /* ---------- actions ---------- */
 let inputTimer = null;
 let lastRefreshAt = Date.now();
-function refresh(record) {
+function refresh(record, clearStale) {
   lastRefreshAt = Date.now();
+  if (clearStale) {
+    /* Pair changed: drop the old table at once so the result can never show the old pair's value, and clear the old date lookup too. */
+    ratesStale = true;
+    currentRates = null;
+    histData = null;
+    renderHistResult();
+    renderResult();
+  }
   loadRates(state.from, { record: record !== false });
 }
 els.amount.addEventListener("input", () => {
   clearTimeout(inputTimer);
   inputTimer = setTimeout(() => { renderPair(); renderResult(); recordRecent(); }, 500);
 });
-els.amount.addEventListener("change", () => { renderPair(); renderResult(); recordRecent(); });
+els.amount.addEventListener("change", () => { const a = parseAmount(); if (a !== null) els.amount.value = fmtAmountInput(a); renderPair(); renderResult(); recordRecent(); });
 els.fromBtn.addEventListener("click", () => openPicker("from"));
 els.toBtn.addEventListener("click", () => openPicker("to"));
 els.swapBtn.addEventListener("click", () => {
   const f = state.from; state.from = state.to; state.to = f;
   els.swapBtn.classList.toggle("flip");
   saveState(); renderPair();
-  refresh(true);
+  refresh(true, true);
   loadChart();
 });
 els.pickerSearch.addEventListener("input", (e) => renderPickerList(e.target.value));
@@ -1527,7 +1576,7 @@ function renderCryptoStrip() {
     if (data && data[CRYPTO_IDS[code]] && typeof data[CRYPTO_IDS[code]].usd === "number") {
       const p = data[CRYPTO_IDS[code]];
       const chg = typeof p.usd_24h_change === "number" ? p.usd_24h_change : null;
-      priceEl.innerHTML = '<span class="crypto-value">$' + fmtRate(p.usd) + '</span>'
+      priceEl.innerHTML = '<span class="crypto-value">' + fmtCryptoPrice(p.usd) + '</span>'
         + (chg === null ? '<span class="crypto-change">—</span>'
           : '<span class="crypto-change ' + (chg >= 0 ? "up" : "down") + '">' + (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%</span>");
       if (note) note.textContent = cryptoStale ? t("cryptoCached") : t("cryptoLive");
@@ -1543,7 +1592,7 @@ function setFromCrypto(code) {
   if (state.to === code) state.to = "USD";
   state.from = code;
   saveState(); renderPair();
-  refresh(true);
+  refresh(true, true);
   loadChart();
 }
 
@@ -1584,7 +1633,7 @@ function renderPinned() {
     b.addEventListener("click", () => {
       state.from = p.from; state.to = p.to;
       saveState(); renderPair();
-      refresh(true);
+      refresh(true, true);
       loadChart();
     });
     els.pinnedRow.appendChild(b);
@@ -1737,7 +1786,7 @@ applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme : (windo
 els.themeBtn.addEventListener("click", () => {
   applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
 });
-els.amount.value = String(state.amount);
+els.amount.value = fmtAmountInput(state.amount);
 if (els.histDate) els.histDate.max = isoDay(new Date());
 renderChips();
 applyLang(); /* sets all static + dynamic strings, then renders pair/result/recents/pinned */
@@ -1758,7 +1807,7 @@ els.pinBtn.addEventListener("click", () => {
 });
 document.querySelectorAll("#amtChips .amt-chip").forEach((chip) => {
   chip.addEventListener("click", () => {
-    els.amount.value = chip.dataset.amount;
+    els.amount.value = fmtAmountInput(+chip.dataset.amount);
     renderPair(); renderResult(); recordRecent();
   });
 });
@@ -1773,6 +1822,11 @@ if (els.installBtn) {
       deferredPrompt = null;
       updateInstallBtn();
     } else if (isIOS) {
+      if (els.installStepsText) els.installStepsText.innerHTML = t("installSteps");
+      if (els.installOverlay) els.installOverlay.classList.add("open");
+    } else {
+      /* No install prompt in this browser: say so instead of silently doing nothing. */
+      if (els.installStepsText) els.installStepsText.innerHTML = t("installUnavailable");
       if (els.installOverlay) els.installOverlay.classList.add("open");
     }
   });
