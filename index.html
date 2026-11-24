@@ -298,7 +298,18 @@
   .sheet-search{margin-top:12px;display:flex;align-items:center;gap:9px;background:var(--card-soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .sheet-search svg{flex:none;color:var(--faint)}
   .sheet-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--ink)}
-  .sheet-list{overflow-y:auto;padding:6px 8px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .sheet-list{overflow-y:auto;padding:6px 8px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+  html[data-theme="dark"] .sheet-list{scrollbar-color:#4A423B transparent}
+  .sheet-list::-webkit-scrollbar{width:8px}
+  .sheet-list::-webkit-scrollbar-track{background:transparent}
+  .sheet-list::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+  html[data-theme="dark"] .sheet-list::-webkit-scrollbar-thumb{background:#4A423B}
+  .crypto-grid{scrollbar-color:var(--line) transparent}
+  html[data-theme="dark"] .crypto-grid{scrollbar-color:#4A423B transparent}
+  .crypto-grid::-webkit-scrollbar{height:6px}
+  .crypto-grid::-webkit-scrollbar-track{background:transparent}
+  .crypto-grid::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+  html[data-theme="dark"] .crypto-grid::-webkit-scrollbar-thumb{background:#4A423B}
   .picker-group{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px 10px 4px}
   .ccy-row{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:10px;padding:10px;cursor:pointer;font:inherit;text-align:left}
   .ccy-row:hover{background:var(--orange-soft)}
@@ -477,7 +488,7 @@
     <h2 data-i18n="histTitle">Rate on a date</h2>
     <p class="hist-sub" data-i18n="histSub">See what the rate was on a past date.</p>
     <div class="hist-row">
-      <input id="histDate" type="date" lang="en" aria-label="Date">
+      <input id="histDate" type="text" inputmode="numeric" placeholder="DD/MM/YYYY" autocomplete="off" aria-label="Date, format day month year">
       <button class="hist-btn" id="histBtn" type="button" data-i18n="histButton">Show rate</button>
     </div>
     <div class="hist-result" id="histResult" aria-live="polite"></div>
@@ -831,10 +842,10 @@ function fmtRate(value) {
   /* Never scientific notation (e.g. 9.13e-10) — plain decimals instead. */
   return value.toLocaleString("en-US", { maximumFractionDigits: 10 });
 }
-/* Crypto strip price: one consistent rule — >=$1000 no decimals, >=$1 two, <$1 four. */
+/* Crypto strip price: one consistent rule — >=$10,000 no decimals, >=$1 two, <$1 four. */
 function fmtCryptoPrice(usd) {
   if (!isFinite(usd)) return "—";
-  const d = usd >= 1000 ? 0 : usd >= 1 ? 2 : 4;
+  const d = usd >= 10000 ? 0 : usd >= 1 ? 2 : 4;
   return "$" + usd.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
 }
 /* Chart stats: same decimals for current / high / low — >=1M no decimals, else two. */
@@ -1717,8 +1728,28 @@ async function cgHistoryUsd(code, cgDate) {
     return p.usd;
   } catch (e) { return null; }
 }
+/* The native date input renders its placeholder from the browser locale ("dd/mm/tttt" on id-ID browsers) and its popup ignores the page theme, so the field is a plain text input with an explicit DD/MM/YYYY placeholder. Accepts DD/MM/YYYY, DD-MM-YYYY and YYYY-MM-DD. */
+function parseHistDateInput(raw) {
+  const s = (raw || "").trim();
+  let m = s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{4})$/);
+  if (m) {
+    const d = +m[1], mo = +m[2], y = +m[3];
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+    const iso = y + "-" + String(mo).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+    const chk = new Date(iso + "T00:00:00");
+    if (chk.getFullYear() !== y || chk.getMonth() + 1 !== mo || chk.getDate() !== d) return null;
+    return iso;
+  }
+  m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+  if (m) {
+    const y = +m[1], mo = +m[2], d = +m[3];
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+    return y + "-" + String(mo).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+  }
+  return null;
+}
 async function lookupHistRate() {
-  const val = (els.histDate.value || "").trim();
+  const val = parseHistDateInput(els.histDate.value);
   if (!val) { histData = { errorKey: "histPickDate" }; renderHistResult(); return; }
   if (val > isoDay(new Date())) { histData = { errorKey: "histFuture" }; renderHistResult(); return; }
   if (state.from === state.to) { histData = { errorKey: "histUnavailable" }; renderHistResult(); return; }
@@ -1787,7 +1818,6 @@ els.themeBtn.addEventListener("click", () => {
   applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
 });
 els.amount.value = fmtAmountInput(state.amount);
-if (els.histDate) els.histDate.max = isoDay(new Date());
 renderChips();
 applyLang(); /* sets all static + dynamic strings, then renders pair/result/recents/pinned */
 refresh(false);
