@@ -1,8 +1,10 @@
 /* Convertly service worker — app-shell offline cache.
    Same-origin files are cached; the live rates API is never cached here
    (the app itself caches the last good rates in localStorage). */
-const CACHE_NAME = "convertly-v2";
-const APP_SHELL = ["./", "index.html", "icon.svg", "manifest.json", "og-image.png"];
+const CACHE_NAME = "convertly-v3";
+// NOTE: og-image.png is NOT precached — it is not in the repo yet (see README).
+// The fetch handler below still caches it on demand if it ever appears.
+const APP_SHELL = ["./", "index.html", "icon.svg", "manifest.json"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
