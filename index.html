@@ -108,6 +108,29 @@
   .recent-item .conv{flex:1;min-width:0;font-size:13.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .recent-item .when{font-size:12px;color:var(--faint);white-space:nowrap}
   .empty-note{font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
+  /* ---------- trend chart ---------- */
+  .trend{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .trend-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .trend-head h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .range-row{display:flex;gap:6px}
+  .range-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font:inherit;font-size:12.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+  .range-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .range-btn.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(234,88,12,.28)}
+  .trend-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+  .stat{background:#FFFCF8;border:1px solid var(--line-soft);border-radius:14px;padding:10px 12px;min-width:0}
+  .stat-label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .stat-value{display:block;font-size:15px;font-weight:800;letter-spacing:-.01em;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat-value.up{color:var(--green)}
+  .stat-value.down{color:var(--red)}
+  .chart-wrap{margin-top:14px}
+  #trendChart{display:block;width:100%;height:auto}
+  #trendChart .grid{stroke:var(--line);stroke-width:1}
+  #trendChart .axis{fill:var(--muted);font-size:11px;font-family:inherit}
+  #trendChart .last-dot{fill:var(--orange)}
+  .chart-note{font-size:13.5px;color:var(--muted);text-align:center;padding:34px 12px}
+  .chart-note.hidden{display:none}
+  .trend-foot{margin-top:10px;font-size:12px;color:var(--faint);text-align:center}
+  @media (max-width:520px){ .trend-stats{grid-template-columns:repeat(2,1fr)} }
   /* ---------- footer ---------- */
   footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--faint);display:grid;gap:4px}
   footer a{color:var(--muted);text-decoration:none}
@@ -201,6 +224,28 @@
     </div>
   </section>
 
+  <section class="trend" aria-label="Exchange rate trend">
+    <div class="trend-head">
+      <h2 id="trendTitle">USD / IDR trend</h2>
+      <div class="range-row" role="group" aria-label="Trend range">
+        <button class="range-btn" type="button" data-range="7">7D</button>
+        <button class="range-btn active" type="button" data-range="30">30D</button>
+        <button class="range-btn" type="button" data-range="90">90D</button>
+      </div>
+    </div>
+    <div class="trend-stats">
+      <div class="stat"><span class="stat-label">Current rate</span><span class="stat-value" id="trendCurrent">&mdash;</span></div>
+      <div class="stat"><span class="stat-label" id="trendHighLabel">30-day high</span><span class="stat-value" id="trendHigh">&mdash;</span></div>
+      <div class="stat"><span class="stat-label" id="trendLowLabel">30-day low</span><span class="stat-value" id="trendLow">&mdash;</span></div>
+      <div class="stat"><span class="stat-label" id="trendChangeLabel">Change (30D)</span><span class="stat-value" id="trendChange">&mdash;</span></div>
+    </div>
+    <div class="chart-wrap">
+      <svg id="trendChart" viewBox="0 0 640 220" role="img" aria-label="Exchange rate trend chart" preserveAspectRatio="xMidYMid meet"></svg>
+      <div class="chart-note" id="trendNote">Loading trend&hellip;</div>
+    </div>
+    <div class="trend-foot">Daily ECB reference rates via Frankfurter &middot; Weekends and holidays have no rate, so those days are skipped</div>
+  </section>
+
   <section class="chips" aria-label="Popular pairs">
     <h2>Popular pairs</h2>
     <div class="chip-row" id="chipRow"></div>
@@ -257,7 +302,10 @@ const els = {
   statusLine: $("statusLine"), statusText: $("statusText"),
   errorBanner: $("errorBanner"), liveBadge: $("liveBadge"), liveBadgeText: $("liveBadgeText"),
   chipRow: $("chipRow"), recentList: $("recentList"), clearRecent: $("clearRecent"),
-  overlay: $("overlay"), pickerTitle: $("pickerTitle"), pickerSearch: $("pickerSearch"), pickerList: $("pickerList")
+  overlay: $("overlay"), pickerTitle: $("pickerTitle"), pickerSearch: $("pickerSearch"), pickerList: $("pickerList"),
+  trendTitle: $("trendTitle"), trendHighLabel: $("trendHighLabel"), trendLowLabel: $("trendLowLabel"),
+  trendChangeLabel: $("trendChangeLabel"), trendCurrent: $("trendCurrent"), trendHigh: $("trendHigh"),
+  trendLow: $("trendLow"), trendChange: $("trendChange"), trendChart: $("trendChart"), trendNote: $("trendNote")
 };
 
 let state = { amount: 100, from: "USD", to: "IDR" };
@@ -356,6 +404,9 @@ function renderResult() {
   els.resultValue.textContent = fmtMoney(result, state.to);
   els.rateLine.innerHTML = "1 <b>" + state.from + "</b> = <b>" + fmtRate(rate) + " " + state.to + "</b>";
   els.inverseLine.innerHTML = "1 <b>" + state.to + "</b> = <b>" + fmtRate(1 / rate) + " " + state.from + "</b>";
+  if (chartData && chartData.base === state.from && chartData.target === state.to) {
+    els.trendCurrent.textContent = "1 " + state.from + " = " + fmtRate(rate) + " " + state.to;
+  }
 }
 
 async function loadRates(base, opts) {
@@ -422,6 +473,7 @@ function renderRecents() {
       els.amount.value = String(r.amount);
       saveState(); renderPair();
       refresh(true);
+      loadChart();
     });
     els.recentList.appendChild(b);
   });
@@ -439,6 +491,7 @@ function renderChips() {
       state.from = f; state.to = t;
       saveState(); renderPair();
       refresh(true);
+      loadChart();
     });
     els.chipRow.appendChild(b);
   });
@@ -486,10 +539,158 @@ function renderPickerList(q) {
       }
       saveState(); renderPair(); closePicker();
       refresh(true);
+      loadChart();
     });
     list.appendChild(row);
   });
 }
+
+/* ---------- rate trend chart (Frankfurter / ECB reference rates) ---------- */
+const FRANKFURTER_HOSTS = ["https://api.frankfurter.dev/v1/", "https://api.frankfurter.app/v1/"];
+const CHART_CACHE_KEY = "convertly-chart-v1";
+let chartRange = 30;
+let chartData = null;   /* { base, target, range, points: [{date, rate}], fetchedAt } */
+let chartSeq = 0;
+
+function isoDay(d) {
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+}
+function fmtDay(iso) {
+  try {
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  } catch (e) { return iso; }
+}
+function chartCache() {
+  try { return JSON.parse(localStorage.getItem(CHART_CACHE_KEY) || "{}"); } catch (e) { return {}; }
+}
+function saveChartCache(c) {
+  try { localStorage.setItem(CHART_CACHE_KEY, JSON.stringify(c)); } catch (e) {}
+}
+function setTrendNote(text, show) {
+  els.trendNote.textContent = text;
+  els.trendNote.classList.toggle("hidden", !show);
+  els.trendChart.style.display = show ? "none" : "block";
+}
+function showChartUnavailable(msg) {
+  chartData = null;
+  setTrendNote(msg, true);
+  els.trendTitle.textContent = state.from + " / " + state.to + " trend";
+  els.trendCurrent.textContent = "—";
+  els.trendHigh.textContent = "—";
+  els.trendLow.textContent = "—";
+  els.trendChange.textContent = "—";
+  els.trendChange.className = "stat-value";
+}
+async function fetchFrankfurter(start, end, base, target) {
+  const path = start + ".." + end + "?from=" + encodeURIComponent(base) + "&to=" + encodeURIComponent(target);
+  for (const host of FRANKFURTER_HOSTS) {
+    try {
+      const res = await fetch(host + path);
+      if (!res.ok) continue;
+      const data = await res.json();
+      if (!data.rates || !Object.keys(data.rates).length) continue;
+      return data;
+    } catch (e) { /* try next host */ }
+  }
+  return null;
+}
+async function loadChart() {
+  const seq = ++chartSeq;
+  if (state.from === state.to) { showChartUnavailable("Same currency selected — there is no trend to show."); return; }
+  setTrendNote("Loading trend…", true);
+  els.trendTitle.textContent = state.from + " / " + state.to + " trend";
+  const end = new Date();
+  const start = new Date();
+  start.setDate(start.getDate() - chartRange);
+  const key = state.from + ">" + state.to + ":" + chartRange;
+  const cache = chartCache();
+  const data = await fetchFrankfurter(isoDay(start), isoDay(end), state.from, state.to);
+  if (seq !== chartSeq) return; /* a newer request superseded this one */
+  if (data) {
+    const points = Object.keys(data.rates).sort()
+      .map((d) => ({ date: d, rate: data.rates[d][state.to] }))
+      .filter((p) => typeof p.rate === "number" && isFinite(p.rate));
+    if (points.length >= 2) {
+      chartData = { base: state.from, target: state.to, range: chartRange, points: points, fetchedAt: Date.now() };
+      cache[key] = chartData;
+      saveChartCache(cache);
+      renderChart(false);
+      return;
+    }
+  }
+  const cached = cache[key];
+  if (cached && cached.points && cached.points.length >= 2 && cached.base === state.from && cached.target === state.to) {
+    chartData = cached;
+    renderChart(true);
+  } else {
+    showChartUnavailable("Chart not available for this pair. Frankfurter covers about 30 major currencies — try USD, EUR, GBP, JPY, or IDR pairs.");
+  }
+}
+function renderChart(stale) {
+  const pts = chartData.points;
+  const range = chartData.range;
+  setTrendNote("", false);
+  els.trendTitle.textContent = chartData.base + " / " + chartData.target + " trend";
+  els.trendHighLabel.textContent = range + "-day high";
+  els.trendLowLabel.textContent = range + "-day low";
+  els.trendChangeLabel.textContent = "Change (" + range + "D)";
+  const values = pts.map((p) => p.rate);
+  const high = Math.max.apply(null, values);
+  const low = Math.min.apply(null, values);
+  const first = pts[0].rate, last = pts[pts.length - 1].rate;
+  const changePct = ((last - first) / first) * 100;
+  const live = (currentRates && currentRates.rates && typeof currentRates.rates[chartData.target] === "number")
+    ? currentRates.rates[chartData.target] : last;
+  els.trendCurrent.textContent = "1 " + chartData.base + " = " + fmtRate(live) + " " + chartData.target;
+  els.trendHigh.textContent = fmtRate(high);
+  els.trendLow.textContent = fmtRate(low);
+  const sign = changePct >= 0 ? "+" : "";
+  els.trendChange.textContent = sign + changePct.toFixed(2) + "%" + (stale ? " (cached)" : "");
+  els.trendChange.className = "stat-value " + (changePct >= 0 ? "up" : "down");
+  /* ---- draw inline SVG line chart (no external library) ---- */
+  const W = 640, H = 220, padL = 10, padR = 14, padT = 20, padB = 28;
+  let min = low, max = high;
+  if (min === max) { min -= 1; max += 1; }
+  const pad = (max - min) * 0.08 || 1;
+  min -= pad; max += pad;
+  const X = (i) => padL + (i / (pts.length - 1)) * (W - padL - padR);
+  const Y = (v) => padT + (1 - (v - min) / (max - min)) * (H - padT - padB);
+  const line = pts.map((p, i) => (i === 0 ? "M" : "L") + X(i).toFixed(1) + " " + Y(p.rate).toFixed(1)).join(" ");
+  const area = line + " L" + X(pts.length - 1).toFixed(1) + " " + (H - padB) + " L" + X(0).toFixed(1) + " " + (H - padB) + " Z";
+  let grid = "";
+  for (let g = 0; g <= 3; g++) {
+    const v = min + ((max - min) * g) / 3;
+    const y = Y(v);
+    grid += '<line class="grid" x1="' + padL + '" y1="' + y.toFixed(1) + '" x2="' + (W - padR) + '" y2="' + y.toFixed(1) + '"/>';
+    grid += '<text class="axis" x="' + (W - padR) + '" y="' + (y - 4).toFixed(1) + '" text-anchor="end">' + fmtRate(v) + '</text>';
+  }
+  const svg = '<defs>'
+    + '<linearGradient id="trendArea" x1="0" y1="0" x2="0" y2="1">'
+    + '<stop offset="0" stop-color="#F97316" stop-opacity="0.22"/>'
+    + '<stop offset="1" stop-color="#F97316" stop-opacity="0"/>'
+    + '</linearGradient>'
+    + '<linearGradient id="trendLine" x1="0" y1="0" x2="1" y2="0">'
+    + '<stop offset="0" stop-color="#F59E0B"/><stop offset="1" stop-color="#EA580C"/>'
+    + '</linearGradient></defs>'
+    + grid
+    + '<path d="' + area + '" fill="url(#trendArea)" stroke="none"/>'
+    + '<path d="' + line + '" fill="none" stroke="url(#trendLine)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
+    + '<circle class="last-dot" cx="' + X(pts.length - 1).toFixed(1) + '" cy="' + Y(last).toFixed(1) + '" r="4.5"/>'
+    + '<text class="axis" x="' + padL + '" y="' + (H - 8) + '">' + fmtDay(pts[0].date) + '</text>'
+    + '<text class="axis" x="' + (W - padR) + '" y="' + (H - 8) + '" text-anchor="end">' + fmtDay(pts[pts.length - 1].date) + '</text>';
+  els.trendChart.innerHTML = svg;
+  els.trendChart.setAttribute("aria-label", "Exchange rate trend for " + chartData.base + " to " + chartData.target + ", " + pts.length + " daily rates");
+}
+document.querySelectorAll(".range-btn").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const r = parseInt(btn.dataset.range, 10);
+    if (r === chartRange) return;
+    chartRange = r;
+    document.querySelectorAll(".range-btn").forEach((b) => b.classList.toggle("active", b === btn));
+    loadChart();
+  });
+});
 
 /* ---------- actions ---------- */
 let inputTimer = null;
@@ -508,6 +709,7 @@ els.swapBtn.addEventListener("click", () => {
   els.swapBtn.classList.toggle("flip");
   saveState(); renderPair();
   refresh(true);
+  loadChart();
 });
 els.pickerSearch.addEventListener("input", (e) => renderPickerList(e.target.value));
 els.overlay.addEventListener("click", (e) => { if (e.target === els.overlay) closePicker(); });
@@ -528,6 +730,7 @@ renderPair();
 renderRecents();
 renderResult();
 refresh(false);
+loadChart();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
