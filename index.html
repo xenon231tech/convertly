@@ -22,61 +22,81 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=optional">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=optional" rel="stylesheet">
 <style>
-  :root{
-    --amber:#F59E0B; --orange:#EA580C; --orange-deep:#C2410C; --rose:#E11D48;
+:root{
+    --amber:#F59E0B; --orange:#EA580C; --orange-deep:#C2410C;
     --ink:#1C1917; --ink-soft:#44403C; --muted:#78716C; --faint:#A8A29E;
-    --line:#EDE8E3; --line-soft:#F5F0EA; --bg:#FDF8F2; --card:#FFFFFF;
-    --green:#16A34A; --red:#DC2626; --amber-soft:#FFFBEB; --orange-soft:#FFF7ED;
+    --line:#E7E0D8; --line-soft:#F1EBE3; --bg:#FAF7F2; --card:#FFFFFF;
+    --card-soft:#FDFBF7; --field:#FFFDF9;
+    --green:#15803D; --green-soft:#F0FDF4; --green-line:#BBF7D0;
+    --red:#DC2626; --red-soft:#FEF2F2; --red-line:#FECACA;
+    --amber-soft:#FFFBEB; --orange-soft:#FFF7ED;
     --grad:linear-gradient(135deg,#FBBF24 0%,#F97316 55%,#EA580C 100%);
-    --shadow:0 24px 60px -24px rgba(194,65,12,.28),0 2px 8px rgba(28,25,23,.05);
-    --radius:24px;
+    --shadow:0 10px 30px -12px rgba(28,25,23,.12);
+    --radius:16px;
+  }
+  html[data-theme="dark"]{
+    --ink:#F4EEE7; --ink-soft:#D8D0C6; --muted:#A79D92; --faint:#7C7268;
+    --line:#322B25; --line-soft:#262019; --bg:#131110; --card:#1E1A17;
+    --card-soft:#221D19; --field:#211C18;
+    --green:#4ADE80; --green-soft:#122A18; --green-line:#1E4A2A;
+    --red:#F87171; --red-soft:#2A1414; --red-line:#4A1E1E;
+    --amber-soft:#2B2008; --orange-soft:#2A1C10;
+    --shadow:0 10px 30px -12px rgba(0,0,0,.55);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{
     font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:
-      radial-gradient(720px 340px at 50% -80px, rgba(249,115,22,.14), transparent 70%),
-      radial-gradient(560px 300px at 95% 10%, rgba(245,158,11,.10), transparent 70%),
-      var(--bg);
+    background:var(--bg);
     color:var(--ink); min-height:100vh; line-height:1.5;
+    font-variant-numeric:tabular-nums;
     -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
+  button{touch-action:manipulation}
   .wrap{max-width:720px;margin:0 auto;padding:0 20px 48px}
   /* ---------- header ---------- */
-  header{position:sticky;top:0;z-index:20;background:rgba(253,248,242,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
-  .header-in{max-width:720px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
-  .brand svg{width:38px;height:38px;flex:none}
-  .brand-name{font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1}
+  header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line-soft)}
+  .header-in{max-width:720px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-width:0}
+  .brand svg{width:36px;height:36px;flex:none}
+  .brand-name{font-size:22px;font-weight:800;letter-spacing:-.03em;line-height:1.1;white-space:nowrap}
   .brand-name em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .brand-tag{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:3px}
-  .live-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#166534;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:999px;padding:6px 12px;white-space:nowrap}
-  .live-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  .brand-tag{display:block;font-size:11px;color:var(--muted);letter-spacing:.02em;margin-top:2px;white-space:nowrap}
+  .header-actions{display:flex;align-items:center;gap:8px;flex:none}
+  .theme-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+  .theme-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .theme-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .live-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#166534;background:var(--green-soft);border:1px solid var(--green-line);border-radius:999px;padding:7px 12px;white-space:nowrap}
+  .live-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
   .live-badge.cached{color:#92400E;background:#FFFBEB;border-color:#FDE68A}
-  .live-badge.cached .dot{background:var(--amber);animation:none}
-  .live-badge.offline{color:#991B1B;background:#FEF2F2;border-color:#FECACA}
-  .live-badge.offline .dot{background:var(--red);animation:none}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,163,74,.45)}70%{box-shadow:0 0 0 7px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}
+  .live-badge.cached .dot{background:var(--amber)}
+  .live-badge.offline{color:#991B1B;background:var(--red-soft);border-color:var(--red-line)}
+  .live-badge.offline .dot{background:var(--red)}
+  html[data-theme="dark"] .live-badge{color:#86EFAC}
+  html[data-theme="dark"] .live-badge.cached{color:#FCD34D;background:#2B2008;border-color:#57500A}
+  html[data-theme="dark"] .live-badge.offline{color:#FCA5A5}
   /* ---------- hero ---------- */
-  .hero{padding:38px 0 22px;text-align:center}
-  .hero h1{font-size:clamp(28px,6vw,40px);line-height:1.12;font-weight:800;letter-spacing:-.03em}
+  .hero{padding:22px 0 16px;text-align:center}
+  .hero h1{font-size:26px;line-height:1.18;font-weight:800;letter-spacing:-.03em}
   .hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p{margin-top:10px;color:var(--muted);font-size:15px}
+  .hero p{margin-top:8px;color:var(--muted);font-size:14px}
   /* ---------- converter card ---------- */
-  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px 20px}
-  .field-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-  .amount-row{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px}
+  .field-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .amount-row{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:12px}
   .amount-row input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:32px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
   .amount-row input::placeholder{color:#D6D3D1}
-  .amount-code{font-size:15px;font-weight:700;color:var(--muted)}
-  .ccy-btn{width:100%;display:flex;align-items:center;gap:12px;background:#FFFCF8;border:1px solid var(--line);border-radius:16px;padding:14px 14px;cursor:pointer;text-align:left;font:inherit;transition:border-color .15s,background .15s,box-shadow .15s}
+  html[data-theme="dark"] .amount-row input::placeholder{color:#57504A}
+  .amount-code{font-size:15px;font-weight:700;color:var(--muted);white-space:nowrap}
+  .ccy-btn{width:100%;display:flex;align-items:center;gap:12px;background:var(--field);border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;text-align:left;font:inherit;transition:border-color .15s,background .15s}
   .ccy-btn:hover{border-color:#FDBA74;background:var(--orange-soft)}
   .ccy-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-  .ccy-code{width:52px;flex:none;text-align:center;font-size:13px;font-weight:800;letter-spacing:.02em;color:#fff;background:var(--grad);border-radius:9px;padding:7px 0}
-  .flag{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 1px rgba(28,25,23,.08);background:#F5F0EA}
+  .ccy-code{width:52px;flex:none;text-align:center;font-size:13px;font-weight:800;letter-spacing:.02em;color:#fff;background:var(--grad);border-radius:8px;padding:7px 0}
+  .flag{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 1px rgba(28,25,23,.08);background:var(--line-soft)}
   .flag.sm{width:20px;height:20px}
   .flag.xs{width:18px;height:18px}
   .flag-globe{width:24px;height:24px;flex:none;border-radius:50%;background:var(--grad);display:inline-flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 0 1px rgba(28,25,23,.08)}
@@ -84,73 +104,102 @@
   .flag-globe.xs{width:18px;height:18px}
   .flag-globe svg{width:62%;height:62%}
   .recent-flags{display:inline-flex;flex:none;align-items:center}
-  .recent-flags .flag.xs:last-child,.recent-flags .flag-globe.xs:last-child{margin-left:-7px;box-shadow:0 0 0 2px #fff,0 0 0 3px rgba(28,25,23,.08)}
+  .recent-flags .flag.xs:last-child,.recent-flags .flag-globe.xs:last-child{margin-left:-7px;box-shadow:0 0 0 2px var(--card),0 0 0 3px rgba(28,25,23,.08)}
   .ccy-meta{flex:1;min-width:0}
   .ccy-name{font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ccy-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .ccy-btn svg{flex:none;color:var(--faint)}
-  .ccy-stack{display:grid;gap:0;margin-top:16px}
-  .swap-wrap{display:flex;justify-content:center;height:0;position:relative;z-index:2}
-  .swap-btn{width:46px;height:46px;margin-top:-23px;border-radius:50%;border:2px solid #FDBA74;background:#fff;color:var(--orange);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(234,88,12,.22);transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .15s,color .15s}
+  .ccy-btn>svg{flex:none;color:var(--faint)}
+  .ccy-stack{display:grid;grid-template-columns:minmax(0,1fr);gap:0;margin-top:14px}
+  .swap-row{display:flex;align-items:center;gap:12px;height:40px}
+  .swap-row::before,.swap-row::after{content:"";flex:1;height:1px;background:var(--line)}
+  .swap-btn{width:40px;height:40px;flex:none;border-radius:50%;border:1px solid #FDBA74;background:var(--card);color:var(--orange);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(234,88,12,.16);transition:transform .3s ease,background .15s,color .15s}
   .swap-btn:hover{background:var(--orange);color:#fff}
   .swap-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
   .swap-btn.flip svg{transform:rotate(180deg)}
-  .swap-btn svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
-  .to-field{margin-top:16px}
+  .swap-btn svg{transition:transform .3s ease}
+  .to-field{margin-top:0}
   /* ---------- result ---------- */
-  .result{margin-top:20px;background:linear-gradient(135deg,#FFFBEB 0%,#FFF7ED 60%,#FEF2F2 130%);border:1px solid #FDE9D3;border-radius:18px;padding:18px}
-  .result-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .result-value{font-size:clamp(26px,7vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-top:6px;word-break:break-word}
+  .result{margin-top:16px;background:var(--amber-soft);border:1px solid #FDE9D3;border-radius:12px;padding:16px}
+  html[data-theme="dark"] .result{border-color:#3A2C12}
+  .result-label{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .result-value{font-size:clamp(26px,7vw,34px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-top:6px;min-height:1.2em;overflow-wrap:anywhere}
   .result-value .cur{font-size:.62em;color:var(--ink-soft);font-weight:700;margin-right:2px}
-  .rate-lines{margin-top:10px;font-size:13.5px;color:var(--ink-soft);display:grid;gap:2px}
+  .rate-lines{margin-top:8px;font-size:13.5px;color:var(--ink-soft);display:grid;gap:2px;min-height:45px}
   .rate-lines b{font-weight:700;color:var(--ink)}
-  .status{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12.5px;color:var(--muted)}
+  .status{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12.5px;color:var(--muted)}
   .status .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
   .status.cached .dot{background:var(--amber)}
   .status.error .dot{background:var(--red)}
-  .status button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;font-weight:700;color:var(--orange-deep);cursor:pointer}
+  .status button{margin-left:auto;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;font-weight:700;color:var(--orange-deep);cursor:pointer;white-space:nowrap;flex:none}
   .status button:hover{border-color:#FDBA74}
-  .error-banner{display:none;margin-top:14px;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:12px;padding:12px 14px;font-size:13.5px}
+  .error-banner{display:none;margin-top:12px;background:var(--red-soft);border:1px solid var(--red-line);color:#991B1B;border-radius:10px;padding:12px 14px;font-size:13.5px}
+  html[data-theme="dark"] .error-banner{color:#FCA5A5}
   .error-banner.show{display:block}
+  /* ---------- result actions ---------- */
+  .result-actions{display:flex;gap:8px;margin-top:14px}
+  .action-btn{flex:1;min-width:0;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:9px 8px;font:inherit;font-size:13px;font-weight:700;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;transition:border-color .15s,color .15s}
+  .action-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .action-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .action-btn svg{flex:none}
+  /* ---------- section headings ---------- */
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
+  .section-head h2{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .section-note{font-size:12px;color:var(--faint);white-space:nowrap}
+  /* ---------- crypto strip ---------- */
+  .crypto{margin-top:20px}
+  .crypto-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .crypto-chip{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s}
+  .crypto-chip:hover{border-color:#FDBA74;background:var(--orange-soft)}
+  .crypto-chip:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .crypto-chip.active{border-color:var(--orange);background:var(--orange-soft);box-shadow:0 0 0 1px var(--orange) inset}
+  .crypto-meta{flex:1;min-width:0;display:grid;gap:1px}
+  .crypto-code{font-size:14px;font-weight:800;letter-spacing:.02em;color:var(--ink)}
+  .crypto-name{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .crypto-price{display:grid;gap:2px;text-align:right;min-height:36px;align-content:center;flex:none}
+  .crypto-value{font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--ink);white-space:nowrap}
+  .crypto-change{font-size:12px;font-weight:700;white-space:nowrap}
+  .crypto-change.up{color:var(--green)}
+  .crypto-change.down{color:var(--red)}
+  .crypto-price .skel-bar{justify-self:end}
   /* ---------- chips ---------- */
-  .chips{margin-top:22px}
-  .chips h2,.recent h2{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .chips{margin-top:20px}
+  .chips h2,.recent h2{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
   .chip-row{display:flex;flex-wrap:wrap;gap:8px}
-  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:13.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+  .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:8px 14px;font:inherit;font-size:13.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s}
   .chip:hover{border-color:#FDBA74;color:var(--orange-deep)}
   .chip.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.30)}
   /* ---------- recent ---------- */
-  .recent{margin-top:26px}
+  .recent{margin-top:20px}
   .recent-head{display:flex;align-items:baseline;justify-content:space-between}
   .clear-btn{border:0;background:none;font:inherit;font-size:12.5px;font-weight:700;color:var(--orange-deep);cursor:pointer;padding:4px 2px}
   .clear-btn:hover{text-decoration:underline}
-  .recent-list{display:grid;gap:8px}
-  .recent-item{display:flex;align-items:center;gap:12px;width:100%;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s}
+  .recent-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .recent-item{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s}
   .recent-item:hover{border-color:#FDBA74;background:var(--orange-soft)}
   .recent-item .pair{font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--ink);white-space:nowrap}
   .recent-item .conv{flex:1;min-width:0;font-size:13.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .recent-item .when{font-size:12px;color:var(--faint);white-space:nowrap}
-  .empty-note{font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
+  .empty-note{font-size:13.5px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:14px;text-align:center}
   /* ---------- trend chart ---------- */
-  .trend{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .trend{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px}
   .trend-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
   .trend-head h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
   .range-row{display:flex;gap:6px}
-  .range-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font:inherit;font-size:12.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+  .range-btn{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 13px;font:inherit;font-size:12.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s}
   .range-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
   .range-btn.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(234,88,12,.28)}
-  .trend-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
-  .stat{background:#FFFCF8;border:1px solid var(--line-soft);border-radius:14px;padding:10px 12px;min-width:0}
-  .stat-label{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-  .stat-value{display:block;font-size:15px;font-weight:800;letter-spacing:-.01em;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .trend-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+  .stat{background:var(--card-soft);border:1px solid var(--line-soft);border-radius:10px;padding:10px 12px;min-width:0;min-height:58px}
+  .stat-label{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stat-value{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.01em;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .stat-value.up{color:var(--green)}
   .stat-value.down{color:var(--red)}
-  .chart-wrap{margin-top:14px}
-  #trendChart{display:block;width:100%;height:auto}
+  .chart-wrap{position:relative;margin-top:14px;aspect-ratio:640/220;min-height:110px}
+  #trendChart{position:absolute;inset:0;display:block;width:100%;height:100%}
   #trendChart .grid{stroke:var(--line);stroke-width:1}
   #trendChart .axis{fill:var(--muted);font-size:11px;font-family:inherit}
   #trendChart .last-dot{fill:var(--orange)}
-  .chart-note{font-size:13.5px;color:var(--muted);text-align:center;padding:34px 12px}
+  .chart-note{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 12px;font-size:13.5px;color:var(--muted);text-align:center}
   .chart-note.hidden{display:none}
   .trend-foot{margin-top:10px;font-size:12px;color:var(--faint);text-align:center}
   @media (max-width:520px){ .trend-stats{grid-template-columns:repeat(2,1fr)} }
@@ -162,37 +211,36 @@
   .coin-btc{background:#F7931A}
   .coin-eth{background:#627EEA}
   .coin-usdt{background:#26A17B}
-  /* ---------- result actions ---------- */
-  .result-actions{display:flex;gap:8px;margin-top:14px}
-  .action-btn{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:border-color .15s,color .15s}
-  .action-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
-  .action-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
-  .action-btn svg{flex:none}
   /* ---------- multi-currency table ---------- */
-  .multi{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .multi{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px}
   .multi h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
   .multi-sub{font-size:13px;color:var(--muted);margin-top:4px}
-  .multi-list{display:grid;gap:8px;margin-top:14px}
-  .multi-row{display:flex;align-items:center;gap:12px;background:#FFFCF8;border:1px solid var(--line-soft);border-radius:14px;padding:11px 14px}
+  .multi-list{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:14px}
+  .multi-row{display:flex;align-items:center;gap:12px;min-height:54px;background:var(--card-soft);border:1px solid var(--line-soft);border-radius:12px;padding:11px 14px}
   .multi-row .ccy-code{width:52px}
   .multi-row .ccy-name{flex:1;min-width:0;font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .multi-row .multi-value{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
+  /* ---------- skeletons (same size as the content they hold) ---------- */
+  .skel-circle{width:24px;height:24px;border-radius:50%;background:var(--line);flex:none}
+  .skel-bar{display:block;height:12px;border-radius:6px;background:var(--line)}
+  .skel-bar.tall{height:32px;border-radius:8px}
+  .skel-flex{flex:1;min-width:0}
   /* ---------- footer ---------- */
-  footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--faint);display:grid;gap:4px}
+  footer{margin-top:32px;text-align:center;font-size:12.5px;color:var(--faint);display:grid;gap:4px}
   footer a{color:var(--muted);text-decoration:none}
   footer a:hover{text-decoration:underline}
   /* ---------- picker sheet ---------- */
   .overlay{position:fixed;inset:0;background:rgba(28,25,23,.48);z-index:40;display:none;align-items:flex-end;justify-content:center}
   .overlay.open{display:flex}
-  .sheet{background:#fff;width:100%;max-width:520px;max-height:82vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:slideUp .25s ease}
-  @keyframes slideUp{from{transform:translateY(24px);opacity:.6}to{transform:translateY(0);opacity:1}}
+  .sheet{background:var(--card);width:100%;max-width:520px;max-height:82vh;border-radius:16px 16px 0 0;display:flex;flex-direction:column;overflow:hidden}
   .sheet-head{padding:16px 18px 10px;border-bottom:1px solid var(--line-soft)}
   .sheet-title{font-size:17px;font-weight:800;letter-spacing:-.01em}
-  .sheet-search{margin-top:12px;display:flex;align-items:center;gap:9px;background:#FAFAF9;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .sheet-search{margin-top:12px;display:flex;align-items:center;gap:9px;background:var(--card-soft);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
   .sheet-search svg{flex:none;color:var(--faint)}
-  .sheet-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px}
+  .sheet-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px;color:var(--ink)}
   .sheet-list{overflow-y:auto;padding:6px 8px 18px;-webkit-overflow-scrolling:touch}
-  .ccy-row{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:12px;padding:10px 10px;cursor:pointer;font:inherit;text-align:left}
+  .picker-group{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px 10px 4px}
+  .ccy-row{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:10px;padding:10px;cursor:pointer;font:inherit;text-align:left}
   .ccy-row:hover,.ccy-row.active{background:var(--orange-soft)}
   .ccy-row .ccy-code{width:48px}
   .ccy-row .ccy-name{font-size:14.5px}
@@ -200,8 +248,10 @@
   .no-match{padding:22px;text-align:center;color:var(--muted);font-size:14px}
   @media (min-width:640px){
     .overlay{align-items:center;padding:24px}
-    .sheet{border-radius:22px;max-height:72vh}
-    .card{padding:26px 24px 24px}
+    .sheet{border-radius:16px;max-height:72vh}
+    .card{padding:20px}
+    .hero{padding:28px 0 18px}
+    .hero h1{font-size:32px}
   }
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important}
@@ -215,14 +265,20 @@
       <svg viewBox="0 0 64 64" role="img" aria-label="Convertly logo"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".55" stop-color="#F97316"/><stop offset="1" stop-color="#EA580C"/></linearGradient><marker id="ah1" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#EA580C"/></marker><marker id="ah2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#F59E0B"/></marker></defs><path d="M32 9 A23 23 0 1 1 12.1 43.5" fill="none" stroke="url(#lg1)" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah1)"/><path d="M32 55 A23 23 0 1 1 51.9 20.5" fill="none" stroke="#F59E0B" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah2)"/></svg>
       <span><span class="brand-name">Convert<em>ly</em></span><span class="brand-tag" style="display:block">Live currency converter</span></span>
     </a>
-    <span class="live-badge" id="liveBadge"><span class="dot"></span><span id="liveBadgeText">Live rates</span></span>
+    <span class="header-actions">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode">
+        <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+        <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      </button>
+      <span class="live-badge" id="liveBadge"><span class="dot"></span><span id="liveBadgeText">Live rates</span></span>
+    </span>
   </div>
 </header>
 
 <main class="wrap">
   <section class="hero">
-    <h1>Convert currencies at <span class="grad">live rates</span>.</h1>
-    <p>160+ world currencies &amp; crypto. Real-time rates, no sign-up, no fees hidden in the math.</p>
+    <h1>Convert at <span class="grad">live rates</span>.</h1>
+    <p>160+ currencies &amp; crypto, live rates.</p>
   </section>
 
   <section class="card" aria-label="Currency converter">
@@ -234,25 +290,25 @@
 
     <div class="ccy-stack">
       <div>
-        <div class="field-label" style="margin-top:16px">From</div>
+        <div class="field-label">From</div>
         <button class="ccy-btn" id="fromBtn" type="button" aria-haspopup="dialog">
-          <span id="fromFlag"></span>
+          <span id="fromFlag"><img class="flag" src="https://hatscripts.github.io/circle-flags/flags/us.svg" alt="" width="24" height="24"></span>
           <span class="ccy-code" id="fromCode">USD</span>
           <span class="ccy-meta"><span class="ccy-name" id="fromName">US Dollar</span><span class="ccy-sub" id="fromSub" style="display:block">United States</span></span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </button>
       </div>
 
-      <div class="swap-wrap">
+      <div class="swap-row">
         <button class="swap-btn" id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
         </button>
       </div>
 
       <div class="to-field">
         <div class="field-label">To</div>
         <button class="ccy-btn" id="toBtn" type="button" aria-haspopup="dialog">
-          <span id="toFlag"></span>
+          <span id="toFlag"><img class="flag" src="https://hatscripts.github.io/circle-flags/flags/id.svg" alt="" width="24" height="24"></span>
           <span class="ccy-code" id="toCode">IDR</span>
           <span class="ccy-meta"><span class="ccy-name" id="toName">Indonesian Rupiah</span><span class="ccy-sub" id="toSub" style="display:block">Indonesia</span></span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -271,8 +327,32 @@
         <button class="action-btn" id="copyResultBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="copyResultLabel">Copy result</span></button>
         <button class="action-btn" id="copyLinkBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="copyLinkLabel">Copy link</span></button>
       </div>
-      <div class="status" id="statusLine"><span class="dot"></span><span id="statusText">Fetching live rates&hellip;</span></div>
+      <div class="status" id="statusLine"><span class="dot"></span><span id="statusText">Fetching live rates&hellip;</span><button id="refreshBtn" type="button">Refresh</button></div>
       <div class="error-banner" id="errorBanner" role="alert"></div>
+    </div>
+  </section>
+
+  <section class="crypto" aria-label="Crypto prices">
+    <div class="section-head">
+      <h2>Crypto prices</h2>
+      <span class="section-note" id="cryptoNote">Live &middot; CoinGecko</span>
+    </div>
+    <div class="crypto-grid" id="cryptoGrid">
+      <button class="crypto-chip" type="button" data-crypto="BTC" aria-label="Convert Bitcoin">
+        <span class="coin coin-btc" role="img" aria-label="BTC"><span aria-hidden="true">&#8383;</span></span>
+        <span class="crypto-meta"><span class="crypto-code">BTC</span><span class="crypto-name">Bitcoin</span></span>
+        <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
+      </button>
+      <button class="crypto-chip" type="button" data-crypto="ETH" aria-label="Convert Ethereum">
+        <span class="coin coin-eth" role="img" aria-label="ETH"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5 19.5 12 12 21.5 4.5 12Z"/></svg></span>
+        <span class="crypto-meta"><span class="crypto-code">ETH</span><span class="crypto-name">Ethereum</span></span>
+        <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
+      </button>
+      <button class="crypto-chip" type="button" data-crypto="USDT" aria-label="Convert Tether">
+        <span class="coin coin-usdt" role="img" aria-label="USDT"><span aria-hidden="true">&#8376;</span></span>
+        <span class="crypto-meta"><span class="crypto-code">USDT</span><span class="crypto-name">Tether</span></span>
+        <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
+      </button>
     </div>
   </section>
 
@@ -301,7 +381,14 @@
   <section class="multi" aria-label="Same amount in other currencies">
     <h2 id="multiTitle">100 USD in other currencies</h2>
     <p class="multi-sub">Same amount, six more currencies — live rates.</p>
-    <div class="multi-list" id="multiList"></div>
+    <div class="multi-list" id="multiList">
+    <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
+    <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
+    <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
+    <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
+    <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
+    <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
+    </div>
   </section>
 
   <section class="chips" aria-label="Popular pairs">
@@ -367,15 +454,16 @@ function flagHTML(code, size, lazy){
   if (isCrypto(code)) return coinHTML(code, size);
   const url = flagURL(code);
   const suffix = size === "sm" ? " sm" : size === "xs" ? " xs" : "";
+  const px = size === "sm" ? 20 : size === "xs" ? 18 : 24;
   if (!url) return '<span class="flag-globe' + suffix + '" role="img" aria-label="No flag for ' + code + '">' + GLOBE_SVG + '</span>';
-  return '<img class="flag' + suffix + '" src="' + url + '" alt=""' + (lazy ? ' loading="lazy"' : "") + ' onerror="this.style.display=\'none\'">';
+  return '<img class="flag' + suffix + '" src="' + url + '" alt="" width="' + px + '" height="' + px + '"' + (lazy ? ' loading="lazy"' : "") + ' onerror="this.style.visibility=\'hidden\'">';
 }
 const POPULAR_PAIRS = [["USD","IDR"],["EUR","USD"],["USD","SGD"],["USD","JPY"],["USD","GBP"],["USD","EUR"]];
 const API_BASE = "https://open.er-api.com/v6/latest/";
 const CACHE_KEY = "convertly-rates-v1";
 const RECENT_KEY = "convertly-recents-v1";
 const STATE_KEY = "convertly-state-v1";
-const COINGECKO_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd,idr,eur";
+const COINGECKO_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_24hr_change=true";
 const COINGECKO_CHART_URL = "https://api.coingecko.com/api/v3/coins/";
 const CRYPTO_CACHE_KEY = "convertly-crypto-v1";
 const CRYPTO_TTL_MS = 60000;
@@ -396,7 +484,9 @@ const els = {
   trendChangeLabel: $("trendChangeLabel"), trendCurrent: $("trendCurrent"), trendHigh: $("trendHigh"),
   trendLow: $("trendLow"), trendChange: $("trendChange"), trendChart: $("trendChart"), trendNote: $("trendNote"),
   trendFoot: $("trendFoot"), multiTitle: $("multiTitle"), multiList: $("multiList"),
-  copyResultBtn: $("copyResultBtn"), copyResultLabel: $("copyResultLabel"), copyLinkBtn: $("copyLinkBtn"), copyLinkLabel: $("copyLinkLabel")
+  copyResultBtn: $("copyResultBtn"), copyResultLabel: $("copyResultLabel"), copyLinkBtn: $("copyLinkBtn"), copyLinkLabel: $("copyLinkLabel"),
+  refreshBtn: $("refreshBtn"), themeBtn: $("themeBtn"), themeIconMoon: $("themeIconMoon"), themeIconSun: $("themeIconSun"),
+  cryptoGrid: $("cryptoGrid"), cryptoNote: $("cryptoNote")
 };
 
 let state = { amount: 100, from: "USD", to: "IDR" };
@@ -422,6 +512,7 @@ try { recents = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e
 
 let currentRates = null;   // { rates, updated, source: "live"|"cached" }
 let fetching = false;
+let ratesAttempted = false; /* true once a rate load has finished (success or fail) */
 let pickerTarget = "from";
 
 function saveState() { try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {} }
@@ -448,6 +539,12 @@ function fmtRate(value) {
 }
 function fmtAmountInput(value) {
   return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
+}
+function fmtUpdatedShort(utcString) {
+  try {
+    const d = new Date(utcString);
+    return d.toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+  } catch (e) { return utcString; }
 }
 function fmtUpdated(utcString) {
   try {
@@ -499,6 +596,9 @@ function renderPair() {
   document.querySelectorAll("#chipRow .chip").forEach((chip) => {
     chip.classList.toggle("active", chip.dataset.from === state.from && chip.dataset.to === state.to);
   });
+  document.querySelectorAll("#cryptoGrid .crypto-chip").forEach((c) => {
+    c.classList.toggle("active", c.dataset.crypto === state.from);
+  });
   syncURL();
 }
 
@@ -525,7 +625,7 @@ function renderResult() {
   els.rateLine.innerHTML = "1 <b>" + state.from + "</b> = <b>" + fmtRate(rate) + " " + state.to + "</b>";
   els.inverseLine.innerHTML = "1 <b>" + state.to + "</b> = <b>" + fmtRate(1 / rate) + " " + state.from + "</b>";
   if (chartData && chartData.base === state.from && chartData.target === state.to) {
-    els.trendCurrent.textContent = "1 " + state.from + " = " + fmtRate(rate) + " " + state.to;
+    els.trendCurrent.textContent = fmtRate(rate); /* bare number: the pair is already in the trend title */
   }
   renderMulti();
 }
@@ -539,9 +639,9 @@ try { cryptoCache = JSON.parse(localStorage.getItem(CRYPTO_CACHE_KEY) || "null")
 function saveCryptoCache() { try { localStorage.setItem(CRYPTO_CACHE_KEY, JSON.stringify(cryptoCache)); } catch (e) {} }
 async function loadCryptoPrices() {
   const now = Date.now();
-  if (cryptoPrices && cryptoPrices.fetchedAt && now - cryptoPrices.fetchedAt < CRYPTO_TTL_MS) { cryptoStale = false; return cryptoPrices.prices; }
+  if (cryptoPrices && cryptoPrices.fetchedAt && now - cryptoPrices.fetchedAt < CRYPTO_TTL_MS) { cryptoStale = false; renderCryptoStrip(); return cryptoPrices.prices; }
   if (cryptoCache && cryptoCache.prices && cryptoCache.fetchedAt && now - cryptoCache.fetchedAt < CRYPTO_TTL_MS) {
-    cryptoPrices = cryptoCache; cryptoStale = false; return cryptoPrices.prices;
+    cryptoPrices = cryptoCache; cryptoStale = false; renderCryptoStrip(); return cryptoPrices.prices;
   }
   try {
     const res = await fetch(COINGECKO_PRICE_URL, { cache: "no-store" });
@@ -552,10 +652,12 @@ async function loadCryptoPrices() {
     cryptoCache = cryptoPrices;
     saveCryptoCache();
     cryptoStale = false;
+    renderCryptoStrip();
     return data;
   } catch (e) {
-    if (cryptoCache && cryptoCache.prices) { cryptoPrices = cryptoCache; cryptoStale = true; return cryptoCache.prices; }
+    if (cryptoCache && cryptoCache.prices) { cryptoPrices = cryptoCache; cryptoStale = true; renderCryptoStrip(); return cryptoCache.prices; }
     cryptoStale = false;
+    renderCryptoStrip();
     return null;
   }
 }
@@ -591,13 +693,13 @@ async function loadRates(base, opts) {
       ratesCache[base] = { rates: data.rates, updated: data.time_last_update_utc, fetchedAt: Date.now() };
       saveCache();
       els.errorBanner.classList.remove("show");
-      setStatus("live", "Live rates · Updated " + fmtUpdated(data.time_last_update_utc));
+      setStatus("live", "Live rates · " + fmtUpdatedShort(data.time_last_update_utc));
     } catch (err) {
       if (cached && cached.rates) {
         currentRates = { rates: cached.rates, updated: cached.updated, source: "cached" };
         els.errorBanner.textContent = "Live update failed — showing the last saved rates from " + fmtUpdated(cached.updated) + ". Check your connection and tap Refresh to try again.";
         els.errorBanner.classList.add("show");
-        setStatus("cached", "Cached rates · From " + fmtUpdated(cached.updated));
+        setStatus("cached", "Cached rates · " + fmtUpdatedShort(cached.updated));
       } else {
         currentRates = null;
         els.errorBanner.textContent = "Could not load live exchange rates. Check your connection and tap Refresh to try again. No rate is shown because no verified rate is available.";
@@ -624,8 +726,8 @@ async function loadRates(base, opts) {
       const updated = (currentRates && currentRates.updated) || usdBase.updated;
       currentRates = { rates: merged, updated: updated, source: "live", crypto: true };
       if (isCrypto(base) || fiatSource === "live") els.errorBanner.classList.remove("show");
-      if (cryptoStale) setStatus("live", "Live rates · Updated " + fmtUpdated(updated) + " · crypto prices cached");
-      else if (isCrypto(base)) setStatus("live", "Live rates · Updated " + fmtUpdated(updated));
+      if (cryptoStale) setStatus("live", "Live rates · " + fmtUpdatedShort(updated));
+      else if (isCrypto(base)) setStatus("live", "Live rates · " + fmtUpdatedShort(updated));
     } else if (isCrypto(state.from)) {
       currentRates = null;
       els.errorBanner.textContent = "Crypto prices are unavailable right now — CoinGecko did not respond. Fiat conversions still work; try this pair again in a moment.";
@@ -636,6 +738,7 @@ async function loadRates(base, opts) {
       els.errorBanner.classList.add("show");
     }
   }
+  ratesAttempted = true;
   fetching = false;
   renderResult();
   if (opts.record !== false) recordRecent();
@@ -703,6 +806,7 @@ function renderMulti() {
   const amount = parseAmount();
   els.multiTitle.textContent = fmtAmountInput(state.amount) + " " + state.from + " in other currencies";
   if (amount === null || !currentRates || !currentRates.rates) {
+    if (!ratesAttempted) return; /* keep the skeleton rows: no layout shift while loading */
     els.multiList.innerHTML = '<div class="empty-note">Rates not available yet.</div>';
     return;
   }
@@ -739,11 +843,27 @@ function renderPickerList(q) {
     const [name, region] = CURRENCIES[code];
     return code.toLowerCase().includes(query) || name.toLowerCase().includes(query) || region.toLowerCase().includes(query);
   });
+  /* Crypto first, then fiat — so BTC/ETH/USDT are never buried in the list. */
+  const ordered = query ? matches : ["BTC", "ETH", "USDT"].concat(matches.filter((c) => !isCrypto(c)));
   if (!matches.length) {
     list.innerHTML = '<div class="no-match">No currency matches "' + q + '".</div>';
     return;
   }
-  matches.forEach((code) => {
+  if (!query) {
+    const group = document.createElement("div");
+    group.className = "picker-group";
+    group.textContent = "Cryptocurrency";
+    list.appendChild(group);
+  }
+  let fiatGroupAdded = false;
+  ordered.forEach((code) => {
+    if (!query && !isCrypto(code) && !fiatGroupAdded) {
+      const group = document.createElement("div");
+      group.className = "picker-group";
+      group.textContent = "All currencies";
+      list.appendChild(group);
+      fiatGroupAdded = true;
+    }
     const [name, region] = CURRENCIES[code];
     const row = document.createElement("button");
     row.type = "button";
@@ -927,7 +1047,7 @@ function renderChart(stale) {
   const changePct = ((last - first) / first) * 100;
   const live = (currentRates && currentRates.rates && typeof currentRates.rates[chartData.target] === "number")
     ? currentRates.rates[chartData.target] : last;
-  els.trendCurrent.textContent = "1 " + chartData.base + " = " + fmtRate(live) + " " + chartData.target;
+  els.trendCurrent.textContent = fmtRate(live);
   els.trendHigh.textContent = fmtRate(high);
   els.trendLow.textContent = fmtRate(low);
   const sign = changePct >= 0 ? "+" : "";
@@ -1031,14 +1151,61 @@ els.copyLinkBtn.addEventListener("click", () => {
   copyText(location.href, els.copyLinkLabel, "Copy link");
 });
 
-/* refresh button injected into status line */
-const retryBtn = document.createElement("button");
-retryBtn.type = "button";
-retryBtn.textContent = "Refresh";
-retryBtn.addEventListener("click", () => refresh(false));
-els.statusLine.appendChild(retryBtn);
+/* Refresh button lives in the HTML status line (static, so it never shifts the layout). */
+els.refreshBtn.addEventListener("click", () => refresh(false));
+
+/* ---------- crypto strip (visible prices, one tap to convert) ---------- */
+function renderCryptoStrip() {
+  const grid = els.cryptoGrid;
+  if (!grid) return;
+  const data = cryptoPrices && cryptoPrices.prices;
+  const note = els.cryptoNote;
+  ["BTC", "ETH", "USDT"].forEach((code) => {
+    const chip = grid.querySelector('[data-crypto="' + code + '"]');
+    if (!chip) return;
+    const priceEl = chip.querySelector(".crypto-price");
+    if (!priceEl) return;
+    if (data && data[CRYPTO_IDS[code]] && typeof data[CRYPTO_IDS[code]].usd === "number") {
+      const p = data[CRYPTO_IDS[code]];
+      const chg = typeof p.usd_24h_change === "number" ? p.usd_24h_change : null;
+      priceEl.innerHTML = '<span class="crypto-value">$' + fmtRate(p.usd) + '</span>'
+        + (chg === null ? '<span class="crypto-change">—</span>'
+          : '<span class="crypto-change ' + (chg >= 0 ? "up" : "down") + '">' + (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%</span>");
+      if (note) note.textContent = cryptoStale ? "Live · CoinGecko (cached)" : "Live · CoinGecko";
+    } else {
+      priceEl.innerHTML = '<span class="crypto-value">—</span><span class="crypto-change">Unavailable</span>';
+      if (note) note.textContent = "Crypto prices unavailable";
+    }
+    chip.classList.toggle("active", state.from === code);
+  });
+}
+function setFromCrypto(code) {
+  if (state.to === code) state.to = "USD";
+  state.from = code;
+  saveState(); renderPair();
+  refresh(true);
+  loadChart();
+}
+
+/* ---------- dark / light theme ---------- */
+const THEME_KEY = "convertly-theme-v1";
+function applyTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", t === "dark" ? "#131110" : "#EA580C");
+  if (els.themeIconSun) els.themeIconSun.style.display = t === "dark" ? "block" : "none";
+  if (els.themeIconMoon) els.themeIconMoon.style.display = t === "dark" ? "none" : "block";
+  try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
+}
 
 /* ---------- init ---------- */
+/* Theme: saved choice wins, otherwise follow the OS. */
+let savedTheme = null;
+try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+els.themeBtn.addEventListener("click", () => {
+  applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
+});
 els.amount.value = String(state.amount);
 renderChips();
 renderPair();
@@ -1046,6 +1213,10 @@ renderRecents();
 renderResult();
 refresh(false);
 loadChart();
+loadCryptoPrices(); /* fills the crypto strip even when the pair is fiat-only */
+document.querySelectorAll("#cryptoGrid .crypto-chip").forEach((chip) => {
+  chip.addEventListener("click", () => setFromCrypto(chip.dataset.crypto));
+});
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
