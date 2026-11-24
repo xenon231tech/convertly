@@ -62,6 +62,15 @@
   .ccy-btn:hover{border-color:#FDBA74;background:var(--orange-soft)}
   .ccy-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
   .ccy-code{width:52px;flex:none;text-align:center;font-size:13px;font-weight:800;letter-spacing:.02em;color:#fff;background:var(--grad);border-radius:9px;padding:7px 0}
+  .flag{width:24px;height:24px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 1px rgba(28,25,23,.08);background:#F5F0EA}
+  .flag.sm{width:20px;height:20px}
+  .flag.xs{width:18px;height:18px}
+  .flag-globe{width:24px;height:24px;flex:none;border-radius:50%;background:var(--grad);display:inline-flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 0 1px rgba(28,25,23,.08)}
+  .flag-globe.sm{width:20px;height:20px}
+  .flag-globe.xs{width:18px;height:18px}
+  .flag-globe svg{width:62%;height:62%}
+  .recent-flags{display:inline-flex;flex:none;align-items:center}
+  .recent-flags .flag.xs:last-child,.recent-flags .flag-globe.xs:last-child{margin-left:-7px;box-shadow:0 0 0 2px #fff,0 0 0 3px rgba(28,25,23,.08)}
   .ccy-meta{flex:1;min-width:0}
   .ccy-name{font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .ccy-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -190,6 +199,7 @@
       <div>
         <div class="field-label" style="margin-top:16px">From</div>
         <button class="ccy-btn" id="fromBtn" type="button" aria-haspopup="dialog">
+          <span id="fromFlag"></span>
           <span class="ccy-code" id="fromCode">USD</span>
           <span class="ccy-meta"><span class="ccy-name" id="fromName">US Dollar</span><span class="ccy-sub" id="fromSub" style="display:block">United States</span></span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -205,6 +215,7 @@
       <div class="to-field">
         <div class="field-label">To</div>
         <button class="ccy-btn" id="toBtn" type="button" aria-haspopup="dialog">
+          <span id="toFlag"></span>
           <span class="ccy-code" id="toCode">IDR</span>
           <span class="ccy-meta"><span class="ccy-name" id="toName">Indonesian Rupiah</span><span class="ccy-sub" id="toSub" style="display:block">Indonesia</span></span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
@@ -285,6 +296,18 @@ const CURRENCIES = {
   AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"]
 };
 const CODES = Object.keys(CURRENCIES).sort();
+/* Flag icons: circle-flags SVG (already round; every code verified live, no placeholders). Currency -> country code. */
+const FLAG_BASE = "https://hatscripts.github.io/circle-flags/flags/";
+const FLAG_OVERRIDES = { EUR:"eu", ANG:"cw", XAF:"cm", XCD:"ag", XCG:"cw", XOF:"sn", XPF:"pf", XDR:null };
+function flagCC(code){ if (Object.prototype.hasOwnProperty.call(FLAG_OVERRIDES, code)) return FLAG_OVERRIDES[code]; return code.slice(0,2).toLowerCase(); }
+function flagURL(code){ const cc = flagCC(code); return cc ? FLAG_BASE + cc + ".svg" : null; }
+const GLOBE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.9 5.7 3.9 9s-1.4 6.4-3.9 9c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>';
+function flagHTML(code, size, lazy){
+  const url = flagURL(code);
+  const suffix = size === "sm" ? " sm" : size === "xs" ? " xs" : "";
+  if (!url) return '<span class="flag-globe' + suffix + '" role="img" aria-label="No flag for ' + code + '">' + GLOBE_SVG + '</span>';
+  return '<img class="flag' + suffix + '" src="' + url + '" alt=""' + (lazy ? ' loading="lazy"' : "") + ' onerror="this.style.display=\'none\'">';
+}
 const POPULAR_PAIRS = [["USD","IDR"],["EUR","USD"],["USD","SGD"],["USD","JPY"],["USD","GBP"],["USD","EUR"]];
 const API_BASE = "https://open.er-api.com/v6/latest/";
 const CACHE_KEY = "convertly-rates-v1";
@@ -295,8 +318,8 @@ const $ = (id) => document.getElementById(id);
 const els = {
   amount: $("amount"), amountCode: $("amountCode"),
   fromBtn: $("fromBtn"), toBtn: $("toBtn"),
-  fromCode: $("fromCode"), fromName: $("fromName"), fromSub: $("fromSub"),
-  toCode: $("toCode"), toName: $("toName"), toSub: $("toSub"),
+  fromFlag: $("fromFlag"), fromCode: $("fromCode"), fromName: $("fromName"), fromSub: $("fromSub"),
+  toFlag: $("toFlag"), toCode: $("toCode"), toName: $("toName"), toSub: $("toSub"),
   swapBtn: $("swapBtn"), resultLabel: $("resultLabel"), resultValue: $("resultValue"),
   rateLine: $("rateLine"), inverseLine: $("inverseLine"),
   statusLine: $("statusLine"), statusText: $("statusText"),
@@ -372,6 +395,8 @@ function setStatus(kind, text) {
 
 function renderPair() {
   els.amountCode.textContent = state.from;
+  els.fromFlag.innerHTML = flagHTML(state.from, "");
+  els.toFlag.innerHTML = flagHTML(state.to, "");
   els.fromCode.textContent = state.from;
   els.fromName.textContent = CURRENCIES[state.from][0];
   els.fromSub.textContent = CURRENCIES[state.from][1];
@@ -464,7 +489,8 @@ function renderRecents() {
     const b = document.createElement("button");
     b.type = "button";
     b.className = "recent-item";
-    b.innerHTML = '<span class="pair"></span><span class="conv"></span><span class="when"></span>';
+    b.innerHTML = '<span class="recent-flags"></span><span class="pair"></span><span class="conv"></span><span class="when"></span>';
+    b.querySelector(".recent-flags").innerHTML = flagHTML(r.from, "xs", true) + flagHTML(r.to, "xs", true);
     b.querySelector(".pair").textContent = r.from + " → " + r.to;
     b.querySelector(".conv").textContent = fmtAmountInput(r.amount) + " " + r.from + " = " + fmtMoney(r.result, r.to);
     b.querySelector(".when").textContent = timeAgo(r.ts);
@@ -525,7 +551,7 @@ function renderPickerList(q) {
     const row = document.createElement("button");
     row.type = "button";
     row.className = "ccy-row" + ((pickerTarget === "from" ? state.from : state.to) === code ? " active" : "");
-    row.innerHTML = '<span class="ccy-code"></span><span class="ccy-meta"><span class="ccy-name" style="display:block"></span><span class="ccy-sub" style="display:block"></span></span>';
+    row.innerHTML = flagHTML(code, "sm", true) + '<span class="ccy-code"></span><span class="ccy-meta"><span class="ccy-name" style="display:block"></span><span class="ccy-sub" style="display:block"></span></span>';
     row.querySelector(".ccy-code").textContent = code;
     row.querySelector(".ccy-name").textContent = name;
     row.querySelector(".ccy-sub").textContent = region;
