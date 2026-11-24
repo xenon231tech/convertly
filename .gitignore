@@ -1,0 +1,13 @@
+# OS / editor artefacts
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Dependencies (none today, but keep the tree clean)
+node_modules/
+
+# Local dev artefacts
+.env
+*.log
