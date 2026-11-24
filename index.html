@@ -4,11 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Convertly — Live Currency Converter</title>
-<meta name="description" content="Convertly converts any amount between 160+ world currencies with live exchange rates. Fast, free, no sign-up.">
+<meta name="description" content="Convertly converts any amount between 160+ world currencies and crypto with live exchange rates. Fast, free, no sign-up.">
 <meta name="theme-color" content="#EA580C">
+<meta property="og:title" content="Convertly — Live Currency Converter">
+<meta property="og:description" content="Convert any amount between 160+ world currencies and crypto with live exchange rates. Fast, free, no sign-up.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://convertly-xenon231techs-projects.vercel.app/">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Convertly — Live Currency Converter">
+<meta name="twitter:description" content="Convert any amount between 160+ world currencies and crypto with live exchange rates. Fast, free, no sign-up.">
+<meta name="twitter:image" content="og-image.png">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --amber:#F59E0B; --orange:#EA580C; --orange-deep:#C2410C; --rose:#E11D48;
@@ -22,7 +36,7 @@
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
   body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    font-family:"Plus Jakarta Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
     background:
       radial-gradient(720px 340px at 50% -80px, rgba(249,115,22,.14), transparent 70%),
       radial-gradient(560px 300px at 95% 10%, rgba(245,158,11,.10), transparent 70%),
@@ -140,6 +154,29 @@
   .chart-note.hidden{display:none}
   .trend-foot{margin-top:10px;font-size:12px;color:var(--faint);text-align:center}
   @media (max-width:520px){ .trend-stats{grid-template-columns:repeat(2,1fr)} }
+  /* ---------- coin marks (crypto has no flag) ---------- */
+  .coin{width:24px;height:24px;border-radius:50%;flex:none;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:800;box-shadow:0 0 0 1px rgba(28,25,23,.08)}
+  .coin.sm{width:20px;height:20px;font-size:11px}
+  .coin.xs{width:18px;height:18px;font-size:10px}
+  .coin svg{width:64%;height:64%}
+  .coin-btc{background:#F7931A}
+  .coin-eth{background:#627EEA}
+  .coin-usdt{background:#26A17B}
+  /* ---------- result actions ---------- */
+  .result-actions{display:flex;gap:8px;margin-top:14px}
+  .action-btn{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;font:inherit;font-size:13px;font-weight:700;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:border-color .15s,color .15s}
+  .action-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .action-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .action-btn svg{flex:none}
+  /* ---------- multi-currency table ---------- */
+  .multi{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+  .multi h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .multi-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .multi-list{display:grid;gap:8px;margin-top:14px}
+  .multi-row{display:flex;align-items:center;gap:12px;background:#FFFCF8;border:1px solid var(--line-soft);border-radius:14px;padding:11px 14px}
+  .multi-row .ccy-code{width:52px}
+  .multi-row .ccy-name{flex:1;min-width:0;font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .multi-row .multi-value{font-size:15px;font-weight:800;letter-spacing:-.01em;white-space:nowrap}
   /* ---------- footer ---------- */
   footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--faint);display:grid;gap:4px}
   footer a{color:var(--muted);text-decoration:none}
@@ -185,7 +222,7 @@
 <main class="wrap">
   <section class="hero">
     <h1>Convert currencies at <span class="grad">live rates</span>.</h1>
-    <p>160+ world currencies. Real-time rates, no sign-up, no fees hidden in the math.</p>
+    <p>160+ world currencies &amp; crypto. Real-time rates, no sign-up, no fees hidden in the math.</p>
   </section>
 
   <section class="card" aria-label="Currency converter">
@@ -230,6 +267,10 @@
         <div id="rateLine">Loading live rate&hellip;</div>
         <div id="inverseLine"></div>
       </div>
+      <div class="result-actions">
+        <button class="action-btn" id="copyResultBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="copyResultLabel">Copy result</span></button>
+        <button class="action-btn" id="copyLinkBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="copyLinkLabel">Copy link</span></button>
+      </div>
       <div class="status" id="statusLine"><span class="dot"></span><span id="statusText">Fetching live rates&hellip;</span></div>
       <div class="error-banner" id="errorBanner" role="alert"></div>
     </div>
@@ -254,7 +295,13 @@
       <svg id="trendChart" viewBox="0 0 640 220" role="img" aria-label="Exchange rate trend chart" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="chart-note" id="trendNote">Loading trend&hellip;</div>
     </div>
-    <div class="trend-foot">Daily ECB reference rates via Frankfurter &middot; Weekends and holidays have no rate, so those days are skipped</div>
+    <div class="trend-foot" id="trendFoot">Daily ECB reference rates via Frankfurter &middot; Weekends and holidays have no rate, so those days are skipped</div>
+  </section>
+
+  <section class="multi" aria-label="Same amount in other currencies">
+    <h2 id="multiTitle">100 USD in other currencies</h2>
+    <p class="multi-sub">Same amount, six more currencies — live rates.</p>
+    <div class="multi-list" id="multiList"></div>
   </section>
 
   <section class="chips" aria-label="Popular pairs">
@@ -271,7 +318,7 @@
   </section>
 
   <footer>
-    <span>Live rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) &middot; Fiat currencies only</span>
+    <span>Live rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) &middot; Crypto prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a> &middot; Trend data by Frankfurter (ECB)</span>
     <span>Convertly &mdash; convert first, decide later.</span>
   </footer>
 </main>
@@ -293,7 +340,7 @@
 "use strict";
 /* Currency data: code -> [name, region]. Covers every currency returned by open.er-api.com. */
 const CURRENCIES = {
-  AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"]
+  AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"],BTC:["Bitcoin","Cryptocurrency"],ETH:["Ethereum","Cryptocurrency"],USDT:["Tether","Cryptocurrency"]
 };
 const CODES = Object.keys(CURRENCIES).sort();
 /* Flag icons: circle-flags SVG (already round; every code verified live, no placeholders). Currency -> country code. */
@@ -302,7 +349,22 @@ const FLAG_OVERRIDES = { EUR:"eu", ANG:"cw", XAF:"cm", XCD:"ag", XCG:"cw", XOF:"
 function flagCC(code){ if (Object.prototype.hasOwnProperty.call(FLAG_OVERRIDES, code)) return FLAG_OVERRIDES[code]; return code.slice(0,2).toLowerCase(); }
 function flagURL(code){ const cc = flagCC(code); return cc ? FLAG_BASE + cc + ".svg" : null; }
 const GLOBE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.9 5.7 3.9 9s-1.4 6.4-3.9 9c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>';
+/* Crypto: CoinGecko ids + drawn coin marks (crypto has no country flag). */
+const CRYPTO_IDS = { BTC:"bitcoin", ETH:"ethereum", USDT:"tether" };
+function isCrypto(code){ return Object.prototype.hasOwnProperty.call(CRYPTO_IDS, code); }
+const COIN_MARKS = {
+  BTC:{ cls:"coin-btc", label:"₿" },
+  ETH:{ cls:"coin-eth", svg:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5 19.5 12 12 21.5 4.5 12Z"/></svg>' },
+  USDT:{ cls:"coin-usdt", label:"₮" }
+};
+function coinHTML(code, size){
+  const mark = COIN_MARKS[code];
+  const suffix = size === "sm" ? " sm" : size === "xs" ? " xs" : "";
+  const inner = mark.svg || ('<span aria-hidden="true">' + mark.label + '</span>');
+  return '<span class="coin ' + mark.cls + suffix + '" role="img" aria-label="' + code + '">' + inner + '</span>';
+}
 function flagHTML(code, size, lazy){
+  if (isCrypto(code)) return coinHTML(code, size);
   const url = flagURL(code);
   const suffix = size === "sm" ? " sm" : size === "xs" ? " xs" : "";
   if (!url) return '<span class="flag-globe' + suffix + '" role="img" aria-label="No flag for ' + code + '">' + GLOBE_SVG + '</span>';
@@ -313,6 +375,10 @@ const API_BASE = "https://open.er-api.com/v6/latest/";
 const CACHE_KEY = "convertly-rates-v1";
 const RECENT_KEY = "convertly-recents-v1";
 const STATE_KEY = "convertly-state-v1";
+const COINGECKO_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd,idr,eur";
+const COINGECKO_CHART_URL = "https://api.coingecko.com/api/v3/coins/";
+const CRYPTO_CACHE_KEY = "convertly-crypto-v1";
+const CRYPTO_TTL_MS = 60000;
 
 const $ = (id) => document.getElementById(id);
 const els = {
@@ -328,7 +394,9 @@ const els = {
   overlay: $("overlay"), pickerTitle: $("pickerTitle"), pickerSearch: $("pickerSearch"), pickerList: $("pickerList"),
   trendTitle: $("trendTitle"), trendHighLabel: $("trendHighLabel"), trendLowLabel: $("trendLowLabel"),
   trendChangeLabel: $("trendChangeLabel"), trendCurrent: $("trendCurrent"), trendHigh: $("trendHigh"),
-  trendLow: $("trendLow"), trendChange: $("trendChange"), trendChart: $("trendChart"), trendNote: $("trendNote")
+  trendLow: $("trendLow"), trendChange: $("trendChange"), trendChart: $("trendChart"), trendNote: $("trendNote"),
+  trendFoot: $("trendFoot"), multiTitle: $("multiTitle"), multiList: $("multiList"),
+  copyResultBtn: $("copyResultBtn"), copyResultLabel: $("copyResultLabel"), copyLinkBtn: $("copyLinkBtn"), copyLinkLabel: $("copyLinkLabel")
 };
 
 let state = { amount: 100, from: "USD", to: "IDR" };
@@ -336,6 +404,16 @@ try {
   const saved = JSON.parse(localStorage.getItem(STATE_KEY) || "null");
   if (saved && CURRENCIES[saved.from] && CURRENCIES[saved.to] && isFinite(+saved.amount)) state = saved;
 } catch (e) { /* fresh start */ }
+/* URL params (?from=USD&to=IDR&amount=100) override the saved state. Invalid values fall back silently. */
+try {
+  const params = new URLSearchParams(location.search);
+  const pf = (params.get("from") || "").toUpperCase();
+  const pt = (params.get("to") || "").toUpperCase();
+  const pa = parseFloat(params.get("amount"));
+  if (pf && CURRENCIES[pf]) state.from = pf;
+  if (pt && CURRENCIES[pt]) state.to = pt;
+  if (isFinite(pa) && pa >= 0) state.amount = pa;
+} catch (e) { /* no usable params */ }
 
 let ratesCache = {};
 try { ratesCache = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); } catch (e) { ratesCache = {}; }
@@ -351,6 +429,10 @@ function saveCache() { try { localStorage.setItem(CACHE_KEY, JSON.stringify(rate
 function saveRecents() { try { localStorage.setItem(RECENT_KEY, JSON.stringify(recents)); } catch (e) {} }
 
 function fmtMoney(value, code) {
+  if (isCrypto(code)) {
+    const digits = code === "BTC" ? 8 : code === "ETH" ? 6 : 2;
+    return code + " " + Number(value).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: digits });
+  }
   const locale = code === "IDR" ? "id-ID" : "en-US";
   try {
     return new Intl.NumberFormat(locale, { style: "currency", currency: code }).format(value);
@@ -393,6 +475,16 @@ function setStatus(kind, text) {
   els.liveBadgeText.textContent = kind === "live" ? "Live rates" : kind === "cached" ? "Cached rates" : "Rates unavailable";
 }
 
+/* Keep the URL shareable: ?from=&to=&amount= mirrors the converter state (no reload). */
+function syncURL() {
+  try {
+    const url = new URL(location.href);
+    url.searchParams.set("from", state.from);
+    url.searchParams.set("to", state.to);
+    url.searchParams.set("amount", String(state.amount));
+    history.replaceState(null, "", url);
+  } catch (e) {}
+}
 function renderPair() {
   els.amountCode.textContent = state.from;
   els.fromFlag.innerHTML = flagHTML(state.from, "");
@@ -407,6 +499,7 @@ function renderPair() {
   document.querySelectorAll("#chipRow .chip").forEach((chip) => {
     chip.classList.toggle("active", chip.dataset.from === state.from && chip.dataset.to === state.to);
   });
+  syncURL();
 }
 
 function renderResult() {
@@ -415,6 +508,7 @@ function renderResult() {
     els.resultValue.innerHTML = "&mdash;";
     els.rateLine.textContent = "Enter an amount to convert.";
     els.inverseLine.textContent = "";
+    renderMulti();
     return;
   }
   state.amount = amount;
@@ -422,6 +516,7 @@ function renderResult() {
     els.resultValue.innerHTML = "&mdash;";
     els.rateLine.textContent = "Rate not available for this pair yet.";
     els.inverseLine.textContent = "";
+    renderMulti();
     return;
   }
   const rate = currentRates.rates[state.to];
@@ -432,38 +527,116 @@ function renderResult() {
   if (chartData && chartData.base === state.from && chartData.target === state.to) {
     els.trendCurrent.textContent = "1 " + state.from + " = " + fmtRate(rate) + " " + state.to;
   }
+  renderMulti();
 }
 
+/* ---------- crypto prices (CoinGecko, free, no key) ---------- */
+let cryptoPrices = null;   /* { prices, fetchedAt } */
+let cryptoCache = null;
+let cryptoStale = false;
+let usdPivotRates = null;  /* last known USD-base fiat table, for the crypto pivot */
+try { cryptoCache = JSON.parse(localStorage.getItem(CRYPTO_CACHE_KEY) || "null"); } catch (e) { cryptoCache = null; }
+function saveCryptoCache() { try { localStorage.setItem(CRYPTO_CACHE_KEY, JSON.stringify(cryptoCache)); } catch (e) {} }
+async function loadCryptoPrices() {
+  const now = Date.now();
+  if (cryptoPrices && cryptoPrices.fetchedAt && now - cryptoPrices.fetchedAt < CRYPTO_TTL_MS) { cryptoStale = false; return cryptoPrices.prices; }
+  if (cryptoCache && cryptoCache.prices && cryptoCache.fetchedAt && now - cryptoCache.fetchedAt < CRYPTO_TTL_MS) {
+    cryptoPrices = cryptoCache; cryptoStale = false; return cryptoPrices.prices;
+  }
+  try {
+    const res = await fetch(COINGECKO_PRICE_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (!data.bitcoin || !data.ethereum || !data.tether) throw new Error("Bad CoinGecko response");
+    cryptoPrices = { prices: data, fetchedAt: now };
+    cryptoCache = cryptoPrices;
+    saveCryptoCache();
+    cryptoStale = false;
+    return data;
+  } catch (e) {
+    if (cryptoCache && cryptoCache.prices) { cryptoPrices = cryptoCache; cryptoStale = true; return cryptoCache.prices; }
+    cryptoStale = false;
+    return null;
+  }
+}
+async function ensureUsdRates() {
+  if (state.from === "USD" && currentRates && currentRates.rates) { usdPivotRates = currentRates; return currentRates; }
+  const cached = ratesCache["USD"];
+  if (cached && cached.rates) { usdPivotRates = cached; return cached; }
+  try {
+    const res = await fetch(API_BASE + "USD", { cache: "no-store" });
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.result !== "success" || !data.rates) return null;
+    ratesCache["USD"] = { rates: data.rates, updated: data.time_last_update_utc, fetchedAt: Date.now() };
+    saveCache();
+    usdPivotRates = ratesCache["USD"];
+    return ratesCache["USD"];
+  } catch (e) { return null; }
+}
 async function loadRates(base, opts) {
   opts = opts || {};
   if (fetching) return;
   fetching = true;
+  const cryptoInvolved = isCrypto(state.from) || isCrypto(state.to);
   const cached = ratesCache[base];
-  try {
-    const res = await fetch(API_BASE + encodeURIComponent(base), { cache: "no-store" });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    if (data.result !== "success" || !data.rates) throw new Error("Bad API response");
-    currentRates = { rates: data.rates, updated: data.time_last_update_utc, source: "live" };
-    ratesCache[base] = { rates: data.rates, updated: data.time_last_update_utc, fetchedAt: Date.now() };
-    saveCache();
-    els.errorBanner.classList.remove("show");
-    setStatus("live", "Live rates · Updated " + fmtUpdated(data.time_last_update_utc));
-  } catch (err) {
-    if (cached && cached.rates) {
-      currentRates = { rates: cached.rates, updated: cached.updated, source: "cached" };
-      els.errorBanner.textContent = "Live update failed — showing the last saved rates from " + fmtUpdated(cached.updated) + ". Check your connection and tap Refresh to try again.";
-      els.errorBanner.classList.add("show");
-      setStatus("cached", "Cached rates · From " + fmtUpdated(cached.updated));
-    } else {
-      currentRates = null;
-      els.errorBanner.textContent = "Could not load live exchange rates. Check your connection and tap Refresh to try again. No rate is shown because no verified rate is available.";
-      els.errorBanner.classList.add("show");
-      setStatus("error", "Rates unavailable — no cached rates saved yet");
+  if (isCrypto(base)) currentRates = null; /* no fiat table exists for a crypto base; built from the USD pivot below */
+  if (!isCrypto(base)) {
+    try {
+      const res = await fetch(API_BASE + encodeURIComponent(base), { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const data = await res.json();
+      if (data.result !== "success" || !data.rates) throw new Error("Bad API response");
+      currentRates = { rates: data.rates, updated: data.time_last_update_utc, source: "live" };
+      ratesCache[base] = { rates: data.rates, updated: data.time_last_update_utc, fetchedAt: Date.now() };
+      saveCache();
+      els.errorBanner.classList.remove("show");
+      setStatus("live", "Live rates · Updated " + fmtUpdated(data.time_last_update_utc));
+    } catch (err) {
+      if (cached && cached.rates) {
+        currentRates = { rates: cached.rates, updated: cached.updated, source: "cached" };
+        els.errorBanner.textContent = "Live update failed — showing the last saved rates from " + fmtUpdated(cached.updated) + ". Check your connection and tap Refresh to try again.";
+        els.errorBanner.classList.add("show");
+        setStatus("cached", "Cached rates · From " + fmtUpdated(cached.updated));
+      } else {
+        currentRates = null;
+        els.errorBanner.textContent = "Could not load live exchange rates. Check your connection and tap Refresh to try again. No rate is shown because no verified rate is available.";
+        els.errorBanner.classList.add("show");
+        setStatus("error", "Rates unavailable — no cached rates saved yet");
+      }
     }
-  } finally {
-    fetching = false;
   }
+  /* Crypto: merge CoinGecko prices into the rate table via the USD pivot. */
+  if (cryptoInvolved) {
+    const prices = await loadCryptoPrices();
+    const usdBase = await ensureUsdRates();
+    if (prices && usdBase && usdBase.rates) {
+      const fiatSource = currentRates ? currentRates.source : null;
+      const toUSD = (code) => isCrypto(code) ? prices[CRYPTO_IDS[code]].usd : (code === "USD" ? 1 : 1 / usdBase.rates[code]);
+      const fromUSD = (code) => isCrypto(code) ? 1 / prices[CRYPTO_IDS[code]].usd : (code === "USD" ? 1 : usdBase.rates[code]);
+      const merged = {};
+      if (isCrypto(state.from)) {
+        Object.keys(usdBase.rates).forEach((c) => { merged[c] = toUSD(state.from) * fromUSD(c); });
+      } else if (currentRates && currentRates.rates) {
+        Object.assign(merged, currentRates.rates);
+      }
+      Object.keys(CRYPTO_IDS).forEach((c) => { merged[c] = toUSD(state.from) * fromUSD(c); });
+      const updated = (currentRates && currentRates.updated) || usdBase.updated;
+      currentRates = { rates: merged, updated: updated, source: "live", crypto: true };
+      if (isCrypto(base) || fiatSource === "live") els.errorBanner.classList.remove("show");
+      if (cryptoStale) setStatus("live", "Live rates · Updated " + fmtUpdated(updated) + " · crypto prices cached");
+      else if (isCrypto(base)) setStatus("live", "Live rates · Updated " + fmtUpdated(updated));
+    } else if (isCrypto(state.from)) {
+      currentRates = null;
+      els.errorBanner.textContent = "Crypto prices are unavailable right now — CoinGecko did not respond. Fiat conversions still work; try this pair again in a moment.";
+      els.errorBanner.classList.add("show");
+      setStatus("error", "Crypto rates unavailable");
+    } else {
+      els.errorBanner.textContent = "Crypto prices are unavailable right now — fiat conversions still work. Try again in a moment.";
+      els.errorBanner.classList.add("show");
+    }
+  }
+  fetching = false;
   renderResult();
   if (opts.record !== false) recordRecent();
 }
@@ -520,6 +693,30 @@ function renderChips() {
       loadChart();
     });
     els.chipRow.appendChild(b);
+  });
+}
+
+/* ---------- same amount in other currencies ---------- */
+const MULTI_TARGETS = ["IDR","EUR","GBP","JPY","SGD","AUD"];
+const MULTI_FILLERS = ["CAD","CHF","CNY","NZD","KRW","HKD"];
+function renderMulti() {
+  const amount = parseAmount();
+  els.multiTitle.textContent = fmtAmountInput(state.amount) + " " + state.from + " in other currencies";
+  if (amount === null || !currentRates || !currentRates.rates) {
+    els.multiList.innerHTML = '<div class="empty-note">Rates not available yet.</div>';
+    return;
+  }
+  const targets = [];
+  MULTI_TARGETS.forEach((c) => { if (c !== state.from) targets.push(c); });
+  MULTI_FILLERS.forEach((c) => { if (targets.length < 6 && c !== state.from && targets.indexOf(c) === -1) targets.push(c); });
+  els.multiList.innerHTML = "";
+  targets.forEach((code) => {
+    const rate = currentRates.rates[code];
+    const row = document.createElement("div");
+    row.className = "multi-row";
+    const value = (typeof rate === "number" && isFinite(rate)) ? fmtMoney(amount * rate, code) : "—";
+    row.innerHTML = flagHTML(code, "sm") + '<span class="ccy-code">' + code + '</span><span class="ccy-name">' + CURRENCIES[code][0] + '</span><span class="multi-value">' + value + '</span>';
+    els.multiList.appendChild(row);
   });
 }
 
@@ -621,6 +818,66 @@ async function fetchFrankfurter(start, end, base, target) {
   }
   return null;
 }
+/* ---------- crypto trend chart (CoinGecko market_chart) ---------- */
+async function fetchCoinChart(id, vs, days) {
+  try {
+    const res = await fetch(COINGECKO_CHART_URL + encodeURIComponent(id) + "/market_chart?vs_currency=" + encodeURIComponent(vs) + "&days=" + days);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data.prices || !data.prices.length) return null;
+    return data.prices; /* [[timestamp_ms, price], ...] */
+  } catch (e) { return null; }
+}
+const CG_VS = ["usd","eur","idr","gbp","jpy","aud","sgd","cad","chf","cny","nzd","krw","hkd"];
+async function fetchCryptoChartData(start, end) {
+  const days = chartRange;
+  const from = state.from, to = state.to;
+  const rates = {};
+  if (isCrypto(from) && isCrypto(to)) {
+    const a = await fetchCoinChart(CRYPTO_IDS[from], "usd", days);
+    const b = await fetchCoinChart(CRYPTO_IDS[to], "usd", days);
+    if (!a || !b) return null;
+    const bByTs = new Map(b.map((p) => [p[0], p[1]]));
+    a.forEach(([ts, price]) => {
+      let bp = bByTs.get(ts);
+      if (bp === undefined) {
+        let best = null, bestD = Infinity;
+        bByTs.forEach((p2, t2) => { const dd = Math.abs(t2 - ts); if (dd < bestD) { bestD = dd; best = p2; } });
+        bp = best;
+      }
+      if (bp) rates[isoDay(new Date(ts))] = { [to]: price / bp };
+    });
+    return { rates: rates };
+  }
+  if (isCrypto(from)) {
+    /* price of `from` in `to` */
+    const vs = CG_VS.includes(to.toLowerCase()) ? to.toLowerCase() : "usd";
+    const raw = await fetchCoinChart(CRYPTO_IDS[from], vs, days);
+    if (!raw) return null;
+    let scale = 1;
+    if (vs === "usd" && to !== "USD") {
+      if (!usdPivotRates) await ensureUsdRates();
+      const pivot = usdPivotRates && usdPivotRates.rates ? usdPivotRates.rates[to] : null;
+      if (typeof pivot !== "number") return null;
+      scale = pivot;
+    }
+    raw.forEach(([ts, price]) => { rates[isoDay(new Date(ts))] = { [to]: price * scale }; });
+    return { rates: rates };
+  }
+  /* fiat -> crypto: price of `to` in `from` */
+  const vs = CG_VS.includes(from.toLowerCase()) ? from.toLowerCase() : "usd";
+  const raw = await fetchCoinChart(CRYPTO_IDS[to], vs, days);
+  if (!raw) return null;
+  let usdPerFrom = 1;
+  if (vs === "usd" && from !== "USD") {
+    if (!usdPivotRates) await ensureUsdRates();
+    const pivot = usdPivotRates && usdPivotRates.rates ? usdPivotRates.rates[from] : null;
+    if (typeof pivot !== "number") return null;
+    usdPerFrom = 1 / pivot;
+  }
+  raw.forEach(([ts, price]) => { rates[isoDay(new Date(ts))] = { [to]: usdPerFrom / price }; });
+  return { rates: rates };
+}
 async function loadChart() {
   const seq = ++chartSeq;
   if (state.from === state.to) { showChartUnavailable("Same currency selected — there is no trend to show."); return; }
@@ -631,7 +888,9 @@ async function loadChart() {
   start.setDate(start.getDate() - chartRange);
   const key = state.from + ">" + state.to + ":" + chartRange;
   const cache = chartCache();
-  const data = await fetchFrankfurter(isoDay(start), isoDay(end), state.from, state.to);
+  const cryptoPair = isCrypto(state.from) || isCrypto(state.to);
+  els.trendFoot.textContent = cryptoPair ? "Daily prices via CoinGecko · Crypto markets never close" : "Daily ECB reference rates via Frankfurter · Weekends and holidays have no rate, so those days are skipped";
+  const data = cryptoPair ? await fetchCryptoChartData(start, end) : await fetchFrankfurter(isoDay(start), isoDay(end), state.from, state.to);
   if (seq !== chartSeq) return; /* a newer request superseded this one */
   if (data) {
     const points = Object.keys(data.rates).sort()
@@ -650,7 +909,7 @@ async function loadChart() {
     chartData = cached;
     renderChart(true);
   } else {
-    showChartUnavailable("Chart not available for this pair. Frankfurter covers about 30 major currencies — try USD, EUR, GBP, JPY, or IDR pairs.");
+    showChartUnavailable(cryptoPair ? "Chart not available for this pair. CoinGecko did not return price history — try again in a moment." : "Chart not available for this pair. Frankfurter covers about 30 major currencies — try USD, EUR, GBP, JPY, or IDR pairs.");
   }
 }
 function renderChart(stale) {
@@ -741,6 +1000,36 @@ els.pickerSearch.addEventListener("input", (e) => renderPickerList(e.target.valu
 els.overlay.addEventListener("click", (e) => { if (e.target === els.overlay) closePicker(); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePicker(); });
 els.clearRecent.addEventListener("click", () => { recents = []; saveRecents(); renderRecents(); });
+
+/* ---------- copy result / copy link ---------- */
+async function copyText(text, labelEl, originalLabel) {
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; }
+  catch (e) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch (e2) { ok = false; }
+  }
+  if (labelEl) {
+    labelEl.textContent = ok ? "Copied" : "Copy failed";
+    setTimeout(() => { labelEl.textContent = originalLabel; }, 1600);
+  }
+  return ok;
+}
+els.copyResultBtn.addEventListener("click", () => {
+  const amount = parseAmount();
+  if (amount === null || !currentRates || !currentRates.rates || typeof currentRates.rates[state.to] !== "number") return;
+  const text = fmtAmountInput(amount) + " " + state.from + " = " + fmtMoney(amount * currentRates.rates[state.to], state.to);
+  copyText(text, els.copyResultLabel, "Copy result");
+});
+els.copyLinkBtn.addEventListener("click", () => {
+  syncURL();
+  copyText(location.href, els.copyLinkLabel, "Copy link");
+});
 
 /* refresh button injected into status line */
 const retryBtn = document.createElement("button");
