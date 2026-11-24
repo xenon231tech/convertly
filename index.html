@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Convertly — Live Currency Converter</title>
+<meta name="description" content="Convertly converts any amount between 160+ world currencies with live exchange rates. Fast, free, no sign-up.">
+<meta name="theme-color" content="#EA580C">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="manifest" href="manifest.json">
+<style>
+  :root{
+    --amber:#F59E0B; --orange:#EA580C; --orange-deep:#C2410C; --rose:#E11D48;
+    --ink:#1C1917; --ink-soft:#44403C; --muted:#78716C; --faint:#A8A29E;
+    --line:#EDE8E3; --line-soft:#F5F0EA; --bg:#FDF8F2; --card:#FFFFFF;
+    --green:#16A34A; --red:#DC2626; --amber-soft:#FFFBEB; --orange-soft:#FFF7ED;
+    --grad:linear-gradient(135deg,#FBBF24 0%,#F97316 55%,#EA580C 100%);
+    --shadow:0 24px 60px -24px rgba(194,65,12,.28),0 2px 8px rgba(28,25,23,.05);
+    --radius:24px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Helvetica Neue",Arial,sans-serif;
+    background:
+      radial-gradient(720px 340px at 50% -80px, rgba(249,115,22,.14), transparent 70%),
+      radial-gradient(560px 300px at 95% 10%, rgba(245,158,11,.10), transparent 70%),
+      var(--bg);
+    color:var(--ink); min-height:100vh; line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:0 20px 48px}
+  /* ---------- header ---------- */
+  header{position:sticky;top:0;z-index:20;background:rgba(253,248,242,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+  .header-in{max-width:720px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+  .brand svg{width:38px;height:38px;flex:none}
+  .brand-name{font-size:23px;font-weight:800;letter-spacing:-.03em;line-height:1}
+  .brand-name em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .brand-tag{font-size:11px;color:var(--muted);letter-spacing:.04em;margin-top:3px}
+  .live-badge{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#166534;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:999px;padding:6px 12px;white-space:nowrap}
+  .live-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+  .live-badge.cached{color:#92400E;background:#FFFBEB;border-color:#FDE68A}
+  .live-badge.cached .dot{background:var(--amber);animation:none}
+  .live-badge.offline{color:#991B1B;background:#FEF2F2;border-color:#FECACA}
+  .live-badge.offline .dot{background:var(--red);animation:none}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(22,163,74,.45)}70%{box-shadow:0 0 0 7px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}
+  /* ---------- hero ---------- */
+  .hero{padding:38px 0 22px;text-align:center}
+  .hero h1{font-size:clamp(28px,6vw,40px);line-height:1.12;font-weight:800;letter-spacing:-.03em}
+  .hero h1 .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{margin-top:10px;color:var(--muted);font-size:15px}
+  /* ---------- converter card ---------- */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px 20px}
+  .field-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .amount-row{display:flex;align-items:baseline;gap:10px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .amount-row input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:32px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .amount-row input::placeholder{color:#D6D3D1}
+  .amount-code{font-size:15px;font-weight:700;color:var(--muted)}
+  .ccy-btn{width:100%;display:flex;align-items:center;gap:12px;background:#FFFCF8;border:1px solid var(--line);border-radius:16px;padding:14px 14px;cursor:pointer;text-align:left;font:inherit;transition:border-color .15s,background .15s,box-shadow .15s}
+  .ccy-btn:hover{border-color:#FDBA74;background:var(--orange-soft)}
+  .ccy-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .ccy-code{width:52px;flex:none;text-align:center;font-size:13px;font-weight:800;letter-spacing:.02em;color:#fff;background:var(--grad);border-radius:9px;padding:7px 0}
+  .ccy-meta{flex:1;min-width:0}
+  .ccy-name{font-size:15px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ccy-sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ccy-btn svg{flex:none;color:var(--faint)}
+  .ccy-stack{display:grid;gap:0;margin-top:16px}
+  .swap-wrap{display:flex;justify-content:center;height:0;position:relative;z-index:2}
+  .swap-btn{width:46px;height:46px;margin-top:-23px;border-radius:50%;border:2px solid #FDBA74;background:#fff;color:var(--orange);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(234,88,12,.22);transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .15s,color .15s}
+  .swap-btn:hover{background:var(--orange);color:#fff}
+  .swap-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .swap-btn.flip svg{transform:rotate(180deg)}
+  .swap-btn svg{transition:transform .35s cubic-bezier(.34,1.56,.64,1)}
+  .to-field{margin-top:16px}
+  /* ---------- result ---------- */
+  .result{margin-top:20px;background:linear-gradient(135deg,#FFFBEB 0%,#FFF7ED 60%,#FEF2F2 130%);border:1px solid #FDE9D3;border-radius:18px;padding:18px}
+  .result-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .result-value{font-size:clamp(26px,7vw,36px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-top:6px;word-break:break-word}
+  .result-value .cur{font-size:.62em;color:var(--ink-soft);font-weight:700;margin-right:2px}
+  .rate-lines{margin-top:10px;font-size:13.5px;color:var(--ink-soft);display:grid;gap:2px}
+  .rate-lines b{font-weight:700;color:var(--ink)}
+  .status{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12.5px;color:var(--muted)}
+  .status .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+  .status.cached .dot{background:var(--amber)}
+  .status.error .dot{background:var(--red)}
+  .status button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font:inherit;font-size:12px;font-weight:700;color:var(--orange-deep);cursor:pointer}
+  .status button:hover{border-color:#FDBA74}
+  .error-banner{display:none;margin-top:14px;background:#FEF2F2;border:1px solid #FECACA;color:#991B1B;border-radius:12px;padding:12px 14px;font-size:13.5px}
+  .error-banner.show{display:block}
+  /* ---------- chips ---------- */
+  .chips{margin-top:22px}
+  .chips h2,.recent h2{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font:inherit;font-size:13.5px;font-weight:700;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+  .chip:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .chip.active{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 6px 16px rgba(234,88,12,.30)}
+  /* ---------- recent ---------- */
+  .recent{margin-top:26px}
+  .recent-head{display:flex;align-items:baseline;justify-content:space-between}
+  .clear-btn{border:0;background:none;font:inherit;font-size:12.5px;font-weight:700;color:var(--orange-deep);cursor:pointer;padding:4px 2px}
+  .clear-btn:hover{text-decoration:underline}
+  .recent-list{display:grid;gap:8px}
+  .recent-item{display:flex;align-items:center;gap:12px;width:100%;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s}
+  .recent-item:hover{border-color:#FDBA74;background:var(--orange-soft)}
+  .recent-item .pair{font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--ink);white-space:nowrap}
+  .recent-item .conv{flex:1;min-width:0;font-size:13.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .recent-item .when{font-size:12px;color:var(--faint);white-space:nowrap}
+  .empty-note{font-size:13.5px;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:14px;padding:14px;text-align:center}
+  /* ---------- footer ---------- */
+  footer{margin-top:34px;text-align:center;font-size:12.5px;color:var(--faint);display:grid;gap:4px}
+  footer a{color:var(--muted);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+  /* ---------- picker sheet ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(28,25,23,.48);z-index:40;display:none;align-items:flex-end;justify-content:center}
+  .overlay.open{display:flex}
+  .sheet{background:#fff;width:100%;max-width:520px;max-height:82vh;border-radius:22px 22px 0 0;display:flex;flex-direction:column;overflow:hidden;animation:slideUp .25s ease}
+  @keyframes slideUp{from{transform:translateY(24px);opacity:.6}to{transform:translateY(0);opacity:1}}
+  .sheet-head{padding:16px 18px 10px;border-bottom:1px solid var(--line-soft)}
+  .sheet-title{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .sheet-search{margin-top:12px;display:flex;align-items:center;gap:9px;background:#FAFAF9;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .sheet-search svg{flex:none;color:var(--faint)}
+  .sheet-search input{flex:1;min-width:0;border:0;outline:0;background:transparent;font:inherit;font-size:15px}
+  .sheet-list{overflow-y:auto;padding:6px 8px 18px;-webkit-overflow-scrolling:touch}
+  .ccy-row{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;border-radius:12px;padding:10px 10px;cursor:pointer;font:inherit;text-align:left}
+  .ccy-row:hover,.ccy-row.active{background:var(--orange-soft)}
+  .ccy-row .ccy-code{width:48px}
+  .ccy-row .ccy-name{font-size:14.5px}
+  .ccy-row .ccy-sub{font-size:12px}
+  .no-match{padding:22px;text-align:center;color:var(--muted);font-size:14px}
+  @media (min-width:640px){
+    .overlay{align-items:center;padding:24px}
+    .sheet{border-radius:22px;max-height:72vh}
+    .card{padding:26px 24px 24px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-in">
+    <a class="brand" href="./" aria-label="Convertly home">
+      <svg viewBox="0 0 64 64" role="img" aria-label="Convertly logo"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".55" stop-color="#F97316"/><stop offset="1" stop-color="#EA580C"/></linearGradient><marker id="ah1" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#EA580C"/></marker><marker id="ah2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#F59E0B"/></marker></defs><path d="M32 9 A23 23 0 1 1 12.1 43.5" fill="none" stroke="url(#lg1)" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah1)"/><path d="M32 55 A23 23 0 1 1 51.9 20.5" fill="none" stroke="#F59E0B" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah2)"/></svg>
+      <span><span class="brand-name">Convert<em>ly</em></span><span class="brand-tag" style="display:block">Live currency converter</span></span>
+    </a>
+    <span class="live-badge" id="liveBadge"><span class="dot"></span><span id="liveBadgeText">Live rates</span></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Convert currencies at <span class="grad">live rates</span>.</h1>
+    <p>160+ world currencies. Real-time rates, no sign-up, no fees hidden in the math.</p>
+  </section>
+
+  <section class="card" aria-label="Currency converter">
+    <div class="field-label">Amount</div>
+    <div class="amount-row">
+      <input id="amount" type="text" inputmode="decimal" autocomplete="off" value="100" aria-label="Amount to convert">
+      <span class="amount-code" id="amountCode">USD</span>
+    </div>
+
+    <div class="ccy-stack">
+      <div>
+        <div class="field-label" style="margin-top:16px">From</div>
+        <button class="ccy-btn" id="fromBtn" type="button" aria-haspopup="dialog">
+          <span class="ccy-code" id="fromCode">USD</span>
+          <span class="ccy-meta"><span class="ccy-name" id="fromName">US Dollar</span><span class="ccy-sub" id="fromSub" style="display:block">United States</span></span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+
+      <div class="swap-wrap">
+        <button class="swap-btn" id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
+        </button>
+      </div>
+
+      <div class="to-field">
+        <div class="field-label">To</div>
+        <button class="ccy-btn" id="toBtn" type="button" aria-haspopup="dialog">
+          <span class="ccy-code" id="toCode">IDR</span>
+          <span class="ccy-meta"><span class="ccy-name" id="toName">Indonesian Rupiah</span><span class="ccy-sub" id="toSub" style="display:block">Indonesia</span></span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="result" aria-live="polite">
+      <div class="result-label" id="resultLabel">100 USD equals</div>
+      <div class="result-value" id="resultValue">&mdash;</div>
+      <div class="rate-lines">
+        <div id="rateLine">Loading live rate&hellip;</div>
+        <div id="inverseLine"></div>
+      </div>
+      <div class="status" id="statusLine"><span class="dot"></span><span id="statusText">Fetching live rates&hellip;</span></div>
+      <div class="error-banner" id="errorBanner" role="alert"></div>
+    </div>
+  </section>
+
+  <section class="chips" aria-label="Popular pairs">
+    <h2>Popular pairs</h2>
+    <div class="chip-row" id="chipRow"></div>
+  </section>
+
+  <section class="recent" aria-label="Recent conversions">
+    <div class="recent-head">
+      <h2>Recent conversions</h2>
+      <button class="clear-btn" id="clearRecent" type="button">Clear</button>
+    </div>
+    <div class="recent-list" id="recentList"></div>
+  </section>
+
+  <footer>
+    <span>Live rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) &middot; Fiat currencies only</span>
+    <span>Convertly &mdash; convert first, decide later.</span>
+  </footer>
+</main>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Choose currency">
+  <div class="sheet">
+    <div class="sheet-head">
+      <div class="sheet-title" id="pickerTitle">Choose currency</div>
+      <div class="sheet-search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="pickerSearch" type="text" placeholder="Search currency or code (e.g. Rupiah, EUR)" autocomplete="off" aria-label="Search currencies">
+      </div>
+    </div>
+    <div class="sheet-list" id="pickerList"></div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* Currency data: code -> [name, region]. Covers every currency returned by open.er-api.com. */
+const CURRENCIES = {
+  AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"]
+};
+const CODES = Object.keys(CURRENCIES).sort();
+const POPULAR_PAIRS = [["USD","IDR"],["EUR","USD"],["USD","SGD"],["USD","JPY"],["USD","GBP"],["USD","EUR"]];
+const API_BASE = "https://open.er-api.com/v6/latest/";
+const CACHE_KEY = "convertly-rates-v1";
+const RECENT_KEY = "convertly-recents-v1";
+const STATE_KEY = "convertly-state-v1";
+
+const $ = (id) => document.getElementById(id);
+const els = {
+  amount: $("amount"), amountCode: $("amountCode"),
+  fromBtn: $("fromBtn"), toBtn: $("toBtn"),
+  fromCode: $("fromCode"), fromName: $("fromName"), fromSub: $("fromSub"),
+  toCode: $("toCode"), toName: $("toName"), toSub: $("toSub"),
+  swapBtn: $("swapBtn"), resultLabel: $("resultLabel"), resultValue: $("resultValue"),
+  rateLine: $("rateLine"), inverseLine: $("inverseLine"),
+  statusLine: $("statusLine"), statusText: $("statusText"),
+  errorBanner: $("errorBanner"), liveBadge: $("liveBadge"), liveBadgeText: $("liveBadgeText"),
+  chipRow: $("chipRow"), recentList: $("recentList"), clearRecent: $("clearRecent"),
+  overlay: $("overlay"), pickerTitle: $("pickerTitle"), pickerSearch: $("pickerSearch"), pickerList: $("pickerList")
+};
+
+let state = { amount: 100, from: "USD", to: "IDR" };
+try {
+  const saved = JSON.parse(localStorage.getItem(STATE_KEY) || "null");
+  if (saved && CURRENCIES[saved.from] && CURRENCIES[saved.to] && isFinite(+saved.amount)) state = saved;
+} catch (e) { /* fresh start */ }
+
+let ratesCache = {};
+try { ratesCache = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); } catch (e) { ratesCache = {}; }
+let recents = [];
+try { recents = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"); } catch (e) { recents = []; }
+
+let currentRates = null;   // { rates, updated, source: "live"|"cached" }
+let fetching = false;
+let pickerTarget = "from";
+
+function saveState() { try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) {} }
+function saveCache() { try { localStorage.setItem(CACHE_KEY, JSON.stringify(ratesCache)); } catch (e) {} }
+function saveRecents() { try { localStorage.setItem(RECENT_KEY, JSON.stringify(recents)); } catch (e) {} }
+
+function fmtMoney(value, code) {
+  const locale = code === "IDR" ? "id-ID" : "en-US";
+  try {
+    return new Intl.NumberFormat(locale, { style: "currency", currency: code }).format(value);
+  } catch (e) {
+    return code + " " + Number(value).toLocaleString("en-US", { maximumFractionDigits: 2 });
+  }
+}
+function fmtRate(value) {
+  if (!isFinite(value) || value === 0) return "—";
+  if (value >= 100) return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
+  if (value >= 1) return value.toLocaleString("en-US", { maximumFractionDigits: 4 });
+  return Number(value.toPrecision(4)).toString();
+}
+function fmtAmountInput(value) {
+  return value.toLocaleString("en-US", { maximumFractionDigits: 2 });
+}
+function fmtUpdated(utcString) {
+  try {
+    const d = new Date(utcString);
+    return d.toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+  } catch (e) { return utcString; }
+}
+function timeAgo(ts) {
+  const s = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+  if (s < 60) return "just now";
+  if (s < 3600) return Math.floor(s / 60) + " min ago";
+  if (s < 86400) return Math.floor(s / 3600) + " h ago";
+  return Math.floor(s / 86400) + " d ago";
+}
+function parseAmount() {
+  const raw = els.amount.value.replace(/[,\s]/g, "");
+  const n = parseFloat(raw);
+  return isFinite(n) && n >= 0 ? n : null;
+}
+
+function setStatus(kind, text) {
+  els.statusLine.className = "status" + (kind === "cached" ? " cached" : kind === "error" ? " error" : "");
+  els.statusText.textContent = text;
+  els.liveBadge.className = "live-badge" + (kind === "cached" ? " cached" : kind === "error" ? " offline" : "");
+  els.liveBadgeText.textContent = kind === "live" ? "Live rates" : kind === "cached" ? "Cached rates" : "Rates unavailable";
+}
+
+function renderPair() {
+  els.amountCode.textContent = state.from;
+  els.fromCode.textContent = state.from;
+  els.fromName.textContent = CURRENCIES[state.from][0];
+  els.fromSub.textContent = CURRENCIES[state.from][1];
+  els.toCode.textContent = state.to;
+  els.toName.textContent = CURRENCIES[state.to][0];
+  els.toSub.textContent = CURRENCIES[state.to][1];
+  els.resultLabel.textContent = fmtAmountInput(state.amount) + " " + state.from + " equals";
+  document.querySelectorAll("#chipRow .chip").forEach((chip) => {
+    chip.classList.toggle("active", chip.dataset.from === state.from && chip.dataset.to === state.to);
+  });
+}
+
+function renderResult() {
+  const amount = parseAmount();
+  if (amount === null) {
+    els.resultValue.innerHTML = "&mdash;";
+    els.rateLine.textContent = "Enter an amount to convert.";
+    els.inverseLine.textContent = "";
+    return;
+  }
+  state.amount = amount;
+  if (!currentRates || !currentRates.rates || typeof currentRates.rates[state.to] !== "number") {
+    els.resultValue.innerHTML = "&mdash;";
+    els.rateLine.textContent = "Rate not available for this pair yet.";
+    els.inverseLine.textContent = "";
+    return;
+  }
+  const rate = currentRates.rates[state.to];
+  const result = amount * rate;
+  els.resultValue.textContent = fmtMoney(result, state.to);
+  els.rateLine.innerHTML = "1 <b>" + state.from + "</b> = <b>" + fmtRate(rate) + " " + state.to + "</b>";
+  els.inverseLine.innerHTML = "1 <b>" + state.to + "</b> = <b>" + fmtRate(1 / rate) + " " + state.from + "</b>";
+}
+
+async function loadRates(base, opts) {
+  opts = opts || {};
+  if (fetching) return;
+  fetching = true;
+  const cached = ratesCache[base];
+  try {
+    const res = await fetch(API_BASE + encodeURIComponent(base), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    if (data.result !== "success" || !data.rates) throw new Error("Bad API response");
+    currentRates = { rates: data.rates, updated: data.time_last_update_utc, source: "live" };
+    ratesCache[base] = { rates: data.rates, updated: data.time_last_update_utc, fetchedAt: Date.now() };
+    saveCache();
+    els.errorBanner.classList.remove("show");
+    setStatus("live", "Live rates · Updated " + fmtUpdated(data.time_last_update_utc));
+  } catch (err) {
+    if (cached && cached.rates) {
+      currentRates = { rates: cached.rates, updated: cached.updated, source: "cached" };
+      els.errorBanner.textContent = "Live update failed — showing the last saved rates from " + fmtUpdated(cached.updated) + ". Check your connection and tap Refresh to try again.";
+      els.errorBanner.classList.add("show");
+      setStatus("cached", "Cached rates · From " + fmtUpdated(cached.updated));
+    } else {
+      currentRates = null;
+      els.errorBanner.textContent = "Could not load live exchange rates. Check your connection and tap Refresh to try again. No rate is shown because no verified rate is available.";
+      els.errorBanner.classList.add("show");
+      setStatus("error", "Rates unavailable — no cached rates saved yet");
+    }
+  } finally {
+    fetching = false;
+  }
+  renderResult();
+  if (opts.record !== false) recordRecent();
+}
+
+function recordRecent() {
+  const amount = parseAmount();
+  if (amount === null || !currentRates || !currentRates.rates || typeof currentRates.rates[state.to] !== "number") return;
+  const entry = { amount: amount, from: state.from, to: state.to, result: amount * currentRates.rates[state.to], ts: Date.now() };
+  recents = recents.filter((r) => !(r.amount === entry.amount && r.from === entry.from && r.to === entry.to));
+  recents.unshift(entry);
+  recents = recents.slice(0, 10);
+  saveRecents();
+  renderRecents();
+}
+
+function renderRecents() {
+  if (!recents.length) {
+    els.recentList.innerHTML = '<div class="empty-note">No conversions yet — your last 10 conversions will appear here.</div>';
+    return;
+  }
+  els.recentList.innerHTML = "";
+  recents.forEach((r) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "recent-item";
+    b.innerHTML = '<span class="pair"></span><span class="conv"></span><span class="when"></span>';
+    b.querySelector(".pair").textContent = r.from + " → " + r.to;
+    b.querySelector(".conv").textContent = fmtAmountInput(r.amount) + " " + r.from + " = " + fmtMoney(r.result, r.to);
+    b.querySelector(".when").textContent = timeAgo(r.ts);
+    b.addEventListener("click", () => {
+      state.amount = r.amount; state.from = r.from; state.to = r.to;
+      els.amount.value = String(r.amount);
+      saveState(); renderPair();
+      refresh(true);
+    });
+    els.recentList.appendChild(b);
+  });
+}
+
+function renderChips() {
+  els.chipRow.innerHTML = "";
+  POPULAR_PAIRS.forEach(([f, t]) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.dataset.from = f; b.dataset.to = t;
+    b.textContent = f + " / " + t;
+    b.addEventListener("click", () => {
+      state.from = f; state.to = t;
+      saveState(); renderPair();
+      refresh(true);
+    });
+    els.chipRow.appendChild(b);
+  });
+}
+
+/* ---------- currency picker ---------- */
+function openPicker(target) {
+  pickerTarget = target;
+  els.pickerTitle.textContent = target === "from" ? "Convert from" : "Convert to";
+  els.pickerSearch.value = "";
+  renderPickerList("");
+  els.overlay.classList.add("open");
+  setTimeout(() => els.pickerSearch.focus(), 60);
+}
+function closePicker() { els.overlay.classList.remove("open"); }
+function renderPickerList(q) {
+  const query = (q || "").trim().toLowerCase();
+  const list = els.pickerList;
+  list.innerHTML = "";
+  const matches = CODES.filter((code) => {
+    if (!query) return true;
+    const [name, region] = CURRENCIES[code];
+    return code.toLowerCase().includes(query) || name.toLowerCase().includes(query) || region.toLowerCase().includes(query);
+  });
+  if (!matches.length) {
+    list.innerHTML = '<div class="no-match">No currency matches "' + q + '".</div>';
+    return;
+  }
+  matches.forEach((code) => {
+    const [name, region] = CURRENCIES[code];
+    const row = document.createElement("button");
+    row.type = "button";
+    row.className = "ccy-row" + ((pickerTarget === "from" ? state.from : state.to) === code ? " active" : "");
+    row.innerHTML = '<span class="ccy-code"></span><span class="ccy-meta"><span class="ccy-name" style="display:block"></span><span class="ccy-sub" style="display:block"></span></span>';
+    row.querySelector(".ccy-code").textContent = code;
+    row.querySelector(".ccy-name").textContent = name;
+    row.querySelector(".ccy-sub").textContent = region;
+    row.addEventListener("click", () => {
+      if (pickerTarget === "from") {
+        if (state.to === code) state.to = state.from;
+        state.from = code;
+      } else {
+        if (state.from === code) state.from = state.to;
+        state.to = code;
+      }
+      saveState(); renderPair(); closePicker();
+      refresh(true);
+    });
+    list.appendChild(row);
+  });
+}
+
+/* ---------- actions ---------- */
+let inputTimer = null;
+function refresh(record) {
+  loadRates(state.from, { record: record !== false });
+}
+els.amount.addEventListener("input", () => {
+  clearTimeout(inputTimer);
+  inputTimer = setTimeout(() => { renderPair(); renderResult(); recordRecent(); }, 500);
+});
+els.amount.addEventListener("change", () => { renderPair(); renderResult(); recordRecent(); });
+els.fromBtn.addEventListener("click", () => openPicker("from"));
+els.toBtn.addEventListener("click", () => openPicker("to"));
+els.swapBtn.addEventListener("click", () => {
+  const f = state.from; state.from = state.to; state.to = f;
+  els.swapBtn.classList.toggle("flip");
+  saveState(); renderPair();
+  refresh(true);
+});
+els.pickerSearch.addEventListener("input", (e) => renderPickerList(e.target.value));
+els.overlay.addEventListener("click", (e) => { if (e.target === els.overlay) closePicker(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closePicker(); });
+els.clearRecent.addEventListener("click", () => { recents = []; saveRecents(); renderRecents(); });
+
+/* refresh button injected into status line */
+const retryBtn = document.createElement("button");
+retryBtn.type = "button";
+retryBtn.textContent = "Refresh";
+retryBtn.addEventListener("click", () => refresh(false));
+els.statusLine.appendChild(retryBtn);
+
+/* ---------- init ---------- */
+els.amount.value = String(state.amount);
+renderChips();
+renderPair();
+renderRecents();
+renderResult();
+refresh(false);
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
