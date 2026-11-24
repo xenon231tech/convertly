@@ -17,6 +17,9 @@
 <meta name="twitter:title" content="Convertly — Live Currency Converter">
 <meta name="twitter:description" content="Convert any amount between 160+ world currencies and crypto with live exchange rates. Fast, free, no sign-up.">
 <meta name="twitter:image" content="og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Convertly","applicationCategory":"FinanceApplication","operatingSystem":"Any","url":"https://convertly-xenon231techs-projects.vercel.app/","description":"Convert any amount between 160+ world currencies and crypto with live exchange rates. Fast, free, no sign-up.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="manifest" href="manifest.json">
@@ -147,8 +150,8 @@
   .section-note{font-size:12px;color:var(--faint);white-space:nowrap}
   /* ---------- crypto strip ---------- */
   .crypto{margin-top:20px}
-  .crypto-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-  .crypto-chip{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s}
+  .crypto-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .crypto-chip{display:flex;align-items:center;gap:12px;flex:0 0 216px;scroll-snap-align:start;min-height:60px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;cursor:pointer;font:inherit;text-align:left;transition:border-color .15s,background .15s}
   .crypto-chip:hover{border-color:#FDBA74;background:var(--orange-soft)}
   .crypto-chip:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
   .crypto-chip.active{border-color:var(--orange);background:var(--orange-soft);box-shadow:0 0 0 1px var(--orange) inset}
@@ -211,6 +214,15 @@
   .coin-btc{background:#F7931A}
   .coin-eth{background:#627EEA}
   .coin-usdt{background:#26A17B}
+  .coin-sol{background:#9945FF}
+  .coin-xrp{background:#23292F}
+  .coin-doge{background:#C2A633}
+  .coin-ada{background:#0033AD}
+  .coin-ltc{background:#345D9D}
+  @media (min-width:640px){
+    .crypto-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow-x:visible}
+    .crypto-chip{flex:none;width:100%}
+  }
   /* ---------- multi-currency table ---------- */
   .multi{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px}
   .multi h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
@@ -225,6 +237,52 @@
   .skel-bar{display:block;height:12px;border-radius:6px;background:var(--line)}
   .skel-bar.tall{height:32px;border-radius:8px}
   .skel-flex{flex:1;min-width:0}
+  /* ---------- quick amounts / pin / pinned pairs / disclaimer ---------- */
+  .field-label-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .field-label-row .field-label{margin-bottom:0}
+  .pin-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:5px 11px;font:inherit;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s}
+  .pin-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .pin-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .pin-btn svg{flex:none}
+  .pin-btn.pinned{color:var(--orange-deep);border-color:#FDBA74;background:var(--orange-soft)}
+  .pin-btn.pinned svg{fill:var(--orange);stroke:var(--orange)}
+  .amt-chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .amt-chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:700;color:var(--ink-soft);cursor:pointer;white-space:nowrap;transition:border-color .15s,color .15s}
+  .amt-chip:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .amt-chip:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .amt-chip.active{background:var(--grad);border-color:transparent;color:#fff}
+  .pinned{margin-top:16px}
+  .pinned h2{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+  .disclaimer{margin-top:10px;font-size:12px;line-height:1.45;color:var(--faint)}
+  /* ---------- historical rate ---------- */
+  .hist{margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 16px}
+  .hist h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
+  .hist-sub{font-size:13px;color:var(--muted);margin-top:4px}
+  .hist-row{display:flex;gap:8px;margin-top:14px}
+  .hist-row input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;color:var(--ink);background:var(--field)}
+  .hist-row input:focus-visible{outline:2px solid var(--orange);outline-offset:1px}
+  .hist-btn{flex:none;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-size:14px;font-weight:700;color:#fff;background:var(--grad);cursor:pointer;white-space:nowrap;box-shadow:0 6px 16px rgba(234,88,12,.28)}
+  .hist-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .hist-result{margin-top:12px;font-size:14px;color:var(--ink-soft);min-height:21px;line-height:1.5}
+  .hist-result b{color:var(--ink)}
+  .hist-result .hist-note{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+  /* ---------- chart tap-to-inspect ---------- */
+  .chart-inspect{margin-top:10px;min-height:20px;font-size:13px;color:var(--ink-soft);text-align:center}
+  .chart-inspect b{color:var(--ink)}
+  /* ---------- install button / sheet ---------- */
+  .install-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin:6px auto 0;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:9px 18px;font:inherit;font-size:13px;font-weight:700;color:var(--orange-deep);cursor:pointer}
+  .install-btn:hover{border-color:#FDBA74}
+  .install-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  .install-body{padding:18px;font-size:14.5px;color:var(--ink-soft);line-height:1.6;display:grid;gap:14px}
+  .install-body b{color:var(--ink)}
+  .lang-btn{min-width:38px;height:36px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink-soft);cursor:pointer;font:inherit;font-size:12.5px;font-weight:800;letter-spacing:.02em;padding:0 10px;flex:none}
+  .lang-btn:hover{border-color:#FDBA74;color:var(--orange-deep)}
+  .lang-btn:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+  @media (max-width:400px){
+    .header-in{padding:12px 14px}
+    .brand-name{font-size:20px}
+    .live-badge{padding:6px 9px}
+  }
   /* ---------- footer ---------- */
   footer{margin-top:32px;text-align:center;font-size:12.5px;color:var(--faint);display:grid;gap:4px}
   footer a{color:var(--muted);text-decoration:none}
@@ -263,10 +321,11 @@
   <div class="header-in">
     <a class="brand" href="./" aria-label="Convertly home">
       <svg viewBox="0 0 64 64" role="img" aria-label="Convertly logo"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FBBF24"/><stop offset=".55" stop-color="#F97316"/><stop offset="1" stop-color="#EA580C"/></linearGradient><marker id="ah1" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#EA580C"/></marker><marker id="ah2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#F59E0B"/></marker></defs><path d="M32 9 A23 23 0 1 1 12.1 43.5" fill="none" stroke="url(#lg1)" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah1)"/><path d="M32 55 A23 23 0 1 1 51.9 20.5" fill="none" stroke="#F59E0B" stroke-width="6.5" stroke-linecap="round" marker-end="url(#ah2)"/></svg>
-      <span><span class="brand-name">Convert<em>ly</em></span><span class="brand-tag" style="display:block">Live currency converter</span></span>
+      <span><span class="brand-name">Convert<em>ly</em></span><span class="brand-tag" style="display:block" data-i18n="brandTag">Live currency converter</span></span>
     </a>
     <span class="header-actions">
-      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode">
+      <button class="lang-btn" id="langBtn" type="button" aria-label="Switch language to Indonesian">ID</button>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle dark mode" data-i18n-aria="themeAria">
         <svg id="themeIconMoon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         <svg id="themeIconSun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
       </button>
@@ -277,20 +336,35 @@
 
 <main class="wrap">
   <section class="hero">
-    <h1>Convert at <span class="grad">live rates</span>.</h1>
-    <p>160+ currencies &amp; crypto, live rates.</p>
+    <h1 data-i18n-html="heroTitle">Convert at <span class="grad">live rates</span>.</h1>
+    <p data-i18n="heroSub">160+ currencies &amp; crypto, live rates.</p>
+  </section>
+
+  <section class="pinned" id="pinnedSection" hidden aria-label="Pinned pairs">
+    <h2 data-i18n="pinnedTitle">Pinned pairs</h2>
+    <div class="chip-row" id="pinnedRow"></div>
   </section>
 
   <section class="card" aria-label="Currency converter">
-    <div class="field-label">Amount</div>
+    <div class="field-label-row">
+      <span class="field-label" data-i18n="amountLabel">Amount</span>
+      <button class="pin-btn" id="pinBtn" type="button" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4 6.1 20.5l1.2-6.5L2.5 9.4l6.6-.9z"/></svg><span id="pinBtnLabel" data-i18n="pinPair">Pin pair</span></button>
+    </div>
     <div class="amount-row">
       <input id="amount" type="text" inputmode="decimal" autocomplete="off" value="100" aria-label="Amount to convert">
       <span class="amount-code" id="amountCode">USD</span>
     </div>
+    <div class="amt-chips" id="amtChips" role="group" aria-label="Quick amounts" data-i18n-aria="quickAmounts">
+      <button class="amt-chip" type="button" data-amount="1">1</button>
+      <button class="amt-chip" type="button" data-amount="10">10</button>
+      <button class="amt-chip" type="button" data-amount="100">100</button>
+      <button class="amt-chip" type="button" data-amount="1000">1,000</button>
+      <button class="amt-chip" type="button" data-amount="100000">100K</button>
+    </div>
 
     <div class="ccy-stack">
       <div>
-        <div class="field-label">From</div>
+        <div class="field-label" data-i18n="fromLabel">From</div>
         <button class="ccy-btn" id="fromBtn" type="button" aria-haspopup="dialog">
           <span id="fromFlag"><img class="flag" src="https://hatscripts.github.io/circle-flags/flags/us.svg" alt="" width="24" height="24"></span>
           <span class="ccy-code" id="fromCode">USD</span>
@@ -300,13 +374,13 @@
       </div>
 
       <div class="swap-row">
-        <button class="swap-btn" id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">
+        <button class="swap-btn" id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies" data-i18n-aria="swapAria" data-i18n-title="swapAria">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg>
         </button>
       </div>
 
       <div class="to-field">
-        <div class="field-label">To</div>
+        <div class="field-label" data-i18n="toLabel">To</div>
         <button class="ccy-btn" id="toBtn" type="button" aria-haspopup="dialog">
           <span id="toFlag"><img class="flag" src="https://hatscripts.github.io/circle-flags/flags/id.svg" alt="" width="24" height="24"></span>
           <span class="ccy-code" id="toCode">IDR</span>
@@ -324,17 +398,18 @@
         <div id="inverseLine"></div>
       </div>
       <div class="result-actions">
-        <button class="action-btn" id="copyResultBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="copyResultLabel">Copy result</span></button>
-        <button class="action-btn" id="copyLinkBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="copyLinkLabel">Copy link</span></button>
+        <button class="action-btn" id="copyResultBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="copyResultLabel" data-i18n="copyResult">Copy result</span></button>
+        <button class="action-btn" id="copyLinkBtn" type="button"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="copyLinkLabel" data-i18n="copyLink">Copy link</span></button>
       </div>
-      <div class="status" id="statusLine"><span class="dot"></span><span id="statusText">Fetching live rates&hellip;</span><button id="refreshBtn" type="button">Refresh</button></div>
+      <div class="status" id="statusLine"><span class="dot"></span><span id="statusText" data-i18n="fetching">Fetching live rates&hellip;</span><button id="refreshBtn" type="button" data-i18n="refresh">Refresh</button></div>
+      <div class="disclaimer" data-i18n="disclaimer">Mid-market rate for reference — banks and money changers apply their own rates.</div>
       <div class="error-banner" id="errorBanner" role="alert"></div>
     </div>
   </section>
 
   <section class="crypto" aria-label="Crypto prices">
     <div class="section-head">
-      <h2>Crypto prices</h2>
+      <h2 data-i18n="cryptoTitle">Crypto prices</h2>
       <span class="section-note" id="cryptoNote">Live &middot; CoinGecko</span>
     </div>
     <div class="crypto-grid" id="cryptoGrid">
@@ -353,6 +428,21 @@
         <span class="crypto-meta"><span class="crypto-code">USDT</span><span class="crypto-name">Tether</span></span>
         <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
       </button>
+      <button class="crypto-chip" type="button" data-crypto="SOL" aria-label="Convert Solana">
+        <span class="coin coin-sol" role="img" aria-label="SOL"><span aria-hidden="true">&#9678;</span></span>
+        <span class="crypto-meta"><span class="crypto-code">SOL</span><span class="crypto-name">Solana</span></span>
+        <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
+      </button>
+      <button class="crypto-chip" type="button" data-crypto="XRP" aria-label="Convert XRP">
+        <span class="coin coin-xrp" role="img" aria-label="XRP"><span aria-hidden="true">X</span></span>
+        <span class="crypto-meta"><span class="crypto-code">XRP</span><span class="crypto-name">XRP</span></span>
+        <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
+      </button>
+      <button class="crypto-chip" type="button" data-crypto="DOGE" aria-label="Convert Dogecoin">
+        <span class="coin coin-doge" role="img" aria-label="DOGE"><span aria-hidden="true">&#208;</span></span>
+        <span class="crypto-meta"><span class="crypto-code">DOGE</span><span class="crypto-name">Dogecoin</span></span>
+        <span class="crypto-price"><span class="skel-bar" style="width:64px"></span><span class="skel-bar" style="width:44px"></span></span>
+      </button>
     </div>
   </section>
 
@@ -366,7 +456,7 @@
       </div>
     </div>
     <div class="trend-stats">
-      <div class="stat"><span class="stat-label">Current rate</span><span class="stat-value" id="trendCurrent">&mdash;</span></div>
+      <div class="stat"><span class="stat-label" data-i18n="trendCurrent">Current rate</span><span class="stat-value" id="trendCurrent">&mdash;</span></div>
       <div class="stat"><span class="stat-label" id="trendHighLabel">30-day high</span><span class="stat-value" id="trendHigh">&mdash;</span></div>
       <div class="stat"><span class="stat-label" id="trendLowLabel">30-day low</span><span class="stat-value" id="trendLow">&mdash;</span></div>
       <div class="stat"><span class="stat-label" id="trendChangeLabel">Change (30D)</span><span class="stat-value" id="trendChange">&mdash;</span></div>
@@ -375,12 +465,23 @@
       <svg id="trendChart" viewBox="0 0 640 220" role="img" aria-label="Exchange rate trend chart" preserveAspectRatio="xMidYMid meet"></svg>
       <div class="chart-note" id="trendNote">Loading trend&hellip;</div>
     </div>
+    <div class="chart-inspect" id="chartInspect" data-i18n="chartTapHint">Tap a point on the chart to see its exact date and rate.</div>
     <div class="trend-foot" id="trendFoot">Daily ECB reference rates via Frankfurter &middot; Weekends and holidays have no rate, so those days are skipped</div>
+  </section>
+
+  <section class="hist" aria-label="Rate on a date">
+    <h2 data-i18n="histTitle">Rate on a date</h2>
+    <p class="hist-sub" data-i18n="histSub">See what the rate was on a past date.</p>
+    <div class="hist-row">
+      <input id="histDate" type="date" aria-label="Date">
+      <button class="hist-btn" id="histBtn" type="button" data-i18n="histButton">Show rate</button>
+    </div>
+    <div class="hist-result" id="histResult" aria-live="polite"></div>
   </section>
 
   <section class="multi" aria-label="Same amount in other currencies">
     <h2 id="multiTitle">100 USD in other currencies</h2>
-    <p class="multi-sub">Same amount, six more currencies — live rates.</p>
+    <p class="multi-sub" data-i18n="multiSub">Same amount, six more currencies — live rates.</p>
     <div class="multi-list" id="multiList">
     <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
     <div class="multi-row skel" aria-hidden="true"><span class="skel-circle"></span><span class="skel-bar tall" style="width:52px"></span><span class="skel-bar skel-flex"></span><span class="skel-bar" style="width:76px"></span></div>
@@ -392,21 +493,22 @@
   </section>
 
   <section class="chips" aria-label="Popular pairs">
-    <h2>Popular pairs</h2>
+    <h2 data-i18n="popularTitle">Popular pairs</h2>
     <div class="chip-row" id="chipRow"></div>
   </section>
 
   <section class="recent" aria-label="Recent conversions">
     <div class="recent-head">
-      <h2>Recent conversions</h2>
-      <button class="clear-btn" id="clearRecent" type="button">Clear</button>
+      <h2 data-i18n="recentTitle">Recent conversions</h2>
+      <button class="clear-btn" id="clearRecent" type="button" data-i18n="clear">Clear</button>
     </div>
     <div class="recent-list" id="recentList"></div>
   </section>
 
   <footer>
-    <span>Live rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) &middot; Crypto prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a> &middot; Trend data by Frankfurter (ECB)</span>
-    <span>Convertly &mdash; convert first, decide later.</span>
+    <span data-i18n-html="footerAttr">Live rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) &middot; Crypto prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a> &middot; Trend data by Frankfurter (ECB)</span>
+    <span data-i18n="footerTag">Convertly &mdash; convert first, decide later.</span>
+    <button class="install-btn" id="installBtn" type="button" hidden><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg><span data-i18n="installBtn">Install app</span></button>
   </footer>
 </main>
 
@@ -416,10 +518,22 @@
       <div class="sheet-title" id="pickerTitle">Choose currency</div>
       <div class="sheet-search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="pickerSearch" type="text" placeholder="Search currency or code (e.g. Rupiah, EUR)" autocomplete="off" aria-label="Search currencies">
+        <input id="pickerSearch" type="text" placeholder="Search currency or code (e.g. Rupiah, EUR)" autocomplete="off" aria-label="Search currencies" data-i18n-ph="pickerSearchPh" data-i18n-aria="pickerSearchAria">
       </div>
     </div>
     <div class="sheet-list" id="pickerList"></div>
+  </div>
+</div>
+
+<div class="overlay" id="installOverlay" role="dialog" aria-modal="true" aria-label="Install Convertly">
+  <div class="sheet install-sheet">
+    <div class="sheet-head">
+      <div class="sheet-title" data-i18n="installTitle">Install Convertly</div>
+    </div>
+    <div class="install-body">
+      <p data-i18n-html="installSteps">Tap <b>Share</b>, then <b>Add to Home Screen</b>, then <b>Add</b>.</p>
+      <button class="action-btn" id="installCloseBtn" type="button" data-i18n="installClose">Close</button>
+    </div>
   </div>
 </div>
 
@@ -427,7 +541,7 @@
 "use strict";
 /* Currency data: code -> [name, region]. Covers every currency returned by open.er-api.com. */
 const CURRENCIES = {
-  AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"],BTC:["Bitcoin","Cryptocurrency"],ETH:["Ethereum","Cryptocurrency"],USDT:["Tether","Cryptocurrency"]
+  ADA:["Cardano","Cryptocurrency"],AED:["UAE Dirham","United Arab Emirates"],AFN:["Afghan Afghani","Afghanistan"],ALL:["Albanian Lek","Albania"],AMD:["Armenian Dram","Armenia"],ANG:["Netherlands Antillean Guilder","Curaçao & Sint Maarten"],AOA:["Angolan Kwanza","Angola"],ARS:["Argentine Peso","Argentina"],AUD:["Australian Dollar","Australia"],AWG:["Aruban Florin","Aruba"],AZN:["Azerbaijani Manat","Azerbaijan"],BAM:["Bosnia-Herzegovina Convertible Mark","Bosnia & Herzegovina"],BBD:["Barbadian Dollar","Barbados"],BDT:["Bangladeshi Taka","Bangladesh"],BGN:["Bulgarian Lev","Bulgaria"],BHD:["Bahraini Dinar","Bahrain"],BIF:["Burundian Franc","Burundi"],BMD:["Bermudan Dollar","Bermuda"],BND:["Brunei Dollar","Brunei"],BOB:["Bolivian Boliviano","Bolivia"],BRL:["Brazilian Real","Brazil"],BSD:["Bahamian Dollar","Bahamas"],BTN:["Bhutanese Ngultrum","Bhutan"],BWP:["Botswanan Pula","Botswana"],BYN:["Belarusian Ruble","Belarus"],BZD:["Belize Dollar","Belize"],CAD:["Canadian Dollar","Canada"],CDF:["Congolese Franc","DR Congo"],CHF:["Swiss Franc","Switzerland"],CLF:["Chilean Unit of Account","Chile"],CLP:["Chilean Peso","Chile"],CNH:["Chinese Yuan (Offshore)","China"],CNY:["Chinese Yuan","China"],COP:["Colombian Peso","Colombia"],CRC:["Costa Rican Colón","Costa Rica"],CUP:["Cuban Peso","Cuba"],CVE:["Cape Verdean Escudo","Cape Verde"],CZK:["Czech Koruna","Czechia"],DJF:["Djiboutian Franc","Djibouti"],DKK:["Danish Krone","Denmark"],DOGE:["Dogecoin","Cryptocurrency"],DOP:["Dominican Peso","Dominican Republic"],DZD:["Algerian Dinar","Algeria"],EGP:["Egyptian Pound","Egypt"],ERN:["Eritrean Nakfa","Eritrea"],ETB:["Ethiopian Birr","Ethiopia"],EUR:["Euro","Eurozone"],FJD:["Fijian Dollar","Fiji"],FKP:["Falkland Islands Pound","Falkland Islands"],FOK:["Faroese Króna","Faroe Islands"],GBP:["British Pound Sterling","United Kingdom"],GEL:["Georgian Lari","Georgia"],GGP:["Guernsey Pound","Guernsey"],GHS:["Ghanaian Cedi","Ghana"],GIP:["Gibraltar Pound","Gibraltar"],GMD:["Gambian Dalasi","Gambia"],GNF:["Guinean Franc","Guinea"],GTQ:["Guatemalan Quetzal","Guatemala"],GYD:["Guyanaese Dollar","Guyana"],HKD:["Hong Kong Dollar","Hong Kong"],HNL:["Honduran Lempira","Honduras"],HRK:["Croatian Kuna","Croatia"],HTG:["Haitian Gourde","Haiti"],HUF:["Hungarian Forint","Hungary"],IDR:["Indonesian Rupiah","Indonesia"],ILS:["Israeli New Shekel","Israel"],IMP:["Manx Pound","Isle of Man"],INR:["Indian Rupee","India"],IQD:["Iraqi Dinar","Iraq"],IRR:["Iranian Rial","Iran"],ISK:["Icelandic Króna","Iceland"],JEP:["Jersey Pound","Jersey"],JMD:["Jamaican Dollar","Jamaica"],JOD:["Jordanian Dinar","Jordan"],JPY:["Japanese Yen","Japan"],KES:["Kenyan Shilling","Kenya"],KGS:["Kyrgystani Som","Kyrgyzstan"],KHR:["Cambodian Riel","Cambodia"],KID:["Kiribati Dollar","Kiribati"],KMF:["Comorian Franc","Comoros"],KRW:["South Korean Won","South Korea"],KWD:["Kuwaiti Dinar","Kuwait"],KYD:["Cayman Islands Dollar","Cayman Islands"],KZT:["Kazakhstani Tenge","Kazakhstan"],LAK:["Laotian Kip","Laos"],LBP:["Lebanese Pound","Lebanon"],LKR:["Sri Lankan Rupee","Sri Lanka"],LRD:["Liberian Dollar","Liberia"],LTC:["Litecoin","Cryptocurrency"],LSL:["Lesotho Loti","Lesotho"],LYD:["Libyan Dinar","Libya"],MAD:["Moroccan Dirham","Morocco"],MDL:["Moldovan Leu","Moldova"],MGA:["Malagasy Ariary","Madagascar"],MKD:["Macedonian Denar","North Macedonia"],MMK:["Myanma Kyat","Myanmar"],MNT:["Mongolian Tugrik","Mongolia"],MOP:["Macanese Pataca","Macao"],MRU:["Mauritanian Ouguiya","Mauritania"],MUR:["Mauritian Rupee","Mauritius"],MVR:["Maldivian Rufiyaa","Maldives"],MWK:["Malawian Kwacha","Malawi"],MXN:["Mexican Peso","Mexico"],MYR:["Malaysian Ringgit","Malaysia"],MZN:["Mozambican Metical","Mozambique"],NAD:["Namibian Dollar","Namibia"],NGN:["Nigerian Naira","Nigeria"],NIO:["Nicaraguan Córdoba","Nicaragua"],NOK:["Norwegian Krone","Norway"],NPR:["Nepalese Rupee","Nepal"],NZD:["New Zealand Dollar","New Zealand"],OMR:["Omani Rial","Oman"],PAB:["Panamanian Balboa","Panama"],PEN:["Peruvian Sol","Peru"],PGK:["Papua New Guinean Kina","Papua New Guinea"],PHP:["Philippine Peso","Philippines"],PKR:["Pakistani Rupee","Pakistan"],PLN:["Polish Zloty","Poland"],PYG:["Paraguayan Guarani","Paraguay"],QAR:["Qatari Riyal","Qatar"],RON:["Romanian Leu","Romania"],RSD:["Serbian Dinar","Serbia"],RUB:["Russian Ruble","Russia"],RWF:["Rwandan Franc","Rwanda"],SAR:["Saudi Riyal","Saudi Arabia"],SBD:["Solomon Islands Dollar","Solomon Islands"],SCR:["Seychellois Rupee","Seychelles"],SDG:["Sudanese Pound","Sudan"],SEK:["Swedish Krona","Sweden"],SGD:["Singapore Dollar","Singapore"],SHP:["St. Helena Pound","St. Helena"],SLE:["Sierra Leonean Leone","Sierra Leone"],SLL:["Sierra Leonean Leone (Old)","Sierra Leone"],SOL:["Solana","Cryptocurrency"],SOS:["Somali Shilling","Somalia"],SRD:["Surinamese Dollar","Suriname"],SSP:["South Sudanese Pound","South Sudan"],STN:["São Tomé & Príncipe Dobra","São Tomé & Príncipe"],SYP:["Syrian Pound","Syria"],SZL:["Swazi Lilangeni","Eswatini"],THB:["Thai Baht","Thailand"],TJS:["Tajikistani Somoni","Tajikistan"],TMT:["Turkmenistani Manat","Turkmenistan"],TND:["Tunisian Dinar","Tunisia"],TOP:["Tongan Pa'anga","Tonga"],TRY:["Turkish Lira","Türkiye"],TTD:["Trinidad & Tobago Dollar","Trinidad & Tobago"],TVD:["Tuvaluan Dollar","Tuvalu"],TWD:["New Taiwan Dollar","Taiwan"],TZS:["Tanzanian Shilling","Tanzania"],UAH:["Ukrainian Hryvnia","Ukraine"],UGX:["Ugandan Shilling","Uganda"],USD:["US Dollar","United States"],UYU:["Uruguayan Peso","Uruguay"],UZS:["Uzbekistani Som","Uzbekistan"],VES:["Venezuelan Bolívar Soberano","Venezuela"],VND:["Vietnamese Dong","Vietnam"],VUV:["Vanuatu Vatu","Vanuatu"],WST:["Samoan Tala","Samoa"],XAF:["Central African CFA Franc","Central Africa"],XCD:["East Caribbean Dollar","Eastern Caribbean"],XCG:["Caribbean Guilder","Curaçao & Sint Maarten"],XDR:["Special Drawing Rights","IMF"],XOF:["West African CFA Franc","West Africa"],XPF:["CFP Franc","French Pacific"],XRP:["XRP","Cryptocurrency"],YER:["Yemeni Rial","Yemen"],ZAR:["South African Rand","South Africa"],ZMW:["Zambian Kwacha","Zambia"],ZWG:["Zimbabwean Gold","Zimbabwe"],ZWL:["Zimbabwean Dollar","Zimbabwe"],BTC:["Bitcoin","Cryptocurrency"],ETH:["Ethereum","Cryptocurrency"],USDT:["Tether","Cryptocurrency"]
 };
 const CODES = Object.keys(CURRENCIES).sort();
 /* Flag icons: circle-flags SVG (already round; every code verified live, no placeholders). Currency -> country code. */
@@ -437,12 +551,18 @@ function flagCC(code){ if (Object.prototype.hasOwnProperty.call(FLAG_OVERRIDES, 
 function flagURL(code){ const cc = flagCC(code); return cc ? FLAG_BASE + cc + ".svg" : null; }
 const GLOBE_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.6 3.9 5.7 3.9 9s-1.4 6.4-3.9 9c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>';
 /* Crypto: CoinGecko ids + drawn coin marks (crypto has no country flag). */
-const CRYPTO_IDS = { BTC:"bitcoin", ETH:"ethereum", USDT:"tether" };
+const CRYPTO_IDS = { BTC:"bitcoin", ETH:"ethereum", USDT:"tether", SOL:"solana", XRP:"ripple", DOGE:"dogecoin", ADA:"cardano", LTC:"litecoin" };
+const STRIP_CRYPTOS = ["BTC", "ETH", "USDT", "SOL", "XRP", "DOGE"];
 function isCrypto(code){ return Object.prototype.hasOwnProperty.call(CRYPTO_IDS, code); }
 const COIN_MARKS = {
   BTC:{ cls:"coin-btc", label:"₿" },
   ETH:{ cls:"coin-eth", svg:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5 19.5 12 12 21.5 4.5 12Z"/></svg>' },
-  USDT:{ cls:"coin-usdt", label:"₮" }
+  USDT:{ cls:"coin-usdt", label:"₮" },
+  SOL:{ cls:"coin-sol", label:"◎" },
+  XRP:{ cls:"coin-xrp", label:"X" },
+  DOGE:{ cls:"coin-doge", label:"Ð" },
+  ADA:{ cls:"coin-ada", label:"₳" },
+  LTC:{ cls:"coin-ltc", label:"Ł" }
 };
 function coinHTML(code, size){
   const mark = COIN_MARKS[code];
@@ -463,7 +583,7 @@ const API_BASE = "https://open.er-api.com/v6/latest/";
 const CACHE_KEY = "convertly-rates-v1";
 const RECENT_KEY = "convertly-recents-v1";
 const STATE_KEY = "convertly-state-v1";
-const COINGECKO_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd&include_24hr_change=true";
+const COINGECKO_PRICE_URL = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,solana,ripple,dogecoin,cardano,litecoin&vs_currencies=usd&include_24hr_change=true";
 const COINGECKO_CHART_URL = "https://api.coingecko.com/api/v3/coins/";
 const CRYPTO_CACHE_KEY = "convertly-crypto-v1";
 const CRYPTO_TTL_MS = 60000;
@@ -486,8 +606,173 @@ const els = {
   trendFoot: $("trendFoot"), multiTitle: $("multiTitle"), multiList: $("multiList"),
   copyResultBtn: $("copyResultBtn"), copyResultLabel: $("copyResultLabel"), copyLinkBtn: $("copyLinkBtn"), copyLinkLabel: $("copyLinkLabel"),
   refreshBtn: $("refreshBtn"), themeBtn: $("themeBtn"), themeIconMoon: $("themeIconMoon"), themeIconSun: $("themeIconSun"),
-  cryptoGrid: $("cryptoGrid"), cryptoNote: $("cryptoNote")
+  cryptoGrid: $("cryptoGrid"), cryptoNote: $("cryptoNote"),
+  langBtn: $("langBtn"), pinBtn: $("pinBtn"), pinBtnLabel: $("pinBtnLabel"),
+  pinnedSection: $("pinnedSection"), pinnedRow: $("pinnedRow"),
+  amtChips: $("amtChips"), histDate: $("histDate"), histBtn: $("histBtn"), histResult: $("histResult"),
+  chartInspect: $("chartInspect"), installBtn: $("installBtn"), installOverlay: $("installOverlay"),
+  installCloseBtn: $("installCloseBtn")
 };
+
+/* ---------- i18n: full EN/ID strings. Currency names/codes stay as-is; the app name stays "Convertly". ---------- */
+const LANG_KEY = "convertly-lang-v1";
+const STRINGS = {
+  en: {
+    brandTag: "Live currency converter",
+    heroTitle: 'Convert at <span class="grad">live rates</span>.',
+    heroSub: "160+ currencies & crypto, live rates.",
+    amountLabel: "Amount", fromLabel: "From", toLabel: "To",
+    pinPair: "Pin pair", unpinPair: "Pinned — tap to unpin", pinnedTitle: "Pinned pairs",
+    quickAmounts: "Quick amounts",
+    resultEquals: "{amount} {from} equals",
+    copyResult: "Copy result", copyLink: "Copy link", refresh: "Refresh",
+    disclaimer: "Mid-market rate for reference — banks and money changers apply their own rates.",
+    cryptoTitle: "Crypto prices",
+    cryptoLive: "Live · CoinGecko", cryptoCached: "Live · CoinGecko (cached)",
+    cryptoUnavailable: "Crypto prices unavailable", unavailable: "Unavailable",
+    trendCurrent: "Current rate", dayHigh: "{n}-day high", dayLow: "{n}-day low", changeLabel: "Change ({n}D)",
+    trendFootFiat: "Daily ECB reference rates via Frankfurter · Weekends and holidays have no rate, so those days are skipped",
+    trendFootCrypto: "Daily prices via CoinGecko · Crypto markets never close",
+    chartLoading: "Loading trend…",
+    chartSame: "Same currency selected — there is no trend to show.",
+    chartUnavailableCrypto: "Chart not available for this pair. CoinGecko did not return price history — try again in a moment.",
+    chartUnavailableFiat: "Chart not available for this pair. Frankfurter covers about 30 major currencies — try USD, EUR, GBP, JPY, or IDR pairs.",
+    chartTapHint: "Tap a point on the chart to see its exact date and rate.",
+    chartInspect: "{date} · 1 {from} = {rate} {to}",
+    chartAria: "Exchange rate trend for {from} to {to}, {n} daily rates",
+    multiSub: "Same amount, six more currencies — live rates.",
+    multiTitle: "{amount} {from} in other currencies",
+    multiUnavailable: "Rates not available yet.",
+    popularTitle: "Popular pairs", recentTitle: "Recent conversions", clear: "Clear",
+    recentEmpty: "No conversions yet — your last 10 conversions will appear here.",
+    justNow: "just now", minAgo: "{n} min ago", hAgo: "{n} h ago", dAgo: "{n} d ago",
+    pickerFrom: "Convert from", pickerTo: "Convert to",
+    pickerSearchPh: "Search currency or code (e.g. Rupiah, EUR)",
+    pickerSearchAria: "Search currencies",
+    noMatch: 'No currency matches "{q}".',
+    enterAmount: "Enter an amount to convert.",
+    rateUnavailable: "Rate not available for this pair yet.",
+    statusLive: "Live rates · {upd}", statusCached: "Cached rates · {upd}",
+    statusError: "Rates unavailable — no cached rates saved yet",
+    badgeLive: "Live rates", badgeCached: "Cached rates", badgeOffline: "Rates unavailable",
+    errLiveFailed: "Live update failed — showing the last saved rates from {upd}. Check your connection and tap Refresh to try again.",
+    errNoRates: "Could not load live exchange rates. Check your connection and tap Refresh to try again. No rate is shown because no verified rate is available.",
+    errCryptoFrom: "Crypto prices are unavailable right now — CoinGecko did not respond. Fiat conversions still work; try this pair again in a moment.",
+    errCryptoTo: "Crypto prices are unavailable right now — fiat conversions still work. Try again in a moment.",
+    copied: "Copied", copyFailed: "Copy failed",
+    footerAttr: 'Live rates by <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) · Crypto prices by <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a> · Trend data by Frankfurter (ECB)',
+    footerTag: "Convertly — convert first, decide later.",
+    histTitle: "Rate on a date", histSub: "See what the rate was on a past date.",
+    histButton: "Show rate", histPickDate: "Pick a date first.",
+    histFuture: "That date is in the future — pick a past date.",
+    histLoading: "Looking up the rate…",
+    histResult: "On {date}, 1 {from} = {rate} {to}",
+    histWeekend: "No rate on {req} (weekend or holiday) — showing the nearest available day, {near}.",
+    histUnavailable: "No rate available for this pair on that date.",
+    installBtn: "Install app", installTitle: "Install Convertly",
+    installSteps: "Tap <b>Share</b>, then <b>Add to Home Screen</b>, then <b>Add</b>.",
+    installClose: "Close",
+    themeAria: "Toggle dark mode", swapAria: "Swap currencies",
+    langAriaToId: "Switch language to Indonesian", langAriaToEn: "Switch language to English",
+    fetching: "Fetching live rates…",
+    metaDesc: "Convertly converts any amount between 160+ world currencies and crypto with live exchange rates. Fast, free, no sign-up."
+  },
+  id: {
+    brandTag: "Konverter mata uang live",
+    heroTitle: 'Konversi dengan <span class="grad">kurs live</span>.',
+    heroSub: "160+ mata uang & kripto, kurs live.",
+    amountLabel: "Jumlah", fromLabel: "Dari", toLabel: "Ke",
+    pinPair: "Sematkan pasangan", unpinPair: "Disematkan — ketuk untuk melepas", pinnedTitle: "Pasangan tersemat",
+    quickAmounts: "Jumlah cepat",
+    resultEquals: "{amount} {from} sama dengan",
+    copyResult: "Salin hasil", copyLink: "Salin tautan", refresh: "Perbarui",
+    disclaimer: "Kurs tengah sebagai referensi — bank dan money changer menerapkan kurs mereka sendiri.",
+    cryptoTitle: "Harga kripto",
+    cryptoLive: "Live · CoinGecko", cryptoCached: "Live · CoinGecko (tersimpan)",
+    cryptoUnavailable: "Harga kripto tidak tersedia", unavailable: "Tidak tersedia",
+    trendCurrent: "Kurs saat ini", dayHigh: "Tertinggi {n} hari", dayLow: "Terendah {n} hari", changeLabel: "Perubahan ({n}H)",
+    trendFootFiat: "Kurs referensi harian ECB via Frankfurter · Akhir pekan dan hari libur tidak ada kurs, jadi hari-hari itu dilewati",
+    trendFootCrypto: "Harga harian via CoinGecko · Pasar kripto tidak pernah tutup",
+    chartLoading: "Memuat tren…",
+    chartSame: "Mata uang yang sama dipilih — tidak ada tren untuk ditampilkan.",
+    chartUnavailableCrypto: "Grafik tidak tersedia untuk pasangan ini. CoinGecko tidak mengembalikan riwayat harga — coba lagi sebentar lagi.",
+    chartUnavailableFiat: "Grafik tidak tersedia untuk pasangan ini. Frankfurter mencakup sekitar 30 mata uang utama — coba pasangan USD, EUR, GBP, JPY, atau IDR.",
+    chartTapHint: "Ketuk titik pada grafik untuk melihat tanggal dan kurs pastinya.",
+    chartInspect: "{date} · 1 {from} = {rate} {to}",
+    chartAria: "Tren kurs {from} ke {to}, {n} kurs harian",
+    multiSub: "Jumlah yang sama, enam mata uang lain — kurs live.",
+    multiTitle: "{amount} {from} dalam mata uang lain",
+    multiUnavailable: "Kurs belum tersedia.",
+    popularTitle: "Pasangan populer", recentTitle: "Konversi terakhir", clear: "Hapus",
+    recentEmpty: "Belum ada konversi — 10 konversi terakhir Anda akan muncul di sini.",
+    justNow: "baru saja", minAgo: "{n} mnt lalu", hAgo: "{n} jam lalu", dAgo: "{n} hari lalu",
+    pickerFrom: "Konversi dari", pickerTo: "Konversi ke",
+    pickerSearchPh: "Cari mata uang atau kode (mis. Rupiah, EUR)",
+    pickerSearchAria: "Cari mata uang",
+    noMatch: 'Tidak ada mata uang yang cocok dengan "{q}".',
+    enterAmount: "Masukkan jumlah untuk dikonversi.",
+    rateUnavailable: "Kurs untuk pasangan ini belum tersedia.",
+    statusLive: "Kurs live · {upd}", statusCached: "Kurs tersimpan · {upd}",
+    statusError: "Kurs tidak tersedia — belum ada kurs tersimpan",
+    badgeLive: "Kurs live", badgeCached: "Kurs tersimpan", badgeOffline: "Kurs tidak tersedia",
+    errLiveFailed: "Pembaruan live gagal — menampilkan kurs terakhir yang tersimpan dari {upd}. Periksa koneksi Anda dan ketuk Perbarui untuk mencoba lagi.",
+    errNoRates: "Tidak dapat memuat kurs live. Periksa koneksi Anda dan ketuk Perbarui untuk mencoba lagi. Tidak ada kurs yang ditampilkan karena tidak ada kurs terverifikasi.",
+    errCryptoFrom: "Harga kripto tidak tersedia saat ini — CoinGecko tidak merespons. Konversi fiat tetap berfungsi; coba pasangan ini lagi sebentar lagi.",
+    errCryptoTo: "Harga kripto tidak tersedia saat ini — konversi fiat tetap berfungsi. Coba lagi sebentar lagi.",
+    copied: "Disalin", copyFailed: "Gagal menyalin",
+    footerAttr: 'Kurs live oleh <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener">ExchangeRate-API</a> (open.er-api.com) · Harga kripto oleh <a href="https://www.coingecko.com" target="_blank" rel="noopener">CoinGecko</a> · Data tren oleh Frankfurter (ECB)',
+    footerTag: "Convertly — konversi dulu, putuskan kemudian.",
+    histTitle: "Kurs pada tanggal", histSub: "Lihat berapa kursnya pada tanggal yang lalu.",
+    histButton: "Tampilkan kurs", histPickDate: "Pilih tanggal terlebih dahulu.",
+    histFuture: "Tanggal itu di masa depan — pilih tanggal yang lalu.",
+    histLoading: "Mencari kurs…",
+    histResult: "Pada {date}, 1 {from} = {rate} {to}",
+    histWeekend: "Tidak ada kurs pada {req} (akhir pekan atau libur) — menampilkan hari terdekat yang tersedia, {near}.",
+    histUnavailable: "Tidak ada kurs tersedia untuk pasangan ini pada tanggal tersebut.",
+    installBtn: "Instal aplikasi", installTitle: "Instal Convertly",
+    installSteps: "Ketuk <b>Bagikan</b>, lalu <b>Tambah ke Layar Utama</b>, lalu <b>Tambah</b>.",
+    installClose: "Tutup",
+    themeAria: "Ganti mode gelap", swapAria: "Tukar mata uang",
+    langAriaToId: "Switch language to Indonesian", langAriaToEn: "Ganti bahasa ke Inggris",
+    fetching: "Mengambil kurs live…",
+    metaDesc: "Convertly mengonversi jumlah berapa pun antar 160+ mata uang dunia dan kripto dengan kurs live. Cepat, gratis, tanpa daftar."
+  }
+};
+let lang = "en";
+try { const savedLang = localStorage.getItem(LANG_KEY); if (savedLang === "id" || savedLang === "en") lang = savedLang; } catch (e) {}
+function t(key, vars) {
+  let s = (STRINGS[lang] && STRINGS[lang][key]) || STRINGS.en[key] || key;
+  if (vars) Object.keys(vars).forEach((k) => { s = s.split("{" + k + "}").join(String(vars[k])); });
+  return s;
+}
+function dateLocale() { return lang === "id" ? "id-ID" : "en-GB"; }
+function applyLang() {
+  document.documentElement.setAttribute("lang", lang);
+  document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.getAttribute("data-i18n")); });
+  document.querySelectorAll("[data-i18n-html]").forEach((el) => { el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+  document.querySelectorAll("[data-i18n-ph]").forEach((el) => { el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph"))); });
+  document.querySelectorAll("[data-i18n-aria]").forEach((el) => { el.setAttribute("aria-label", t(el.getAttribute("data-i18n-aria"))); });
+  document.querySelectorAll("[data-i18n-title]").forEach((el) => { el.setAttribute("title", t(el.getAttribute("data-i18n-title"))); });
+  const metaDesc = document.querySelector('meta[name="description"]');
+  if (metaDesc) metaDesc.setAttribute("content", t("metaDesc"));
+  if (els.langBtn) {
+    els.langBtn.textContent = lang === "en" ? "ID" : "EN";
+    els.langBtn.setAttribute("aria-label", lang === "en" ? t("langAriaToId") : t("langAriaToEn"));
+  }
+  try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+  /* Re-render every dynamic string from current state. */
+  renderPair();
+  renderResult();
+  renderRecents();
+  renderCryptoStrip();
+  updateTrendTexts();
+  if (lastStatus) setStatus(lastStatus.kind, lastStatus.updated, lastStatus.error);
+  renderPinBtn();
+  renderPinned();
+  if (histData) renderHistResult();
+  if (chartData) { renderChart(false); updateChartInspect(); }
+  else updateTrendTexts();
+}
 
 let state = { amount: 100, from: "USD", to: "IDR" };
 try {
@@ -521,7 +806,7 @@ function saveRecents() { try { localStorage.setItem(RECENT_KEY, JSON.stringify(r
 
 function fmtMoney(value, code) {
   if (isCrypto(code)) {
-    const digits = code === "BTC" ? 8 : code === "ETH" ? 6 : 2;
+    const digits = code === "BTC" ? 8 : code === "ETH" ? 6 : (value < 1 ? 6 : 2);
     return code + " " + Number(value).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: digits });
   }
   const locale = code === "IDR" ? "id-ID" : "en-US";
@@ -543,21 +828,27 @@ function fmtAmountInput(value) {
 function fmtUpdatedShort(utcString) {
   try {
     const d = new Date(utcString);
-    return d.toLocaleString("en-GB", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+    return d.toLocaleString(dateLocale(), { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
   } catch (e) { return utcString; }
 }
 function fmtUpdated(utcString) {
   try {
     const d = new Date(utcString);
-    return d.toLocaleString("en-GB", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
+    return d.toLocaleString(dateLocale(), { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZoneName: "short" });
   } catch (e) { return utcString; }
+}
+function fmtLongDate(iso) {
+  try {
+    const d = new Date(iso + "T00:00:00");
+    return d.toLocaleDateString(dateLocale(), { day: "numeric", month: "short", year: "numeric" });
+  } catch (e) { return iso; }
 }
 function timeAgo(ts) {
   const s = Math.max(0, Math.floor((Date.now() - ts) / 1000));
-  if (s < 60) return "just now";
-  if (s < 3600) return Math.floor(s / 60) + " min ago";
-  if (s < 86400) return Math.floor(s / 3600) + " h ago";
-  return Math.floor(s / 86400) + " d ago";
+  if (s < 60) return t("justNow");
+  if (s < 3600) return t("minAgo", { n: Math.floor(s / 60) });
+  if (s < 86400) return t("hAgo", { n: Math.floor(s / 3600) });
+  return t("dAgo", { n: Math.floor(s / 86400) });
 }
 function parseAmount() {
   const raw = els.amount.value.replace(/[,\s]/g, "");
@@ -565,11 +856,14 @@ function parseAmount() {
   return isFinite(n) && n >= 0 ? n : null;
 }
 
-function setStatus(kind, text) {
+let lastStatus = null; /* { kind, updated, error } — so a language switch can re-render the status line */
+function setStatus(kind, updated, error) {
+  lastStatus = { kind: kind, updated: updated || null, error: !!error };
   els.statusLine.className = "status" + (kind === "cached" ? " cached" : kind === "error" ? " error" : "");
-  els.statusText.textContent = text;
+  els.statusText.textContent = kind === "live" ? t("statusLive", { upd: updated })
+    : kind === "cached" ? t("statusCached", { upd: updated }) : t("statusError");
   els.liveBadge.className = "live-badge" + (kind === "cached" ? " cached" : kind === "error" ? " offline" : "");
-  els.liveBadgeText.textContent = kind === "live" ? "Live rates" : kind === "cached" ? "Cached rates" : "Rates unavailable";
+  els.liveBadgeText.textContent = kind === "live" ? t("badgeLive") : kind === "cached" ? t("badgeCached") : t("badgeOffline");
 }
 
 /* Keep the URL shareable: ?from=&to=&amount= mirrors the converter state (no reload). */
@@ -592,13 +886,15 @@ function renderPair() {
   els.toCode.textContent = state.to;
   els.toName.textContent = CURRENCIES[state.to][0];
   els.toSub.textContent = CURRENCIES[state.to][1];
-  els.resultLabel.textContent = fmtAmountInput(state.amount) + " " + state.from + " equals";
+  els.resultLabel.textContent = t("resultEquals", { amount: fmtAmountInput(state.amount), from: state.from });
   document.querySelectorAll("#chipRow .chip").forEach((chip) => {
     chip.classList.toggle("active", chip.dataset.from === state.from && chip.dataset.to === state.to);
   });
+  renderPinBtn();
   document.querySelectorAll("#cryptoGrid .crypto-chip").forEach((c) => {
     c.classList.toggle("active", c.dataset.crypto === state.from);
   });
+  markAmtChip();
   syncURL();
 }
 
@@ -606,15 +902,16 @@ function renderResult() {
   const amount = parseAmount();
   if (amount === null) {
     els.resultValue.innerHTML = "&mdash;";
-    els.rateLine.textContent = "Enter an amount to convert.";
+    els.rateLine.textContent = t("enterAmount");
     els.inverseLine.textContent = "";
     renderMulti();
     return;
   }
   state.amount = amount;
+  els.resultLabel.textContent = t("resultEquals", { amount: fmtAmountInput(amount), from: state.from });
   if (!currentRates || !currentRates.rates || typeof currentRates.rates[state.to] !== "number") {
     els.resultValue.innerHTML = "&mdash;";
-    els.rateLine.textContent = "Rate not available for this pair yet.";
+    els.rateLine.textContent = t("rateUnavailable");
     els.inverseLine.textContent = "";
     renderMulti();
     return;
@@ -634,6 +931,7 @@ function renderResult() {
 let cryptoPrices = null;   /* { prices, fetchedAt } */
 let cryptoCache = null;
 let cryptoStale = false;
+let cryptoAttempted = false; /* true once a CoinGecko fetch has finished (success or fail) */
 let usdPivotRates = null;  /* last known USD-base fiat table, for the crypto pivot */
 try { cryptoCache = JSON.parse(localStorage.getItem(CRYPTO_CACHE_KEY) || "null"); } catch (e) { cryptoCache = null; }
 function saveCryptoCache() { try { localStorage.setItem(CRYPTO_CACHE_KEY, JSON.stringify(cryptoCache)); } catch (e) {} }
@@ -647,14 +945,16 @@ async function loadCryptoPrices() {
     const res = await fetch(COINGECKO_PRICE_URL, { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
     const data = await res.json();
-    if (!data.bitcoin || !data.ethereum || !data.tether) throw new Error("Bad CoinGecko response");
+    if (!Object.values(CRYPTO_IDS).every((id) => data[id] && typeof data[id].usd === "number")) throw new Error("Bad CoinGecko response");
     cryptoPrices = { prices: data, fetchedAt: now };
     cryptoCache = cryptoPrices;
     saveCryptoCache();
     cryptoStale = false;
+    cryptoAttempted = true;
     renderCryptoStrip();
     return data;
   } catch (e) {
+    cryptoAttempted = true;
     if (cryptoCache && cryptoCache.prices) { cryptoPrices = cryptoCache; cryptoStale = true; renderCryptoStrip(); return cryptoCache.prices; }
     cryptoStale = false;
     renderCryptoStrip();
@@ -693,18 +993,18 @@ async function loadRates(base, opts) {
       ratesCache[base] = { rates: data.rates, updated: data.time_last_update_utc, fetchedAt: Date.now() };
       saveCache();
       els.errorBanner.classList.remove("show");
-      setStatus("live", "Live rates · " + fmtUpdatedShort(data.time_last_update_utc));
+      setStatus("live", fmtUpdatedShort(data.time_last_update_utc));
     } catch (err) {
       if (cached && cached.rates) {
         currentRates = { rates: cached.rates, updated: cached.updated, source: "cached" };
-        els.errorBanner.textContent = "Live update failed — showing the last saved rates from " + fmtUpdated(cached.updated) + ". Check your connection and tap Refresh to try again.";
+        els.errorBanner.textContent = t("errLiveFailed", { upd: fmtUpdated(cached.updated) });
         els.errorBanner.classList.add("show");
-        setStatus("cached", "Cached rates · " + fmtUpdatedShort(cached.updated));
+        setStatus("cached", fmtUpdatedShort(cached.updated));
       } else {
         currentRates = null;
-        els.errorBanner.textContent = "Could not load live exchange rates. Check your connection and tap Refresh to try again. No rate is shown because no verified rate is available.";
+        els.errorBanner.textContent = t("errNoRates");
         els.errorBanner.classList.add("show");
-        setStatus("error", "Rates unavailable — no cached rates saved yet");
+        setStatus("error", null, true);
       }
     }
   }
@@ -726,15 +1026,15 @@ async function loadRates(base, opts) {
       const updated = (currentRates && currentRates.updated) || usdBase.updated;
       currentRates = { rates: merged, updated: updated, source: "live", crypto: true };
       if (isCrypto(base) || fiatSource === "live") els.errorBanner.classList.remove("show");
-      if (cryptoStale) setStatus("live", "Live rates · " + fmtUpdatedShort(updated));
-      else if (isCrypto(base)) setStatus("live", "Live rates · " + fmtUpdatedShort(updated));
+      if (cryptoStale) setStatus("live", fmtUpdatedShort(updated));
+      else if (isCrypto(base)) setStatus("live", fmtUpdatedShort(updated));
     } else if (isCrypto(state.from)) {
       currentRates = null;
-      els.errorBanner.textContent = "Crypto prices are unavailable right now — CoinGecko did not respond. Fiat conversions still work; try this pair again in a moment.";
+      els.errorBanner.textContent = t("errCryptoFrom");
       els.errorBanner.classList.add("show");
-      setStatus("error", "Crypto rates unavailable");
+      setStatus("error", null, true);
     } else {
-      els.errorBanner.textContent = "Crypto prices are unavailable right now — fiat conversions still work. Try again in a moment.";
+      els.errorBanner.textContent = t("errCryptoTo");
       els.errorBanner.classList.add("show");
     }
   }
@@ -757,7 +1057,8 @@ function recordRecent() {
 
 function renderRecents() {
   if (!recents.length) {
-    els.recentList.innerHTML = '<div class="empty-note">No conversions yet — your last 10 conversions will appear here.</div>';
+    els.recentList.innerHTML = '<div class="empty-note"></div>';
+    els.recentList.querySelector(".empty-note").textContent = t("recentEmpty");
     return;
   }
   els.recentList.innerHTML = "";
@@ -804,10 +1105,11 @@ const MULTI_TARGETS = ["IDR","EUR","GBP","JPY","SGD","AUD"];
 const MULTI_FILLERS = ["CAD","CHF","CNY","NZD","KRW","HKD"];
 function renderMulti() {
   const amount = parseAmount();
-  els.multiTitle.textContent = fmtAmountInput(state.amount) + " " + state.from + " in other currencies";
+  els.multiTitle.textContent = t("multiTitle", { amount: fmtAmountInput(state.amount), from: state.from });
   if (amount === null || !currentRates || !currentRates.rates) {
     if (!ratesAttempted) return; /* keep the skeleton rows: no layout shift while loading */
-    els.multiList.innerHTML = '<div class="empty-note">Rates not available yet.</div>';
+    els.multiList.innerHTML = '<div class="empty-note"></div>';
+    els.multiList.querySelector(".empty-note").textContent = t("multiUnavailable");
     return;
   }
   const targets = [];
@@ -827,7 +1129,7 @@ function renderMulti() {
 /* ---------- currency picker ---------- */
 function openPicker(target) {
   pickerTarget = target;
-  els.pickerTitle.textContent = target === "from" ? "Convert from" : "Convert to";
+  els.pickerTitle.textContent = target === "from" ? t("pickerFrom") : t("pickerTo");
   els.pickerSearch.value = "";
   renderPickerList("");
   els.overlay.classList.add("open");
@@ -843,10 +1145,11 @@ function renderPickerList(q) {
     const [name, region] = CURRENCIES[code];
     return code.toLowerCase().includes(query) || name.toLowerCase().includes(query) || region.toLowerCase().includes(query);
   });
-  /* Crypto first, then fiat — so BTC/ETH/USDT are never buried in the list. */
-  const ordered = query ? matches : ["BTC", "ETH", "USDT"].concat(matches.filter((c) => !isCrypto(c)));
+  /* Crypto first, then fiat — so the coins are never buried in the list. */
+  const ordered = query ? matches : ["BTC", "ETH", "USDT", "SOL", "XRP", "DOGE", "ADA", "LTC"].concat(matches.filter((c) => !isCrypto(c)));
   if (!matches.length) {
-    list.innerHTML = '<div class="no-match">No currency matches "' + q + '".</div>';
+    list.innerHTML = '<div class="no-match"></div>';
+    list.querySelector(".no-match").textContent = t("noMatch", { q: q });
     return;
   }
   if (!query) {
@@ -894,6 +1197,7 @@ const CHART_CACHE_KEY = "convertly-chart-v1";
 let chartRange = 30;
 let chartData = null;   /* { base, target, range, points: [{date, rate}], fetchedAt } */
 let chartSeq = 0;
+let inspectedIdx = null; /* index into chartData.points tapped by the user, or null */
 
 function isoDay(d) {
   return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
@@ -901,7 +1205,7 @@ function isoDay(d) {
 function fmtDay(iso) {
   try {
     const d = new Date(iso + "T00:00:00");
-    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+    return d.toLocaleDateString(dateLocale(), { day: "numeric", month: "short" });
   } catch (e) { return iso; }
 }
 function chartCache() {
@@ -917,6 +1221,7 @@ function setTrendNote(text, show) {
 }
 function showChartUnavailable(msg) {
   chartData = null;
+  inspectedIdx = null;
   setTrendNote(msg, true);
   els.trendTitle.textContent = state.from + " / " + state.to + " trend";
   els.trendCurrent.textContent = "—";
@@ -924,6 +1229,21 @@ function showChartUnavailable(msg) {
   els.trendLow.textContent = "—";
   els.trendChange.textContent = "—";
   els.trendChange.className = "stat-value";
+  updateChartInspect();
+}
+function updateTrendTexts() {
+  /* Re-applies the language-dependent trend labels/foot from current state (no fetch). */
+  const cryptoPair = isCrypto(state.from) || isCrypto(state.to);
+  els.trendFoot.textContent = cryptoPair ? t("trendFootCrypto") : t("trendFootFiat");
+  if (chartData) {
+    els.trendHighLabel.textContent = t("dayHigh", { n: chartData.range });
+    els.trendLowLabel.textContent = t("dayLow", { n: chartData.range });
+    els.trendChangeLabel.textContent = t("changeLabel", { n: chartData.range });
+  } else {
+    els.trendHighLabel.textContent = t("dayHigh", { n: chartRange });
+    els.trendLowLabel.textContent = t("dayLow", { n: chartRange });
+    els.trendChangeLabel.textContent = t("changeLabel", { n: chartRange });
+  }
 }
 async function fetchFrankfurter(start, end, base, target) {
   const path = start + ".." + end + "?from=" + encodeURIComponent(base) + "&to=" + encodeURIComponent(target);
@@ -1000,8 +1320,8 @@ async function fetchCryptoChartData(start, end) {
 }
 async function loadChart() {
   const seq = ++chartSeq;
-  if (state.from === state.to) { showChartUnavailable("Same currency selected — there is no trend to show."); return; }
-  setTrendNote("Loading trend…", true);
+  if (state.from === state.to) { showChartUnavailable(t("chartSame")); return; }
+  setTrendNote(t("chartLoading"), true);
   els.trendTitle.textContent = state.from + " / " + state.to + " trend";
   const end = new Date();
   const start = new Date();
@@ -1009,7 +1329,7 @@ async function loadChart() {
   const key = state.from + ">" + state.to + ":" + chartRange;
   const cache = chartCache();
   const cryptoPair = isCrypto(state.from) || isCrypto(state.to);
-  els.trendFoot.textContent = cryptoPair ? "Daily prices via CoinGecko · Crypto markets never close" : "Daily ECB reference rates via Frankfurter · Weekends and holidays have no rate, so those days are skipped";
+  updateTrendTexts();
   const data = cryptoPair ? await fetchCryptoChartData(start, end) : await fetchFrankfurter(isoDay(start), isoDay(end), state.from, state.to);
   if (seq !== chartSeq) return; /* a newer request superseded this one */
   if (data) {
@@ -1029,7 +1349,7 @@ async function loadChart() {
     chartData = cached;
     renderChart(true);
   } else {
-    showChartUnavailable(cryptoPair ? "Chart not available for this pair. CoinGecko did not return price history — try again in a moment." : "Chart not available for this pair. Frankfurter covers about 30 major currencies — try USD, EUR, GBP, JPY, or IDR pairs.");
+    showChartUnavailable(cryptoPair ? t("chartUnavailableCrypto") : t("chartUnavailableFiat"));
   }
 }
 function renderChart(stale) {
@@ -1037,9 +1357,9 @@ function renderChart(stale) {
   const range = chartData.range;
   setTrendNote("", false);
   els.trendTitle.textContent = chartData.base + " / " + chartData.target + " trend";
-  els.trendHighLabel.textContent = range + "-day high";
-  els.trendLowLabel.textContent = range + "-day low";
-  els.trendChangeLabel.textContent = "Change (" + range + "D)";
+  els.trendHighLabel.textContent = t("dayHigh", { n: range });
+  els.trendLowLabel.textContent = t("dayLow", { n: range });
+  els.trendChangeLabel.textContent = t("changeLabel", { n: range });
   const values = pts.map((p) => p.rate);
   const high = Math.max.apply(null, values);
   const low = Math.min.apply(null, values);
@@ -1082,10 +1402,46 @@ function renderChart(stale) {
     + '<path d="' + area + '" fill="url(#trendArea)" stroke="none"/>'
     + '<path d="' + line + '" fill="none" stroke="url(#trendLine)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
     + '<circle class="last-dot" cx="' + X(pts.length - 1).toFixed(1) + '" cy="' + Y(last).toFixed(1) + '" r="4.5"/>'
+    + (inspectedIdx !== null && inspectedIdx >= 0 && inspectedIdx < pts.length
+        ? '<circle cx="' + X(inspectedIdx).toFixed(1) + '" cy="' + Y(pts[inspectedIdx].rate).toFixed(1) + '" r="6" fill="#fff" stroke="#EA580C" stroke-width="2.5"/>'
+          + '<line x1="' + X(inspectedIdx).toFixed(1) + '" y1="' + padT + '" x2="' + X(inspectedIdx).toFixed(1) + '" y2="' + (H - padB) + '" stroke="#EA580C" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>'
+        : "")
     + '<text class="axis" x="' + padL + '" y="' + (H - 8) + '">' + fmtDay(pts[0].date) + '</text>'
     + '<text class="axis" x="' + (W - padR) + '" y="' + (H - 8) + '" text-anchor="end">' + fmtDay(pts[pts.length - 1].date) + '</text>';
   els.trendChart.innerHTML = svg;
-  els.trendChart.setAttribute("aria-label", "Exchange rate trend for " + chartData.base + " to " + chartData.target + ", " + pts.length + " daily rates");
+  els.trendChart.setAttribute("aria-label", t("chartAria", { from: chartData.base, to: chartData.target, n: pts.length }));
+  updateChartInspect();
+}
+/* ---------- chart tap-to-inspect: tap/click a point to see its exact date + rate ---------- */
+function updateChartInspect() {
+  if (!els.chartInspect) return;
+  if (!chartData || !chartData.points || inspectedIdx === null || inspectedIdx < 0 || inspectedIdx >= chartData.points.length) {
+    els.chartInspect.textContent = t("chartTapHint");
+    return;
+  }
+  const p = chartData.points[inspectedIdx];
+  els.chartInspect.innerHTML = "";
+  const b = document.createElement("b");
+  b.textContent = t("chartInspect", { date: fmtLongDate(p.date), from: chartData.base, rate: fmtRate(p.rate), to: chartData.target });
+  els.chartInspect.appendChild(b);
+}
+function inspectChartPoint(clientX) {
+  if (!chartData || !chartData.points || chartData.points.length < 2) return;
+  const rect = els.trendChart.getBoundingClientRect();
+  if (!rect.width) return;
+  const W = 640, padL = 10, padR = 14;
+  const x = ((clientX - rect.left) / rect.width) * W;
+  const frac = (x - padL) / (W - padL - padR);
+  let idx = Math.round(frac * (chartData.points.length - 1));
+  idx = Math.max(0, Math.min(chartData.points.length - 1, idx));
+  inspectedIdx = idx;
+  renderChart(false);
+}
+if (els.trendChart) {
+  els.trendChart.addEventListener("click", (e) => inspectChartPoint(e.clientX));
+  els.trendChart.addEventListener("touchend", (e) => {
+    if (e.changedTouches && e.changedTouches.length) inspectChartPoint(e.changedTouches[0].clientX);
+  }, { passive: true });
 }
 document.querySelectorAll(".range-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -1099,7 +1455,9 @@ document.querySelectorAll(".range-btn").forEach((btn) => {
 
 /* ---------- actions ---------- */
 let inputTimer = null;
+let lastRefreshAt = Date.now();
 function refresh(record) {
+  lastRefreshAt = Date.now();
   loadRates(state.from, { record: record !== false });
 }
 els.amount.addEventListener("input", () => {
@@ -1135,7 +1493,7 @@ async function copyText(text, labelEl, originalLabel) {
     } catch (e2) { ok = false; }
   }
   if (labelEl) {
-    labelEl.textContent = ok ? "Copied" : "Copy failed";
+    labelEl.textContent = ok ? t("copied") : t("copyFailed");
     setTimeout(() => { labelEl.textContent = originalLabel; }, 1600);
   }
   return ok;
@@ -1144,11 +1502,11 @@ els.copyResultBtn.addEventListener("click", () => {
   const amount = parseAmount();
   if (amount === null || !currentRates || !currentRates.rates || typeof currentRates.rates[state.to] !== "number") return;
   const text = fmtAmountInput(amount) + " " + state.from + " = " + fmtMoney(amount * currentRates.rates[state.to], state.to);
-  copyText(text, els.copyResultLabel, "Copy result");
+  copyText(text, els.copyResultLabel, t("copyResult"));
 });
 els.copyLinkBtn.addEventListener("click", () => {
   syncURL();
-  copyText(location.href, els.copyLinkLabel, "Copy link");
+  copyText(location.href, els.copyLinkLabel, t("copyLink"));
 });
 
 /* Refresh button lives in the HTML status line (static, so it never shifts the layout). */
@@ -1158,9 +1516,10 @@ els.refreshBtn.addEventListener("click", () => refresh(false));
 function renderCryptoStrip() {
   const grid = els.cryptoGrid;
   if (!grid) return;
+  if (!cryptoAttempted && !(cryptoPrices && cryptoPrices.prices)) return; /* keep the skeleton bars until the first fetch finishes */
   const data = cryptoPrices && cryptoPrices.prices;
   const note = els.cryptoNote;
-  ["BTC", "ETH", "USDT"].forEach((code) => {
+  STRIP_CRYPTOS.forEach((code) => {
     const chip = grid.querySelector('[data-crypto="' + code + '"]');
     if (!chip) return;
     const priceEl = chip.querySelector(".crypto-price");
@@ -1171,10 +1530,11 @@ function renderCryptoStrip() {
       priceEl.innerHTML = '<span class="crypto-value">$' + fmtRate(p.usd) + '</span>'
         + (chg === null ? '<span class="crypto-change">—</span>'
           : '<span class="crypto-change ' + (chg >= 0 ? "up" : "down") + '">' + (chg >= 0 ? "+" : "") + chg.toFixed(2) + "%</span>");
-      if (note) note.textContent = cryptoStale ? "Live · CoinGecko (cached)" : "Live · CoinGecko";
+      if (note) note.textContent = cryptoStale ? t("cryptoCached") : t("cryptoLive");
     } else {
-      priceEl.innerHTML = '<span class="crypto-value">—</span><span class="crypto-change">Unavailable</span>';
-      if (note) note.textContent = "Crypto prices unavailable";
+      priceEl.innerHTML = '<span class="crypto-value">—</span><span class="crypto-change"></span>';
+      priceEl.querySelector(".crypto-change").textContent = t("unavailable");
+      if (note) note.textContent = t("cryptoUnavailable");
     }
     chip.classList.toggle("active", state.from === code);
   });
@@ -1198,6 +1558,177 @@ function applyTheme(t) {
   try { localStorage.setItem(THEME_KEY, t); } catch (e) {}
 }
 
+/* ---------- pinned / favorite pairs (localStorage, survives reload) ---------- */
+const PINNED_KEY = "convertly-pinned-v1";
+let pinnedPairs = [];
+try { pinnedPairs = JSON.parse(localStorage.getItem(PINNED_KEY) || "[]"); } catch (e) { pinnedPairs = []; }
+pinnedPairs = pinnedPairs.filter((p) => p && CURRENCIES[p.from] && CURRENCIES[p.to] && p.from !== p.to).slice(0, 8);
+function savePinned() { try { localStorage.setItem(PINNED_KEY, JSON.stringify(pinnedPairs)); } catch (e) {} }
+function isPinned(f, t) { return pinnedPairs.some((p) => p.from === f && p.to === t); }
+function renderPinBtn() {
+  if (!els.pinBtn) return;
+  const pinned = isPinned(state.from, state.to);
+  els.pinBtn.classList.toggle("pinned", pinned);
+  els.pinBtn.setAttribute("aria-pressed", pinned ? "true" : "false");
+  if (els.pinBtnLabel) els.pinBtnLabel.textContent = pinned ? t("unpinPair") : t("pinPair");
+}
+function renderPinned() {
+  if (!els.pinnedSection || !els.pinnedRow) return;
+  els.pinnedSection.hidden = pinnedPairs.length === 0;
+  els.pinnedRow.innerHTML = "";
+  pinnedPairs.forEach((p) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip" + (state.from === p.from && state.to === p.to ? " active" : "");
+    b.textContent = p.from + " / " + p.to;
+    b.addEventListener("click", () => {
+      state.from = p.from; state.to = p.to;
+      saveState(); renderPair();
+      refresh(true);
+      loadChart();
+    });
+    els.pinnedRow.appendChild(b);
+  });
+}
+
+/* ---------- quick-amount chips ---------- */
+function markAmtChip() {
+  if (!els.amtChips) return;
+  const cur = parseAmount();
+  els.amtChips.querySelectorAll(".amt-chip").forEach((c) => {
+    c.classList.toggle("active", cur !== null && +c.dataset.amount === cur);
+  });
+}
+
+/* ---------- auto-refresh: every 60s while the tab is visible ---------- */
+const AUTO_REFRESH_MS = 60000;
+let autoTimer = null;
+function armAutoRefresh(delay) {
+  if (autoTimer) clearTimeout(autoTimer);
+  autoTimer = setTimeout(autoRefreshTick, typeof delay === "number" ? delay : AUTO_REFRESH_MS);
+}
+function autoRefreshTick() {
+  if (document.visibilityState !== "visible") { armAutoRefresh(); return; } /* hidden tab: no calls at all; re-check in 60s */
+  const elapsed = Date.now() - lastRefreshAt;
+  if (elapsed < AUTO_REFRESH_MS - 1000) { armAutoRefresh(AUTO_REFRESH_MS - elapsed); return; } /* a manual refresh just happened — wait out the remainder so we never fire faster than ~60s */
+  lastRefreshAt = Date.now();
+  refresh(false); /* record:false so the auto tick never spams recents */
+  loadCryptoPrices(); /* reuses its own 60s cache; no extra call when fresh */
+  armAutoRefresh();
+}
+armAutoRefresh();
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && Date.now() - lastRefreshAt >= AUTO_REFRESH_MS) autoRefreshTick();
+});
+
+/* ---------- historical rate by date ---------- */
+let histData = null; /* { date, reqDate, rate, from, to } | { errorKey, vars } | null */
+let histSeq = 0;
+function renderHistResult() {
+  if (!els.histResult) return;
+  if (!histData) { els.histResult.textContent = ""; return; }
+  if (histData.errorKey) { els.histResult.textContent = t(histData.errorKey, histData.vars || {}); return; }
+  els.histResult.innerHTML = "";
+  const b = document.createElement("b");
+  b.textContent = t("histResult", { date: fmtLongDate(histData.date), from: histData.from, rate: fmtRate(histData.rate), to: histData.to });
+  els.histResult.appendChild(b);
+  if (histData.reqDate && histData.reqDate !== histData.date) {
+    const note = document.createElement("span");
+    note.className = "hist-note";
+    note.textContent = t("histWeekend", { req: fmtLongDate(histData.reqDate), near: fmtLongDate(histData.date) });
+    els.histResult.appendChild(note);
+  }
+}
+/* Frankfurter has no weekend/holiday rates: walk back up to 7 days for the nearest available day. */
+async function frankfurterOnDate(dateIso, from, to) {
+  const d = new Date(dateIso + "T00:00:00");
+  for (let i = 0; i < 7; i++) {
+    const iso = isoDay(d);
+    try {
+      const res = await fetch(FRANKFURTER_HOSTS[0] + iso + "?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to));
+      if (res.ok) {
+        const data = await res.json();
+        /* Frankfurter answers a weekend/holiday date with the previous business day's
+           rates and says so in `date` — that is the day actually served, so report it. */
+        if (data && data.rates && typeof data.rates[to] === "number") return { rate: data.rates[to], served: data.date || iso };
+      }
+    } catch (e) { /* try the previous day */ }
+    d.setDate(d.getDate() - 1);
+  }
+  return null;
+}
+/* CoinGecko daily snapshot for one coin, in USD. Null when the coin/date has no data. */
+async function cgHistoryUsd(code, cgDate) {
+  try {
+    const res = await fetch(COINGECKO_CHART_URL + encodeURIComponent(CRYPTO_IDS[code]) + "/history?date=" + cgDate);
+    if (!res.ok) return null;
+    const data = await res.json();
+    const p = data && data.market_data && data.market_data.current_price;
+    if (!p || typeof p.usd !== "number") return null;
+    return p.usd;
+  } catch (e) { return null; }
+}
+async function lookupHistRate() {
+  const val = (els.histDate.value || "").trim();
+  if (!val) { histData = { errorKey: "histPickDate" }; renderHistResult(); return; }
+  if (val > isoDay(new Date())) { histData = { errorKey: "histFuture" }; renderHistResult(); return; }
+  if (state.from === state.to) { histData = { errorKey: "histUnavailable" }; renderHistResult(); return; }
+  const seq = ++histSeq;
+  els.histResult.textContent = t("histLoading");
+  const from = state.from, to = state.to;
+  const parts = val.split("-");
+  const cgDate = parts[2] + "-" + parts[1] + "-" + parts[0]; /* DD-MM-YYYY for CoinGecko */
+  let rate = null, served = val, servedFiat = null;
+  const usdPer = async (code) => {
+    if (code === "USD") return 1;
+    if (isCrypto(code)) return await cgHistoryUsd(code, cgDate);
+    const r = await frankfurterOnDate(val, "USD", code);
+    if (!r) return null;
+    servedFiat = r.served;
+    return 1 / r.rate;
+  };
+  const perUsd = async (code) => {
+    if (code === "USD") return 1;
+    if (isCrypto(code)) { const p = await cgHistoryUsd(code, cgDate); return p ? 1 / p : null; }
+    const r = await frankfurterOnDate(val, "USD", code);
+    if (!r) return null;
+    servedFiat = r.served;
+    return r.rate;
+  };
+  try {
+    if (!isCrypto(from) && !isCrypto(to)) {
+      const r = await frankfurterOnDate(val, from, to);
+      if (r) { rate = r.rate; served = r.served; }
+    } else {
+      const a = await usdPer(from);
+      const b = await perUsd(to);
+      if (typeof a === "number" && typeof b === "number") { rate = a * b; served = servedFiat || val; }
+    }
+  } catch (e) { rate = null; }
+  if (seq !== histSeq) return; /* a newer lookup superseded this one */
+  if (typeof rate === "number" && isFinite(rate) && rate > 0) {
+    histData = { date: served, reqDate: val, rate: rate, from: from, to: to };
+  } else {
+    histData = { errorKey: "histUnavailable" };
+  }
+  renderHistResult();
+}
+
+/* ---------- install (PWA): real beforeinstallprompt, iOS manual-steps fallback ---------- */
+let deferredPrompt = null;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent || "") && !window.MSStream;
+const isStandalone = (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || navigator.standalone === true;
+function updateInstallBtn() {
+  if (!els.installBtn) return;
+  els.installBtn.hidden = isStandalone || (deferredPrompt === null && !isIOS);
+}
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault(); /* capture it: the button shows only when the browser offers install */
+  deferredPrompt = e;
+  updateInstallBtn();
+});
+window.addEventListener("appinstalled", () => { deferredPrompt = null; updateInstallBtn(); });
+
 /* ---------- init ---------- */
 /* Theme: saved choice wins, otherwise follow the OS. */
 let savedTheme = null;
@@ -1207,16 +1738,48 @@ els.themeBtn.addEventListener("click", () => {
   applyTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark");
 });
 els.amount.value = String(state.amount);
+if (els.histDate) els.histDate.max = isoDay(new Date());
 renderChips();
-renderPair();
-renderRecents();
-renderResult();
+applyLang(); /* sets all static + dynamic strings, then renders pair/result/recents/pinned */
 refresh(false);
 loadChart();
 loadCryptoPrices(); /* fills the crypto strip even when the pair is fiat-only */
 document.querySelectorAll("#cryptoGrid .crypto-chip").forEach((chip) => {
   chip.addEventListener("click", () => setFromCrypto(chip.dataset.crypto));
 });
+els.pinBtn.addEventListener("click", () => {
+  if (isPinned(state.from, state.to)) {
+    pinnedPairs = pinnedPairs.filter((p) => !(p.from === state.from && p.to === state.to));
+  } else {
+    pinnedPairs.unshift({ from: state.from, to: state.to });
+    pinnedPairs = pinnedPairs.slice(0, 8);
+  }
+  savePinned(); renderPinBtn(); renderPinned();
+});
+document.querySelectorAll("#amtChips .amt-chip").forEach((chip) => {
+  chip.addEventListener("click", () => {
+    els.amount.value = chip.dataset.amount;
+    renderPair(); renderResult(); recordRecent();
+  });
+});
+els.histBtn.addEventListener("click", lookupHistRate);
+els.histDate.addEventListener("change", lookupHistRate);
+els.langBtn.addEventListener("click", () => { lang = lang === "en" ? "id" : "en"; applyLang(); });
+if (els.installBtn) {
+  els.installBtn.addEventListener("click", async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      try { await deferredPrompt.userChoice; } catch (e) {}
+      deferredPrompt = null;
+      updateInstallBtn();
+    } else if (isIOS) {
+      if (els.installOverlay) els.installOverlay.classList.add("open");
+    }
+  });
+}
+if (els.installCloseBtn) els.installCloseBtn.addEventListener("click", () => els.installOverlay.classList.remove("open"));
+if (els.installOverlay) els.installOverlay.addEventListener("click", (e) => { if (e.target === els.installOverlay) els.installOverlay.classList.remove("open"); });
+updateInstallBtn();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {

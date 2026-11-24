@@ -1,8 +1,8 @@
 /* Convertly service worker — app-shell offline cache.
    Same-origin files are cached; the live rates API is never cached here
    (the app itself caches the last good rates in localStorage). */
-const CACHE_NAME = "convertly-v4";
-// NOTE: og-image.png is NOT precached — it is not in the repo yet (see README).
+const CACHE_NAME = "convertly-v5";
+// NOTE: og-image.png is deliberately NOT precached — it is a large social image, not app shell.
 // The fetch handler below still caches it on demand if it ever appears.
 const APP_SHELL = ["./", "index.html", "icon.svg", "manifest.json"];
 
